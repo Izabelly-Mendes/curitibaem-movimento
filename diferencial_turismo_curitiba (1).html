@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curitiba em Movimento — Diferencial Imóveis</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #f5f5f0; color: #1a1a1a; }
+
+.cover {
+  background: #1a1a1a;
+  padding: 52px 48px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.cover-circle1 {
+  position: absolute; top: -80px; right: -80px;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: rgba(255,107,0,0.07);
+}
+.cover-circle2 {
+  position: absolute; bottom: -100px; left: 60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: rgba(255,107,0,0.04);
+}
+.logo-img { height: 56px; filter: brightness(0) invert(1); margin-bottom: 52px; display: block; }
+.cover-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: #FF6B00; margin-bottom: 14px; }
+.cover-title { font-family: 'Syne', sans-serif; font-size: 44px; font-weight: 800; color: #fff; line-height: 1.05; margin-bottom: 14px; }
+.cover-title span { color: #FF6B00; }
+.cover-sub { font-size: 15px; color: rgba(255,255,255,0.45); font-weight: 300; margin-bottom: 36px; }
+.pills { display: flex; gap: 9px; flex-wrap: wrap; }
+.pill { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.14); border-radius: 100px; padding: 6px 14px; font-size: 11.5px; color: rgba(255,255,255,0.6); }
+.pill.o { background: rgba(255,107,0,0.14); border-color: rgba(255,107,0,0.3); color: #FF6B00; }
+
+.body { padding: 36px 48px 52px; }
+
+.sec-label {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #FF6B00; margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
+}
+.sec-label::after { content: ''; flex: 1; height: 0.5px; background: #ddd; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+.kpi2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.kpi3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+
+.kpi { background: #fff; border-radius: 12px; border: 0.5px solid #e0ddd5; padding: 18px 16px; }
+.kpi.dk { background: #1a1a1a; border-color: #1a1a1a; }
+.kpi-num { font-family: 'Syne', sans-serif; font-size: 27px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 4px; }
+.kpi-num span { color: #FF6B00; }
+.kpi.dk .kpi-num { color: #FF6B00; }
+.kpi-lbl { font-size: 12px; color: #888; line-height: 1.45; }
+.kpi.dk .kpi-lbl { color: rgba(255,255,255,0.5); }
+.kpi-src { font-size: 10px; color: #bbb; margin-top: 6px; }
+.kpi.dk .kpi-src { color: rgba(255,255,255,0.25); }
+
+.card { background: #fff; border-radius: 14px; border: 0.5px solid #e0ddd5; padding: 22px 24px; margin-bottom: 14px; }
+.card-h { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.card-b { font-size: 13.5px; color: #555; line-height: 1.65; }
+.card-b strong { color: #1a1a1a; font-weight: 500; }
+.hl { color: #FF6B00; font-weight: 500; }
+
+.ins { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.6; }
+
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-lbl { font-size: 12px; color: #555; width: 90px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 6px; background: #f0ede6; border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 10px; background: #FF6B00; }
+.bar-val { font-size: 12px; font-weight: 500; color: #1a1a1a; width: 36px; text-align: right; }
+
+.award { background: #1a1a1a; border-radius: 12px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.award-ico { width: 42px; height: 42px; background: rgba(255,107,0,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.award strong { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #fff; display: block; margin-bottom: 3px; }
+.award span { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+.divider { height: 0.5px; background: #e0ddd5; margin: 28px 0; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tag { background: #f5f5f0; border: 0.5px solid #ddd; border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: #555; }
+.tag.o { background: rgba(255,107,0,0.07); border-color: rgba(255,107,0,0.2); color: #c85200; }
+
+.footer { background: #1a1a1a; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; }
+.footer-txt { font-size: 11px; color: rgba(255,255,255,0.3); }
+.footer-logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.35; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-circle1"></div>
+  <div class="cover-circle2"></div>
+  <img src="1779819956308_image.png" class="logo-img" alt="Diferencial Imóveis">
+  <div class="cover-tag">Material de treinamento interno</div>
+  <div class="cover-title">Curitiba em<br><span>movimento</span></div>
+  <div class="cover-sub">Turismo, eventos e impacto imobiliário · 2024/2025</div>
+  <div class="pills">
+    <div class="pill o">Dados oficiais</div>
+    <div class="pill">IMT</div>
+    <div class="pill">SEHA</div>
+    <div class="pill">Embratur</div>
+    <div class="pill">Prefeitura de Curitiba</div>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- FLUXO TURÍSTICO -->
+  <div class="sec-label">Visão geral do fluxo turístico</div>
+  <div class="kpi-grid">
+    <div class="kpi dk">
+      <div class="kpi-num"><span>10M</span></div>
+      <div class="kpi-lbl">visitantes totais em 2024</div>
+      <div class="kpi-src">Prefeitura de Curitiba / IMT</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">8,2<span>M</span></div>
+      <div class="kpi-lbl">turistas com pernoite em 2024</div>
+      <div class="kpi-src">IMT — Instituto Municipal de Turismo</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">+3<span>M</span></div>
+      <div class="kpi-lbl">turistas esperados em 2025</div>
+      <div class="kpi-src">Projeção IMT — calendário 3-4x maior</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Como ler esses números</div>
+    <div class="card-b">O IMT trabalha com dois recortes. O total de <strong>visitantes</strong> inclui turistas (quem pernoita) e excursionistas (quem fica ao menos 4h sem pernoite). Para o mercado imobiliário, o número mais relevante é o de <strong>turistas com pernoite</strong> — são eles que demandam hospedagem, seja hotel, seja Airbnb.</div>
+    <div class="ins">Em dezembro de 2024 sozinho, Curitiba recebeu quase <strong>400 mil visitantes</strong> — volume que supera o ano inteiro de vários destinos brasileiros.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PERFIL -->
+  <div class="sec-label">Perfil dos visitantes — mudança histórica</div>
+  <div class="card">
+    <div class="card-h">Pela primeira vez, lazer superou negócios</div>
+    <div class="card-b" style="margin-bottom:16px">Em 2024 ocorreu uma virada inédita: as viagens por <span class="hl">lazer passaram a ser a principal motivação</span>, superando o turismo corporativo que historicamente dominava a cidade.</div>
+    <div class="bar-row">
+      <div class="bar-lbl">Lazer</div>
+      <div class="bar-track"><div class="bar-fill" style="width:66%"></div></div>
+      <div class="bar-val">33,3%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Negócios</div>
+      <div class="bar-track"><div class="bar-fill" style="width:47%;background:#ccc"></div></div>
+      <div class="bar-val">24%</div>
+    </div>
+    <div class="card-b" style="margin-top:10px;font-size:11.5px;color:#bbb">Fonte: IMT — percentuais restantes referem-se a visitas a amigos/familiares e outros motivos</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- LINHA TURISMO -->
+  <div class="sec-label">Linha turismo — termômetro do turismo de lazer</div>
+  <div class="kpi2">
+    <div class="kpi">
+      <div class="kpi-num">908<span>mil</span></div>
+      <div class="kpi-lbl">embarques na Linha Turismo em 2025</div>
+      <div class="kpi-src">SEHA / Prefeitura de Curitiba</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">+<span>13,6%</span></div>
+      <div class="kpi-lbl">crescimento vs. 2024 (799,7 mil embarques)</div>
+      <div class="kpi-src">Confirmado por múltiplas fontes</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-b">Quase <strong>1 milhão de pessoas circulando pelos 26 pontos turísticos</strong> da cidade ao longo do ano. A Linha Turismo é o indicador mais direto do turista que veio para conhecer Curitiba — não para trabalhar.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EVENTOS -->
+  <div class="sec-label">Eventos, shows e congressos</div>
+  <div class="kpi3">
+    <div class="kpi">
+      <div class="kpi-num"><span>140</span></div>
+      <div class="kpi-lbl">eventos em 2024 (técnico-científicos, feiras e congressos)</div>
+      <div class="kpi-src">Curitiba Convention & Visitors Bureau</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num"><span>85</span></div>
+      <div class="kpi-lbl">eventos realizados apenas entre janeiro e agosto de 2025</div>
+      <div class="kpi-src">CCVB — dado parcial</div>
+    </div>
+    <div class="kpi dk">
+      <div class="kpi-num"><span>+40</span></div>
+      <div class="kpi-lbl">shows internacionais já confirmados para 2026</div>
+      <div class="kpi-src">Agenda consolidada — Me Gusta Curitiba / Jan 2026</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Principais espaços de eventos da cidade</div>
+    <div class="card-b"><strong>Arena da Baixada</strong> (42 mil lugares, teto retrátil, único na América do Sul) · <strong>Pedreira Paulo Leminski</strong> · <strong>Teatro Positivo</strong> · <strong>Teatro Guaíra</strong> · <strong>Viasoft Experience</strong> (7,3 mil m² de exposição, 150+ eventos em 2025) · <strong>Expotrade Convention Center</strong> · <strong>UP Experience</strong> (Teatro Positivo + auditórios).</div>
+    <div class="ins">Em uma única semana de março de 2025 — Festival de Teatro, Smart City Expo, show da Olivia Rodrigo e Expo Turismo Paraná simultâneos — os hotéis de Curitiba atingiram <strong>100% de ocupação</strong>.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Incentivo fiscal municipal — ISS reduzido para eventos</div>
+    <div class="card-b">A Prefeitura de Curitiba reduziu a alíquota do <strong>ISS de 5% para 2%</strong> para shows, espetáculos, feiras, congressos, competições esportivas e produção de eventos em geral. Isso representa menos da metade do imposto cobrado em outras cidades, tornando Curitiba diretamente mais atrativa para grandes turnês e eventos corporativos.<br><br>O presidente do IMT, Rodrigo Swinka, confirmou publicamente: <span class="hl">"o ISS reduzido beneficiou o setor, tornando Curitiba um dos principais polos de eventos do Brasil"</span>.<br><br>Existe ainda o <strong>Programa Municipal de Incentivo à Cultura (PAIC)</strong>, com renúncia fiscal de até 2% do IPTU e ISS para projetos culturais captados via mecenato subsidiado.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- NATAL -->
+  <div class="sec-label">Natal de Curitiba 2025</div>
+  <div class="award">
+    <div class="award-ico">🎄</div>
+    <div>
+      <strong>Maior Natal do Brasil — edição 2025</strong>
+      <span>25 de novembro a 23 de dezembro (apresentações) · Decoração até 6 de janeiro de 2026</span>
+    </div>
+  </div>
+  <div class="kpi3">
+    <div class="kpi">
+      <div class="kpi-num">3,09<span>M</span></div>
+      <div class="kpi-lbl">espectadores totais</div>
+      <div class="kpi-src">+35% em relação a 2024</div>
+    </div>
+    <div class="kpi dk">
+      <div class="kpi-num"><span>R$</span>722<span>M</span></div>
+      <div class="kpi-lbl">impacto econômico estimado</div>
+      <div class="kpi-src">+80% em relação a 2024</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">469<span>mil</span></div>
+      <div class="kpi-lbl">turistas no período natalino</div>
+      <div class="kpi-src">+60% em relação a 2024 · IMT</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-b"><strong>44 dias de programação</strong> com mais de <strong>150 atrações gratuitas</strong> — incluindo a parceria inédita com a Disney no Parque Barigui. Taxa média de ocupação dos hotéis: <strong>90%</strong>, chegando a <strong>100%</strong> nas áreas centrais nos dias de grandes apresentações. Tempo médio de permanência: <strong>4,1 pernoites</strong>. Satisfação do público: <strong>95%</strong>.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOTELARIA -->
+  <div class="sec-label">Hotelaria e infraestrutura</div>
+  <div class="kpi3">
+    <div class="kpi">
+      <div class="kpi-num">20<span>mil</span></div>
+      <div class="kpi-lbl">leitos monitorados pelo SEHA (150 meios de hospedagem regulamentados)</div>
+      <div class="kpi-src">SEHA / Viaje Paraná</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">~4<span>mil</span></div>
+      <div class="kpi-lbl">leitos em hotéis de 4 e 5 estrelas</div>
+      <div class="kpi-src">Referência de mercado</div>
+    </div>
+    <div class="kpi dk">
+      <div class="kpi-num"><span>90%</span></div>
+      <div class="kpi-lbl">ocupação média em outubro de 2025 — melhor pós-pandemia</div>
+      <div class="kpi-src">SEHA / Governo do Paraná</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Evolução da ocupação hoteleira anual</div>
+    <div class="card-b" style="margin-bottom:14px">Taxa média anual — base: hotéis filiados ao SEHA:</div>
+    <div class="bar-row">
+      <div class="bar-lbl">2022</div>
+      <div class="bar-track"><div class="bar-fill" style="width:48%;background:#ccc"></div></div>
+      <div class="bar-val">48%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">2023</div>
+      <div class="bar-track"><div class="bar-fill" style="width:53%;background:#bbb"></div></div>
+      <div class="bar-val">53%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">2024</div>
+      <div class="bar-track"><div class="bar-fill" style="width:63%;background:#888"></div></div>
+      <div class="bar-val">63%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-lbl">Out/2025</div>
+      <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+      <div class="bar-val">90%</div>
+    </div>
+    <div class="ins">Nos feriados de 2025, a média de ocupação ficou consistentemente em <strong>90%</strong> — incluindo Carnaval, Páscoa, Tiradentes, Dia do Trabalhador e Consciência Negra.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- AEROPORTO -->
+  <div class="sec-label">Aeroporto e conectividade</div>
+  <div class="kpi2">
+    <div class="kpi">
+      <div class="kpi-num">6,08<span>M</span></div>
+      <div class="kpi-lbl">passageiros no Aeroporto Afonso Pena em 2025</div>
+      <div class="kpi-src">+56% desde 2022 (3,9M) · Gerência do Afonso Pena</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">160</div>
+      <div class="kpi-lbl">pousos e decolagens diários — 22 destinos, 4 países da América Latina</div>
+      <div class="kpi-src">~15 mil passageiros/dia</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-b">Em 2025 foram inauguradas rotas para Lima (Peru) e Assunção (Paraguai). Para 2026, está prevista a operação da <strong>TAP com voo direto Curitiba–Lisboa</strong>, conectando a capital paranaense ao mercado europeu pela primeira vez com rota regular.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- RECONHECIMENTO -->
+  <div class="sec-label">Reconhecimento internacional</div>
+  <div class="award">
+    <div class="award-ico">🏆</div>
+    <div>
+      <strong>Lonely Planet — Top 10 cidades do mundo para visitar em 2025</strong>
+      <span>Única cidade brasileira na lista do guia de viagens mais respeitado do mundo</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ESTRANGEIROS -->
+  <div class="sec-label">Turistas estrangeiros no Paraná</div>
+  <div class="kpi3">
+    <div class="kpi dk">
+      <div class="kpi-num">1,06<span>M</span></div>
+      <div class="kpi-lbl">turistas internacionais no Paraná em 2025 — recorde histórico</div>
+      <div class="kpi-src">Embratur / Ministério do Turismo</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">+<span>16,6%</span></div>
+      <div class="kpi-lbl">crescimento em relação a 2024 — Paraná: 4º portão de entrada do Brasil</div>
+      <div class="kpi-src">Embratur</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">142<span>mil</span></div>
+      <div class="kpi-lbl">turistas estrangeiros no Paraná só em fevereiro de 2026</div>
+      <div class="kpi-src">Embratur — 1º trimestre 2026: +18,3%</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h">Indicadores de 2026 confirmam tendência</div>
+    <div class="card-b">A <strong>Torre Panorâmica</strong> registrou <span class="hl">+12,6% de visitantes</span> no início de 2026 vs. mesmo período de 2025. O Aeroporto Afonso Pena registrou <strong>1,46 milhão de passageiros no 1º trimestre de 2026</strong> — +5% sobre o mesmo período do ano anterior.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- IMPACTO IMOBILIÁRIO -->
+  <div class="sec-label">Por que isso move o mercado imobiliário</div>
+  <div class="card">
+    <div class="card-b">Curitiba deixou de ser destino apenas corporativo. O crescimento do <strong>turismo de lazer</strong>, combinado com um <strong>calendário de eventos 3 a 4 vezes maior</strong> que em anos anteriores, cria demanda consistente por hospedagem <strong>todos os dias da semana e ao longo de todos os meses do ano</strong> — não apenas em alta temporada ou feiras setoriais.<br><br>Esse cenário impulsiona diretamente a <strong>locação de curta duração (short stay)</strong>. Imóveis compactos e bem localizados — especialmente próximos ao Centro, Batel, Água Verde e grandes espaços de eventos — passam a ter uso mais intenso e rentabilidade mais estável.
+    </div>
+    <div class="ins">O turista que vem para um show na Arena da Baixada, para o Festival de Teatro ou para o Natal de Curitiba <strong>não vai para hotel necessariamente</strong> — ele vai onde encontra melhor custo-benefício. E é aí que o Airbnb e o short stay entram com vantagem competitiva real.</div>
+  </div>
+
+  <div class="tags">
+    <div class="tag o">Short stay</div>
+    <div class="tag o">Locação por temporada</div>
+    <div class="tag">Imóvel compacto</div>
+    <div class="tag">Valorização por evento</div>
+    <div class="tag">Renda passiva</div>
+    <div class="tag">Investimento em lazer</div>
+  </div>
+
+
+  <div class="divider"></div>
+
+  <!-- AIRBNB -->
+  <div class="sec-label">Airbnb em Curitiba — o mercado de short stay</div>
+
+  <div class="kpi3">
+    <div class="kpi dk">
+      <div class="kpi-num"><span>5.190</span></div>
+      <div class="kpi-lbl">anúncios ativos no Airbnb em Curitiba (jan/2026)</div>
+      <div class="kpi-src">Airbtics — +36,8% em 1 ano / +120,5% em 3 anos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num"><span>64%</span></div>
+      <div class="kpi-lbl">taxa média de ocupação 2024/2025 — acima da média nacional</div>
+      <div class="kpi-src">Airbtics / Confirmado por Lopes Home Curitiba</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">234<span>noites</span></div>
+      <div class="kpi-lbl">média de noites reservadas por anúncio ativo ao ano</div>
+      <div class="kpi-src">Airbtics 2024/2025</div>
+    </div>
+  </div>
+
+  <div class="kpi2" style="margin-bottom:14px">
+    <div class="kpi">
+      <div class="kpi-num">R$<span>199</span></div>
+      <div class="kpi-lbl">diária média em Curitiba — alta de 34,5% em 1 ano</div>
+      <div class="kpi-src">Airbtics — jan/2026</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-num">R$<span>49K</span></div>
+      <div class="kpi-lbl">receita anual média por anúncio ativo — alta de 31,7% em 1 ano</div>
+      <div class="kpi-src">Airbtics — fev/2025 a jan/2026</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Locação curta vs. locação tradicional</div>
+    <div class="card-b">Com 234 noites reservadas por ano e diária média de R$ 199, um studio bem posicionado pode gerar em torno de <strong>R$ 3.900 a R$ 4.600 mensais brutos</strong> em short stay — contra <strong>R$ 1.800 a R$ 2.400 mensais</strong> em locação tradicional para a mesma tipologia. A diferença pode chegar a <strong>mais de 80%</strong> na renda gerada, com valorização patrimonial do imóvel por cima.<br><br>Das mais de 5 mil unidades anunciadas no Airbnb em Curitiba, cerca de 4 mil estão concentradas em bairros como Centro, Água Verde e Batel — exatamente as regiões onde a Bicalho atua. Entre os bairros mais procurados pelos hóspedes estão Batel (polo gastronômico e de entretenimento, ideal para curtas estadias), Água Verde (mistura residencial e comercial com fácil acesso a vários pontos da cidade) e Centro (boa mobilidade e alta rotatividade).</div>
+    <div class="ins">O mercado de short stay em Curitiba cresceu <strong>+120% em anúncios ativos nos últimos 3 anos</strong>. Mesmo com mais oferta, a ocupação se manteve estável em 64% e a diária subiu 34,5% — sinal de demanda crescendo mais rápido que a oferta.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- REGIÕES ESTRATÉGICAS -->
+  <div class="sec-label">Regiões estratégicas — onde a Diferencial atua</div>
+
+  <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card-h">Água Verde</div>
+    <div class="card-b">Um dos bairros com <strong>maior valorização de tíquete médio em 2025: +33%</strong>, chegando a R$ 1,3 milhão (Loft, dez/2025). O preço do metro quadrado avançou expressivamente, impulsionado pela alta demanda e pela escassez de terrenos. O bairro combina perfil residencial consolidado com excelente infraestrutura de comércio, gastronomia e mobilidade. A proximidade com o Batel — um dos metros quadrados mais valorizados de Curitiba (R$ 16.240/m²) — cria um efeito de valorização por contiguidade.<br><br>Para o Airbnb, Água Verde é destino recorrente de turistas que buscam <strong>localização central sem pagar o preço do Batel</strong>, com acesso fácil à Linha Turismo, ao Centro Histórico e ao eixo gastronômico da Sete de Setembro.</div>
+  </div>
+
+  <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card-h">Bigorrilho</div>
+    <div class="card-b">O Bigorrilho registrou <strong>valorização de 23% no tíquete médio e +31% no preço por metro quadrado em 2025</strong>, chegando a R$ 15.061/m² (Loft, dez/2025). É o bairro mais gastronômico de Curitiba, com o eixo Batel Soho consolidado como referência de restaurantes, bares e vida noturna — o que atrai diretamente o turista de lazer que a cidade vem captando.<br><br>Para short stay, o Bigorrilho tem perfil duplo: serve tanto o turista de lazer em busca de experiências gastronômicas quanto o executivo que prefere um apartamento no estilo de vida de bairro a ficar em hotel. Diárias no Airbnb no Bigorrilho partem de R$ 107 e chegam a R$ 247 para studios, com altíssima avaliação de hóspedes.</div>
+  </div>
+
+  <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card-h">Av. Iguaçu — novo eixo de expansão</div>
+    <div class="card-b">A Avenida Iguaçu conecta o Centro ao Água Verde e ao eixo sul da cidade, com excelente acesso à Linha Turismo e aos principais equipamentos culturais. É um corredor em valorização, beneficiado pela pressão de demanda que transborda do Batel e do Água Verde — dois bairros que já operam com oferta restrita de novos lançamentos.<br><br>Para investimento em short stay, a localização é estratégica: está entre dois dos bairros mais buscados no Airbnb de Curitiba, com menor ticket de entrada e maior potencial de valorização nos próximos ciclos.</div>
+  </div>
+
+  <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card-h">Sete de Setembro — eixo central nobre</div>
+    <div class="card-b">A Sete de Setembro é um dos endereços mais tradicionais e valorizados de Curitiba, conectando o Centro ao Batel e ao Bigorrilho. O Centro liderou a alta de preço por metro quadrado em 2025, com <strong>+48%, chegando a R$ 10.250/m²</strong> (Loft, dez/2025). A localização favorece tanto o turista de lazer quanto o corporativo, com acesso direto ao Shopping Curitiba, ao Pátio Batel e à malha de transporte urbano.<br><br>Para short stay, o eixo Centro/Batel é onde estão os Airbnbs com as <strong>maiores diárias e maior taxa de ocupação</strong> da cidade — perfil ideal para studios compactos de alto padrão.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Por que essas regiões têm vantagem competitiva no Airbnb</div>
+    <div class="card-b">Os empreendimentos da Bicalho estão concentrados em um raio estratégico que cobre exatamente as regiões mais buscadas por turistas e executivos no Airbnb de Curitiba. A proximidade com a Arena da Baixada (Água Verde/Portão), com o eixo gastronômico do Bigorrilho, com o Centro histórico e com a malha de transporte coloca esses imóveis em posição privilegiada para capturar <strong>demanda de shows, congressos, feriados e turismo de lazer</strong> — o segmento que mais cresceu em 2024 e 2025 e que sustenta as maiores diárias e ocupações do mercado curitibano.</div>
+    <div class="ins">Um studio nessas regiões comprado como investimento tem dois motores de retorno simultâneos: <strong>valorização patrimonial acima da média da cidade</strong> (confirmada pelos dados Loft 2025) e <strong>renda de short stay consistente ao longo de todos os meses do ano</strong>, ancorada no calendário de eventos que Curitiba consolidou.</div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-txt">Material interno — Bicalho · Curitiba 2025</div>
+  <img src="1779819956308_image.png" class="footer-logo" alt="Diferencial Imóveis">
+</div>
+
+</body>
+</html>
