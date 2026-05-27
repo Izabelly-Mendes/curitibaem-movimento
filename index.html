@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Curitiba em Movimento — Diferencial Imóveis</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: #f5f5f0; color: #1a1a1a; }
+body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; color: #1a1a1a; }
 
 .cover {
   background: #1a1a1a;
@@ -25,20 +24,20 @@ body { font-family: 'DM Sans', sans-serif; background: #f5f5f0; color: #1a1a1a; 
   width: 220px; height: 220px; border-radius: 50%;
   background: rgba(255,107,0,0.04);
 }
-.logo-img { height: 56px; filter: brightness(0) invert(1); margin-bottom: 52px; display: block; }
-.cover-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: #FF6B00; margin-bottom: 14px; }
-.cover-title { font-family: 'Syne', sans-serif; font-size: 44px; font-weight: 800; color: #fff; line-height: 1.05; margin-bottom: 14px; }
+.logo-img { height: 48px; filter: brightness(0) invert(1); margin-bottom: 52px; display: block; }
+.cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #FF6B00; margin-bottom: 14px; }
+.cover-title { font-family: 'Cambria', 'Georgia', serif; font-size: 44px; font-weight: bold; color: #fff; line-height: 1.05; margin-bottom: 14px; }
 .cover-title span { color: #FF6B00; }
-.cover-sub { font-size: 15px; color: rgba(255,255,255,0.45); font-weight: 300; margin-bottom: 36px; }
+.cover-sub { font-size: 15px; color: rgba(255,255,255,0.45); font-weight: 400; margin-bottom: 36px; }
 .pills { display: flex; gap: 9px; flex-wrap: wrap; }
 .pill { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.14); border-radius: 100px; padding: 6px 14px; font-size: 11.5px; color: rgba(255,255,255,0.6); }
 .pill.o { background: rgba(255,107,0,0.14); border-color: rgba(255,107,0,0.3); color: #FF6B00; }
 
-.body { padding: 36px 48px 52px; }
+.body { padding: 40px 48px 56px; }
 
 .sec-label {
-  font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
-  color: #FF6B00; margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #FF6B00; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
 }
 .sec-label::after { content: ''; flex: 1; height: 0.5px; background: #ddd; }
 
@@ -48,34 +47,34 @@ body { font-family: 'DM Sans', sans-serif; background: #f5f5f0; color: #1a1a1a; 
 
 .kpi { background: #fff; border-radius: 12px; border: 0.5px solid #e0ddd5; padding: 18px 16px; }
 .kpi.dk { background: #1a1a1a; border-color: #1a1a1a; }
-.kpi-num { font-family: 'Syne', sans-serif; font-size: 27px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 4px; }
+.kpi-num { font-family: 'Cambria', 'Georgia', serif; font-size: 27px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 4px; letter-spacing: -0.02em; }
 .kpi-num span { color: #FF6B00; }
 .kpi.dk .kpi-num { color: #FF6B00; }
-.kpi-lbl { font-size: 12px; color: #888; line-height: 1.45; }
+.kpi-lbl { font-size: 12px; color: #888; line-height: 1.5; }
 .kpi.dk .kpi-lbl { color: rgba(255,255,255,0.5); }
 .kpi-src { font-size: 10px; color: #bbb; margin-top: 6px; }
 .kpi.dk .kpi-src { color: rgba(255,255,255,0.25); }
 
 .card { background: #fff; border-radius: 14px; border: 0.5px solid #e0ddd5; padding: 22px 24px; margin-bottom: 14px; }
-.card-h { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-.card-b { font-size: 13.5px; color: #555; line-height: 1.65; }
-.card-b strong { color: #1a1a1a; font-weight: 500; }
-.hl { color: #FF6B00; font-weight: 500; }
+.card-h { font-family: 'Cambria', 'Georgia', serif; font-size: 15px; font-weight: bold; margin-bottom: 8px; }
+.card-b { font-size: 13.5px; color: #555; line-height: 1.72; }
+.card-b strong { color: #1a1a1a; font-weight: 700; }
+.hl { color: #FF6B00; font-weight: 700; }
 
-.ins { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.6; }
+.ins { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.65; }
 
 .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
 .bar-lbl { font-size: 12px; color: #555; width: 90px; flex-shrink: 0; }
 .bar-track { flex: 1; height: 6px; background: #f0ede6; border-radius: 10px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 10px; background: #FF6B00; }
-.bar-val { font-size: 12px; font-weight: 500; color: #1a1a1a; width: 36px; text-align: right; }
+.bar-val { font-size: 12px; font-weight: 700; color: #1a1a1a; width: 36px; text-align: right; }
 
 .award { background: #1a1a1a; border-radius: 12px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
 .award-ico { width: 42px; height: 42px; background: rgba(255,107,0,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-.award strong { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #fff; display: block; margin-bottom: 3px; }
+.award strong { font-family: 'Cambria', 'Georgia', serif; font-size: 14px; font-weight: bold; color: #fff; display: block; margin-bottom: 3px; }
 .award span { font-size: 12px; color: rgba(255,255,255,0.4); }
 
-.divider { height: 0.5px; background: #e0ddd5; margin: 28px 0; }
+.divider { height: 0.5px; background: #e0ddd5; margin: 32px 0; }
 
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .tag { background: #f5f5f0; border: 0.5px solid #ddd; border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: #555; }
@@ -84,6 +83,7 @@ body { font-family: 'DM Sans', sans-serif; background: #f5f5f0; color: #1a1a1a; 
 .footer { background: #1a1a1a; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; }
 .footer-txt { font-size: 11px; color: rgba(255,255,255,0.3); }
 .footer-logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.35; }
+.footer-logo--bicalho { height: 30px; }
 </style>
 </head>
 <body>
@@ -91,7 +91,7 @@ body { font-family: 'DM Sans', sans-serif; background: #f5f5f0; color: #1a1a1a; 
 <div class="cover">
   <div class="cover-circle1"></div>
   <div class="cover-circle2"></div>
-  <img src="1779819956308_image.png" class="logo-img" alt="Diferencial Imóveis">
+  <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis">
   <div class="cover-tag">Material de treinamento interno</div>
   <div class="cover-title">Curitiba em<br><span>movimento</span></div>
   <div class="cover-sub">Turismo, eventos e impacto imobiliário · 2024/2025</div>
@@ -439,8 +439,9 @@ body { font-family: 'DM Sans', sans-serif; background: #f5f5f0; color: #1a1a1a; 
 </div>
 
 <div class="footer">
-  <div class="footer-txt">Material interno — Bicalho · Curitiba 2025</div>
-  <img src="1779819956308_image.png" class="footer-logo" alt="Diferencial Imóveis">
+  <img src="bicalho_logo.png" class="footer-logo footer-logo--bicalho" alt="Bicalho Empreendimentos">
+  <div class="footer-txt">Material interno · Curitiba 2026</div>
+  <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial Imóveis">
 </div>
 
 </body>
