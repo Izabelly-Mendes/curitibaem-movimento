@@ -80,7 +80,10 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 .tag { background: #f5f5f0; border: 0.5px solid #ddd; border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: #555; }
 .tag.o { background: rgba(255,107,0,0.07); border-color: rgba(255,107,0,0.2); color: #c85200; }
 
-.footer { background: #1a1a1a; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; }
+.insight-box { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.65; }
+.insight-box p { margin: 0; }
+
+.footer { background: #1a1a1a; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
 .footer-txt { font-size: 11px; color: rgba(255,255,255,0.3); }
 .footer-logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.35; }
 .footer-logo--bicalho { height: 30px; }
@@ -141,6 +144,34 @@ img { max-width: 100%; height: auto; }
   }
   .footer-logo { height: 20px; }
   .footer-logo--bicalho { height: 24px; }
+}
+
+@media (max-width: 768px) {
+  .body { padding: 20px 16px 40px; }
+  .cover { padding: 32px 20px 28px; }
+  .cover-title { font-size: 28px; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .kpi3 { grid-template-columns: 1fr 1fr; }
+  .kpi2 { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .three-col { grid-template-columns: 1fr; }
+  .sugest-grid { grid-template-columns: 1fr; }
+  .verif-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .verif-sep { display: none; }
+  .logo-img { height: 38px; }
+  .footer { flex-direction: column; gap: 12px; padding: 20px 16px; }
+  img { max-width: 100%; }
+  table { display: block; overflow-x: auto; }
+  .award { flex-direction: column; gap: 10px; }
+  .award-icon { align-self: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .kpi3 { grid-template-columns: 1fr; }
+  .cover-title { font-size: 24px; }
+  .result-val { font-size: 15px; }
+  .kpi-num { font-size: 22px; }
 }
 </style>
 </head>
@@ -494,9 +525,65 @@ img { max-width: 100%; height: auto; }
     <div class="ins">Um studio nessas regiões comprado como investimento tem dois motores de retorno simultâneos: <strong>valorização patrimonial acima da média da cidade</strong> (confirmada pelos dados Loft 2025) e <strong>renda de short stay consistente ao longo de todos os meses do ano</strong>, ancorada no calendário de eventos que Curitiba consolidou.</div>
   </div>
 
+  <!-- HOSPEDAGEM CORPORATIVA -->
+  <div class="divider"></div>
+  <div class="sec-label">Hospedagem corporativa por contrato em Curitiba</div>
+
+  <div class="card">
+    <div class="card-h">Hotéis e redes corporativas</div>
+    <div class="card-b">
+      Boa parte dos hotéis de Curitiba pertence a grandes redes e é voltada ao público corporativo, o que se reflete na presença de salas para eventos e na oferta mais limitada de áreas de lazer. Redes como <strong>Bourbon, Radisson, Mercure, Ibis e Slaviero</strong> fazem contratos diretos com empresas — tarifas negociadas, faturamento mensal e reserva de blocos de apartamentos para equipes em trânsito.<br><br>
+      Empresas como <strong>O Boticário, Madero, LG</strong> e similares têm sede em Curitiba e geram fluxo contínuo de visitantes externos para reuniões, treinamentos e auditorias. Esse perfil de demanda é exatamente o que os hotéis de negócios e o short stay corporativo capturam — um argumento de contexto sólido para o investimento imobiliário na cidade.
+    </div>
+    <div class="insight-box">
+      <p>A localização estratégica e a infraestrutura de Curitiba são os principais atrativos para grandes eventos corporativos. Em 2024, os 140 eventos captados pelo CCVB trouxeram 10 milhões de visitantes e geraram impacto econômico de <strong>R$ 13,8 bilhões</strong>. Do total, 38% dos turistas vieram motivados por compromissos de negócios, elevando a ocupação hoteleira a <strong>100%</strong> no auge da temporada de congressos. <a href="https://gazetadasemana.com.br/noticia/248840/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios" target="_blank" style="color:#FF6B00;font-size:11px;">Fonte: Gazeta da Semana</a></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Short stay corporativo — o caso T-Systems</div>
+    <div class="card-b">
+      No short stay, o caso mais documentado em Curitiba é o da <strong>T-Systems</strong>: a empresa trazia toda semana uma equipe de São Paulo hospedada em hotel. Ao migrar para apartamentos via ShortStay Curitiba, conseguiu reduzir custos e proporcionar maior conforto aos colaboradores. A T-Systems alugou <strong>dez apartamentos</strong> em um prédio próximo ao Shopping Estação, com cada funcionário morando sozinho em uma unidade. <em>"Vamos iniciar um segundo projeto em Curitiba e devemos seguir o mesmo formato"</em>, revelou o gerente responsável pelo projeto na cidade.<br><br>
+      Empresas de gestão de Airbnb em Curitiba como a <strong>HostnJoy</strong> relatam que <span class="hl">60% dos hóspedes são executivos e viajantes de negócios</span>, e 40% são turistas. A taxa média de ocupação alcançada é de <strong>81% ao ano</strong>, com demanda constante por parte de empresas que instalam sedes ou projetos na cidade.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">Curitiba como capital dos grandes shows e eventos em 2025</div>
+    <div class="card-b">
+      Curitiba consolidou em 2025 sua posição como um dos principais destinos de shows e eventos do Brasil. A cidade recebeu grandes nomes internacionais ao longo do ano — com destaque para shows de artistas como <strong>Twenty One Pilots, Olivia Rodrigo, Sting e Anitta</strong> — e já tem para 2026 uma agenda com mais de <strong>40 shows internacionais confirmados</strong> em espaços como a Arena da Baixada, a Pedreira Paulo Leminski e o Teatro Positivo.<br><br>
+      O Viasoft Experience, com 7,3 mil m² de área de exposição, confirmou <strong>mais de 150 eventos para 2025</strong> — entre congressos, feiras e convenções. O complexo UP Experience foi eleito Centro de Convenções do Ano no Prêmio Capivara. O investimento público em infraestrutura e o ISS reduzido de 5% para 2% para eventos tornaram Curitiba diretamente competitiva com São Paulo e Rio de Janeiro na captação de grandes turnês e eventos corporativos. <a href="https://xvcuritiba.com.br/curitiba-se-consolida-como-capital-dos-grandes-shows-e-eventos-em-2025/" target="_blank" style="color:#FF6B00;font-size:11px;">Fonte: XV Curitiba</a>
+    </div>
+    <div class="insight-box">
+      <p>Mais de <strong>50% do turismo em Curitiba</strong> corresponde a congressos e eventos técnico-científicos. O crescimento do turismo de negócios e MICE equilibra a balança sazonal da hotelaria durante todos os meses do ano — o que sustenta a demanda por hospedagem tanto em hotel quanto em short stay de forma consistente e previsível.</p>
+    </div>
+  </div>
+
 </div>
 
 <div class="footer">
+  <div style="width:100%;padding:28px 0 20px;border-top:0.5px solid rgba(255,255,255,0.1);margin-bottom:20px;">
+    <div style="font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">Fontes</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <a href="https://turismo.curitiba.pr.gov.br" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">IMT / Prefeitura de Curitiba</a>
+      <a href="https://www.sehapr.com.br" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">SEHA</a>
+      <a href="https://www.curitibacvb.com.br" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Curitiba Convention &amp; Visitors Bureau</a>
+      <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Airbtics — Airbnb Curitiba</a>
+      <a href="https://www.loft.com.br/blog/mercado-imobiliario/curitiba" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Loft — Valorização por bairro</a>
+      <a href="https://www.band.com.br/band-parana/noticias/locacoes-de-curta-duracao-crescem-com-eventos-em-curitiba-202605181633" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Band Paraná — Short Stay</a>
+      <a href="https://www.bemparana.com.br/noticias/economia/curitiba-registra-alta-de-no-preco-de-imoveis-em-2025-cabral-e-agua-verde-lideram-altas/" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Bem Paraná — Imóveis 2025</a>
+      <a href="https://xvcuritiba.com.br/curitiba-se-consolida-como-capital-dos-grandes-shows-e-eventos-em-2025/" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">XV Curitiba — Shows 2025</a>
+      <a href="https://xvcuritiba.com.br/apartamentos-em-curitiba-se-consolidam-como-alvo-de-investidores-do-airbnb/" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">XV Curitiba — Airbnb</a>
+      <a href="https://habitec.com.br/blog/os-bairros-mais-buscados-de-curitiba-em-2025-ranking-e-tendencias-para-2026" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Habitec — Bairros 2025</a>
+      <a href="https://www.megustacuritiba.com.br/2026/01/20/curitiba-se-consolida-na-rota-das-mega-turnes-e-agenda-de-2026-promete-recordes-no-turismo/" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Me Gusta Curitiba — Shows 2026</a>
+      <a href="https://www.parquetangua.com/curitiba-bate-recorde-historico-e-alcanca-10-milhoes-de-visitantes/" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Parque Tanguá — Turismo</a>
+      <a href="https://www.parana.pr.gov.br/aen/Noticia/Alta-de-183-Parana-recebeu-426-mil-turistas-estrangeiros-no-primeiro-trimestre" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Governo do Paraná / Embratur</a>
+      <a href="https://www.curitiba.pr.leg.br/informacao/noticias/vereadores-e-prefeitura-de-curitiba-debatem-acoes-para-atrair-turistas" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Câmara Municipal — ISS</a>
+      <a href="https://www.bandab.com.br/cultura/geral/natal-de-curitiba-data-2025-programacao/" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Banda B — Natal de Curitiba</a>
+      <a href="https://www.lonelyplanet.com/best-in-travel" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Lonely Planet — Top Destinos 2025</a>
+      <a href="https://gazetadasemana.com.br/noticia/248840/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios" target="_blank" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:none;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;">Gazeta da Semana — Eventos de Negócios</a>
+    </div>
+  </div>
   <img src="bicalho_logo.png" class="footer-logo footer-logo--bicalho" alt="Bicalho Empreendimentos">
   <div class="footer-txt">Material interno · Curitiba 2026</div>
   <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial Imóveis">
