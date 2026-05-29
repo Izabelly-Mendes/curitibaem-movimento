@@ -272,6 +272,21 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 .footer-txt { font-size: 11px; color: rgba(255,255,255,0.3); }
 .footer-logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.35; }
 .footer-logo--bicalho { height: 30px; }
+
+/* ── LANGUAGE SELECTOR ───────────────────────────────────── */
+.lang-btn {
+  background: rgba(255,255,255,0.08);
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 4px 7px;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lang-btn:hover { background: rgba(255,255,255,0.16); }
+.lang-btn-active { background: rgba(255,107,0,0.18); border-color: rgba(255,107,0,0.45); }
+
 .footer-src {
   font-size: 11px;
   color: rgba(255,255,255,0.35);
@@ -372,21 +387,21 @@ img { max-width: 100%; height: auto; }
 <nav class="sidebar" id="sidebar">
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
   <div class="sidebar-nav">
-    <a href="javascript:void(0)" onclick="navegarSecao('geral', this)" class="sidebar-item menu-ativo" data-tooltip="Geral"><span class="label">Geral</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-reconhecimento', this)" class="sidebar-item" data-tooltip="Reconhecimento"><span class="label">Reconhecimento</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-fluxo', this)" class="sidebar-item" data-tooltip="Fluxo de Turistas"><span class="label">Fluxo de Turistas</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-perfil', this)" class="sidebar-item" data-tooltip="Perfil dos Visitantes"><span class="label">Perfil dos Visitantes</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-linha', this)" class="sidebar-item" data-tooltip="Linha Turismo"><span class="label">Linha Turismo</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-eventos', this)" class="sidebar-item" data-tooltip="Eventos e Shows"><span class="label">Eventos e Shows</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-natal', this)" class="sidebar-item" data-tooltip="Natal 2025"><span class="label">Natal 2025</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-hotelaria', this)" class="sidebar-item" data-tooltip="Hotelaria"><span class="label">Hotelaria</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-aeroporto', this)" class="sidebar-item" data-tooltip="Aeroporto"><span class="label">Aeroporto</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-estrangeiros', this)" class="sidebar-item" data-tooltip="Turistas Estrangeiros"><span class="label">Turistas Estrangeiros</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-investir', this)" class="sidebar-item" data-tooltip="Por que Investir"><span class="label">Por que Investir</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-corporativo', this)" class="sidebar-item" data-tooltip="Hosp. Corporativa"><span class="label">Hospedagem Corporativa</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-airbnb', this)" class="sidebar-item" data-tooltip="Airbnb"><span class="label">Airbnb</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-regioes', this)" class="sidebar-item" data-tooltip="Regiões Estratégicas"><span class="label">Regiões Estratégicas</span></a>
-    <a href="javascript:void(0)" onclick="navegarSecao('secao-noticias', this)" class="sidebar-item" data-tooltip="Notícias"><span class="label">Notícias</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('geral', this)" class="sidebar-item menu-ativo" data-tooltip="Geral" data-sb="sb_geral"><span class="label" data-i18n="sb_geral">Geral</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-reconhecimento', this)" class="sidebar-item" data-tooltip="Reconhecimento" data-sb="sb_reconhecimento"><span class="label" data-i18n="sb_reconhecimento">Reconhecimento</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-fluxo', this)" class="sidebar-item" data-tooltip="Fluxo de Turistas" data-sb="sb_fluxo"><span class="label" data-i18n="sb_fluxo">Fluxo de Turistas</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-perfil', this)" class="sidebar-item" data-tooltip="Perfil dos Visitantes" data-sb="sb_perfil"><span class="label" data-i18n="sb_perfil">Perfil dos Visitantes</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-linha', this)" class="sidebar-item" data-tooltip="Linha Turismo" data-sb="sb_linha"><span class="label" data-i18n="sb_linha">Linha Turismo</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-eventos', this)" class="sidebar-item" data-tooltip="Eventos e Shows" data-sb="sb_eventos"><span class="label" data-i18n="sb_eventos">Eventos e Shows</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-natal', this)" class="sidebar-item" data-tooltip="Natal 2025" data-sb="sb_natal"><span class="label" data-i18n="sb_natal">Natal 2025</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-hotelaria', this)" class="sidebar-item" data-tooltip="Hotelaria" data-sb="sb_hotelaria"><span class="label" data-i18n="sb_hotelaria">Hotelaria</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-aeroporto', this)" class="sidebar-item" data-tooltip="Aeroporto" data-sb="sb_aeroporto"><span class="label" data-i18n="sb_aeroporto">Aeroporto</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-estrangeiros', this)" class="sidebar-item" data-tooltip="Turistas Estrangeiros" data-sb="sb_estrangeiros"><span class="label" data-i18n="sb_estrangeiros">Turistas Estrangeiros</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-investir', this)" class="sidebar-item" data-tooltip="Por que Investir" data-sb="sb_investir"><span class="label" data-i18n="sb_investir">Por que Investir</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-corporativo', this)" class="sidebar-item" data-tooltip="Hosp. Corporativa" data-sb="sb_corporativo"><span class="label" data-i18n="sb_corporativo">Hospedagem Corporativa</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-airbnb', this)" class="sidebar-item" data-tooltip="Airbnb" data-sb="sb_airbnb"><span class="label" data-i18n="sb_airbnb">Airbnb</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-regioes', this)" class="sidebar-item" data-tooltip="Regiões Estratégicas" data-sb="sb_regioes"><span class="label" data-i18n="sb_regioes">Regiões Estratégicas</span></a>
+    <a href="javascript:void(0)" onclick="navegarSecao('secao-noticias', this)" class="sidebar-item" data-tooltip="Notícias" data-sb="sb_noticias"><span class="label" data-i18n="sb_noticias">Notícias</span></a>
   </div>
 </nav>
 
@@ -396,16 +411,22 @@ img { max-width: 100%; height: auto; }
 <div class="cover" id="secao-geral">
   <div class="cover-circle1"></div>
   <div class="cover-circle2"></div>
+  <!-- Language selector -->
+  <div style="position:absolute;top:16px;right:16px;display:flex;gap:5px;z-index:10;">
+    <button class="lang-btn lang-btn-active" data-lang="pt" onclick="trocarIdioma('pt')" title="Português">🇧🇷</button>
+    <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" title="English">🇺🇸</button>
+    <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" title="中文">🇨🇳</button>
+  </div>
   <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis">
-  <div class="cover-tag">Material de treinamento interno</div>
-  <div class="cover-title">Curitiba em<br><span>movimento</span></div>
-  <div class="cover-sub">Turismo, eventos e impacto imobiliário · 2024/2025</div>
+  <div class="cover-tag" data-i18n="cover_tag">Material de treinamento interno</div>
+  <div class="cover-title" data-i18n="cover_title">Curitiba em<br><span>movimento</span></div>
+  <div class="cover-sub" data-i18n="cover_sub">Turismo, eventos e impacto imobiliário · 2024/2025</div>
   <div class="pills">
-    <div class="pill o">Dados oficiais</div>
+    <div class="pill o" data-i18n="pill_dados">Dados oficiais</div>
     <div class="pill">IMT</div>
     <div class="pill">SEHA</div>
     <div class="pill">Embratur</div>
-    <div class="pill">Prefeitura de Curitiba</div>
+    <div class="pill" data-i18n="pill_prefeitura">Prefeitura de Curitiba</div>
   </div>
 </div>
 
@@ -415,12 +436,12 @@ img { max-width: 100%; height: auto; }
   <!-- 1. RECONHECIMENTO INTERNACIONAL         -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-reconhecimento">
-    <div class="sec-label">Reconhecimento internacional</div>
+    <div class="sec-label" data-i18n="sl_reconhecimento">Reconhecimento internacional</div>
     <div class="award">
       <div class="award-ico">🏆</div>
       <div>
-        <strong>Lonely Planet: Top 10 cidades do mundo para visitar em 2025</strong>
-        <span>Única cidade brasileira na lista do guia de viagens mais respeitado do mundo</span>
+        <strong data-i18n="award_lp">Lonely Planet: Top 10 cidades do mundo para visitar em 2025</strong>
+        <span data-i18n="award_lp_sub">Única cidade brasileira na lista do guia de viagens mais respeitado do mundo</span>
       </div>
     </div>
     <div class="divider"></div>
@@ -430,7 +451,7 @@ img { max-width: 100%; height: auto; }
   <!-- 2. FLUXO TURÍSTICO                      -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-fluxo">
-    <div class="sec-label">Visão geral do fluxo turístico <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_fluxo">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="kpi-grid">
       <div class="kpi dk" data-fonte="https://turismo.curitiba.pr.gov.br">
         <div class="kpi-num"><span>10M</span></div>
@@ -449,7 +470,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Como ler esses números</div>
+      <div class="card-h" data-i18n="ch_lernumeros">Como ler esses números</div>
       <div class="card-b">O IMT trabalha com dois recortes. O total de <strong>visitantes</strong> inclui turistas (quem pernoita) e excursionistas (quem fica ao menos 4h sem pernoite). Para o mercado imobiliário, o número mais relevante é o de <strong>turistas com pernoite</strong> — são eles que demandam hospedagem, seja hotel, seja Airbnb.</div>
       <div class="ins">Em dezembro de 2024 sozinho, Curitiba recebeu quase <strong>400 mil visitantes</strong> — volume que supera o ano inteiro de vários destinos brasileiros.</div>
     </div>
@@ -460,9 +481,9 @@ img { max-width: 100%; height: auto; }
   <!-- 3. PERFIL DOS VISITANTES                -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-perfil">
-    <div class="sec-label">Perfil dos visitantes: mudança histórica <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_perfil">Perfil dos visitantes: mudança histórica</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="card">
-      <div class="card-h">Pela primeira vez, lazer superou negócios</div>
+      <div class="card-h" data-i18n="ch_primezirav">Pela primeira vez, lazer superou negócios</div>
       <div class="card-b" style="margin-bottom:16px">Em 2024 ocorreu uma virada inédita: as viagens por <span class="hl">lazer passaram a ser a principal motivação</span>, superando o turismo corporativo que historicamente dominava a cidade.</div>
       <div class="bar-row">
         <div class="bar-lbl">Lazer</div>
@@ -483,7 +504,7 @@ img { max-width: 100%; height: auto; }
   <!-- 4. LINHA TURISMO                        -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-linha">
-    <div class="sec-label">Linha turismo: termômetro do turismo de lazer <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_linha">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="kpi2">
       <div class="kpi" data-fonte="https://www.sehapr.com.br">
         <div class="kpi-num">908<span>mil</span></div>
@@ -506,7 +527,7 @@ img { max-width: 100%; height: auto; }
   <!-- 5. EVENTOS, SHOWS E CONGRESSOS          -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-eventos">
-    <div class="sec-label">Eventos, shows e congressos <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_eventos">Eventos, shows e congressos</span> <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="kpi3">
       <div class="kpi" data-fonte="https://www.curitibacvb.com.br">
         <div class="kpi-num"><span>140</span></div>
@@ -525,7 +546,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Principais espaços de eventos da cidade</div>
+      <div class="card-h" data-i18n="ch_espacos">Principais espaços de eventos da cidade</div>
       <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;">
         <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span><strong>Arena da Baixada</strong> — 42 mil lugares, teto retrátil, único na América do Sul</span></li>
         <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span><strong>Pedreira Paulo Leminski</strong> — anfiteatro ao ar livre para grandes shows</span></li>
@@ -538,15 +559,15 @@ img { max-width: 100%; height: auto; }
       <div class="ins">Em uma única semana de março de 2025 — Festival de Teatro, Smart City Expo, show da Olivia Rodrigo e Expo Turismo Paraná simultâneos — os hotéis de Curitiba atingiram <strong>100% de ocupação</strong>.</div>
     </div>
     <div class="card">
-      <div class="card-h">Incentivo fiscal municipal — ISS reduzido para eventos</div>
+      <div class="card-h" data-i18n="ch_iss">Incentivo fiscal municipal — ISS reduzido para eventos</div>
       <div class="card-b">A Prefeitura de Curitiba reduziu a alíquota do <strong>ISS de 5% para 2%</strong> para shows, espetáculos, feiras, congressos, competições esportivas e produção de eventos em geral. Isso representa menos da metade do imposto cobrado em outras cidades, tornando Curitiba diretamente mais atrativa para grandes turnês e eventos corporativos.<br><br>O presidente do IMT, Rodrigo Swinka, confirmou publicamente: <span class="hl">"o ISS reduzido beneficiou o setor, tornando Curitiba um dos principais polos de eventos do Brasil"</span>.<br><br>Existe ainda o <strong>Programa Municipal de Incentivo à Cultura (PAIC)</strong>, com renúncia fiscal de até 2% do IPTU e ISS para projetos culturais captados via mecenato subsidiado.</div>
     </div>
 
     <!-- SUBSEÇÃO A: EVENTOS MÉDICOS -->
     <div class="divider"></div>
-    <div class="sec-label">Curitiba como polo de eventos médicos</div>
+    <div class="sec-label" data-i18n="sl_medicos">Curitiba como polo de eventos médicos</div>
     <div class="card">
-      <div class="card-h">Congressos médicos confirmados em 2025</div>
+      <div class="card-h" data-i18n="ch_cbmi">Congressos médicos confirmados em 2025</div>
       <div class="card-b">
         Curitiba se consolidou como um dos principais destinos nacionais para congressos médicos e científicos. Mais de 50% dos eventos técnico-científicos captados pelo CCVB pertencem à área da saúde — especializações que movimentam milhares de profissionais e acompanhantes, todos demandando hospedagem, transporte e serviços.<br><br>
         Os três congressos de maior porte realizados em Curitiba em 2025 foram:
@@ -563,9 +584,9 @@ img { max-width: 100%; height: auto; }
 
     <!-- SUBSEÇÃO B: TURISMO ESTÉTICO -->
     <div class="divider"></div>
-    <div class="sec-label">Turismo estético e de saúde em Curitiba</div>
+    <div class="sec-label" data-i18n="sl_estetico">Turismo estético e de saúde em Curitiba</div>
     <div class="card">
-      <div class="card-h">Curitiba no mapa do turismo médico-estético</div>
+      <div class="card-h" data-i18n="ch_estetico">Curitiba no mapa do turismo médico-estético</div>
       <div class="card-b">
         Curitiba está entre os <strong>cinco maiores polos de turismo médico do Brasil</strong>, ao lado de São Paulo, Recife, Rio de Janeiro e Porto Alegre. A cidade atrai pacientes de outros estados e do exterior para procedimentos estéticos, odontológicos e cirurgias eletivas — impulsionada pela qualidade dos profissionais e pela estrutura hospitalar de ponta.<br><br>
         O Brasil é o <strong>2º país do mundo em número de cirurgias plásticas</strong>, com mais de 2,3 milhões de procedimentos realizados em 2024 — crescimento de 7,2% em relação a 2023. Cerca de <strong>14% desses procedimentos</strong> são realizados em pacientes de fora do estado ou do país.<br><br>
@@ -579,9 +600,9 @@ img { max-width: 100%; height: auto; }
 
     <!-- SUBSEÇÃO C: EVENTOS CORPORATIVOS E MICE -->
     <div class="divider"></div>
-    <div class="sec-label">Eventos corporativos e de negócios</div>
+    <div class="sec-label" data-i18n="sl_mice">Eventos corporativos e de negócios</div>
     <div class="card">
-      <div class="card-h">Curitiba como destino MICE</div>
+      <div class="card-h" data-i18n="ch_mice">Curitiba como destino MICE</div>
       <div class="card-b">
         MICE é o segmento de turismo corporativo que reúne Meetings (reuniões), Incentives (viagens de incentivo), Conferences (conferências) e Exhibitions (feiras e exposições). Curitiba é reconhecida como um dos principais destinos MICE do Brasil, com infraestrutura, conectividade e incentivos fiscais que colocam a cidade em destaque no cenário nacional.<br><br>
         Em 2025, o <strong>CCVB apoiou diretamente 50 eventos</strong>, participou de 20 processos de captação e conquistou 7 novos eventos para a cidade. A estratégia para 2025/2026 inclui ampliar nichos como turismo corporativo, industrial e de inovação.<br><br>
@@ -603,12 +624,12 @@ img { max-width: 100%; height: auto; }
   <!-- 6. NATAL DE CURITIBA 2025               -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-natal">
-    <div class="sec-label">Natal de Curitiba 2025 <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_natal">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="award">
       <div class="award-ico">🎄</div>
       <div>
-        <strong>Maior Natal do Brasil — edição 2025</strong>
-        <span>25 de novembro a 23 de dezembro (apresentações) · Decoração até 6 de janeiro de 2026</span>
+        <strong data-i18n="ch_natal">Maior Natal do Brasil — edição 2025</strong>
+        <span data-i18n="ch_natal_sub">25 de novembro a 23 de dezembro (apresentações) · Decoração até 6 de janeiro de 2026</span>
       </div>
     </div>
     <div class="kpi3">
@@ -638,7 +659,7 @@ img { max-width: 100%; height: auto; }
   <!-- 7. HOTELARIA E INFRAESTRUTURA           -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-hotelaria">
-    <div class="sec-label">Hotelaria e infraestrutura <a href="https://www.parana.pr.gov.br/aen/Noticia/Hoteis-de-Curitiba-registram-90-de-ocupacao-em-outubro" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_hotelaria">Hotelaria e infraestrutura</span> <a href="https://www.parana.pr.gov.br/aen/Noticia/Hoteis-de-Curitiba-registram-90-de-ocupacao-em-outubro" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="kpi3">
       <div class="kpi" data-fonte="https://www.sehapr.com.br">
         <div class="kpi-num">20<span>mil</span></div>
@@ -657,7 +678,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Evolução da ocupação hoteleira anual</div>
+      <div class="card-h" data-i18n="ch_ocupacao">Evolução da ocupação hoteleira anual</div>
       <div class="card-b" style="margin-bottom:14px">Taxa média anual — base: hotéis filiados ao SEHA:</div>
       <div class="bar-row">
         <div class="bar-lbl">2022</div>
@@ -688,7 +709,7 @@ img { max-width: 100%; height: auto; }
   <!-- 8. AEROPORTO E CONECTIVIDADE            -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-aeroporto">
-    <div class="sec-label">Aeroporto e conectividade <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_aeroporto">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="kpi2">
       <div class="kpi" data-fonte="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/">
         <div class="kpi-num">6,08<span>M</span></div>
@@ -711,7 +732,7 @@ img { max-width: 100%; height: auto; }
   <!-- 9. TURISTAS ESTRANGEIROS                -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-estrangeiros">
-    <div class="sec-label">Turistas estrangeiros no Paraná</div>
+    <div class="sec-label" data-i18n="sl_estrangeiros">Turistas estrangeiros no Paraná</div>
     <div class="kpi3">
       <div class="kpi dk" data-fonte="https://www.parana.pr.gov.br/aen/Noticia/Alta-de-183-Parana-recebeu-426-mil-turistas-estrangeiros-no-primeiro-trimestre">
         <div class="kpi-num">1,06<span>M</span></div>
@@ -730,7 +751,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Indicadores de 2026 confirmam tendência</div>
+      <div class="card-h" data-i18n="ch_indicadores">Indicadores de 2026 confirmam tendência</div>
       <div class="card-b">A <strong>Torre Panorâmica</strong> registrou <span class="hl">+12,6% de visitantes</span> no início de 2026 vs. mesmo período de 2025. O Aeroporto Afonso Pena registrou <strong>1,46 milhão de passageiros no 1º trimestre de 2026</strong> — +5% sobre o mesmo período do ano anterior.</div>
     </div>
     <div class="divider"></div>
@@ -740,7 +761,7 @@ img { max-width: 100%; height: auto; }
   <!-- 10. POR QUE ISSO MOVE O MERCADO         -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-investir">
-    <div class="sec-label">Por que isso move o mercado imobiliário</div>
+    <div class="sec-label" data-i18n="sl_investir">Por que isso move o mercado imobiliário</div>
     <div class="card">
       <div class="card-b">Curitiba deixou de ser destino apenas corporativo. O crescimento do <strong>turismo de lazer</strong>, combinado com um <strong>calendário de eventos 3 a 4 vezes maior</strong> que em anos anteriores, cria demanda consistente por hospedagem <strong>todos os dias da semana e ao longo de todos os meses do ano</strong> — não apenas em alta temporada ou feiras setoriais.<br><br>Esse cenário impulsiona diretamente a <strong>locação de curta duração (short stay)</strong>. Imóveis compactos e bem localizados — especialmente próximos ao Centro, Batel, Água Verde e grandes espaços de eventos — passam a ter uso mais intenso e rentabilidade mais estável.</div>
       <div class="ins">O turista que vem para um show na Arena da Baixada, para o Festival de Teatro ou para o Natal de Curitiba <strong>não vai para hotel necessariamente</strong> — ele vai onde encontra melhor custo-benefício. E é aí que o Airbnb e o short stay entram com vantagem competitiva real.</div>
@@ -760,9 +781,9 @@ img { max-width: 100%; height: auto; }
   <!-- 11. HOSPEDAGEM CORPORATIVA              -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-corporativo">
-    <div class="sec-label">Hospedagem corporativa por contrato em Curitiba</div>
+    <div class="sec-label" data-i18n="sl_corporativo">Hospedagem corporativa por contrato em Curitiba</div>
     <div class="card">
-      <div class="card-h">Hotéis e redes corporativas</div>
+      <div class="card-h" data-i18n="ch_hoteis">Hotéis e redes corporativas</div>
       <div class="card-b">
         Boa parte dos hotéis de Curitiba pertence a grandes redes e é voltada ao público corporativo, o que se reflete na presença de salas para eventos e na oferta mais limitada de áreas de lazer. Redes como <strong>Bourbon, Radisson, Mercure, Ibis e Slaviero</strong> fazem contratos diretos com empresas — tarifas negociadas, faturamento mensal e reserva de blocos de apartamentos para equipes em trânsito.<br><br>
         Empresas como <strong>O Boticário, Madero, LG</strong> e similares têm sede em Curitiba e geram fluxo contínuo de visitantes externos para reuniões, treinamentos e auditorias. Esse perfil de demanda é exatamente o que os hotéis de negócios e o short stay corporativo capturam — um argumento de contexto sólido para o investimento imobiliário na cidade.
@@ -772,14 +793,14 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Short stay corporativo: o caso T-Systems</div>
+      <div class="card-h" data-i18n="ch_tstystems">Short stay corporativo: o caso T-Systems</div>
       <div class="card-b">
         No short stay, o caso mais documentado em Curitiba é o da <strong>T-Systems</strong>: a empresa trazia toda semana uma equipe de São Paulo hospedada em hotel. Ao migrar para apartamentos via ShortStay Curitiba, conseguiu reduzir custos e proporcionar maior conforto aos colaboradores. A T-Systems alugou <strong>dez apartamentos</strong> em um prédio próximo ao Shopping Estação, com cada funcionário morando sozinho em uma unidade. <em>"Vamos iniciar um segundo projeto em Curitiba e devemos seguir o mesmo formato"</em>, revelou o gerente responsável pelo projeto na cidade.<br><br>
         Empresas de gestão de Airbnb em Curitiba como a <strong>HostnJoy</strong> relatam que <span class="hl">60% dos hóspedes são executivos e viajantes de negócios</span>, e 40% são turistas. A taxa média de ocupação alcançada é de <strong>81% ao ano</strong>, com demanda constante por parte de empresas que instalam sedes ou projetos na cidade.
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Curitiba como capital dos grandes shows e eventos em 2025</div>
+      <div class="card-h" data-i18n="ch_shows">Curitiba como capital dos grandes shows e eventos em 2025</div>
       <div class="card-b">
         Curitiba consolidou em 2025 sua posição como um dos principais destinos de shows e eventos do Brasil. A cidade recebeu grandes nomes internacionais ao longo do ano — com destaque para shows de artistas como <strong>Twenty One Pilots, Olivia Rodrigo, Sting e Anitta</strong> — e já tem para 2026 uma agenda com mais de <strong>40 shows internacionais confirmados</strong> em espaços como a Arena da Baixada, a Pedreira Paulo Leminski e o Teatro Positivo.<br><br>
         O Viasoft Experience, com 7,3 mil m² de área de exposição, confirmou <strong>mais de 150 eventos para 2025</strong> — entre congressos, feiras e convenções. O complexo UP Experience foi eleito Centro de Convenções do Ano no Prêmio Capivara. O investimento público em infraestrutura e o ISS reduzido de 5% para 2% para eventos tornaram Curitiba diretamente competitiva com São Paulo e Rio de Janeiro na captação de grandes turnês e eventos corporativos. <a href="https://xvcuritiba.com.br/curitiba-se-consolida-como-capital-dos-grandes-shows-e-eventos-em-2025/" target="_blank" style="color:#FF6B00;font-size:11px;">Fonte: XV Curitiba</a>
@@ -795,7 +816,7 @@ img { max-width: 100%; height: auto; }
   <!-- 12. AIRBNB EM CURITIBA                  -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-airbnb">
-    <div class="sec-label">Airbnb em Curitiba: o mercado de short stay <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-i18n="sl_airbnb">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
     <div class="kpi3">
       <div class="kpi dk" data-fonte="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/">
         <div class="kpi-num"><span>5.190</span></div>
@@ -826,7 +847,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-h">Locação curta vs. locação tradicional</div>
+      <div class="card-h" data-i18n="ch_locacao">Locação curta vs. locação tradicional</div>
       <div class="card-b">Com 234 noites reservadas por ano e diária média de R$ 199, um studio bem posicionado pode gerar em torno de <strong>R$ 3.900 a R$ 4.600 mensais brutos</strong> em short stay — contra <strong>R$ 1.800 a R$ 2.400 mensais</strong> em locação tradicional para a mesma tipologia. A diferença pode chegar a <strong>mais de 80%</strong> na renda gerada, com valorização patrimonial do imóvel por cima.<br><br>Das mais de 5 mil unidades anunciadas no Airbnb em Curitiba, cerca de 4 mil estão concentradas em bairros como Centro, Água Verde e Batel — exatamente as regiões onde a Bicalho atua. Entre os bairros mais procurados pelos hóspedes estão Batel (polo gastronômico e de entretenimento, ideal para curtas estadias), Água Verde (mistura residencial e comercial com fácil acesso a vários pontos da cidade) e Centro (boa mobilidade e alta rotatividade).</div>
       <div class="ins">O mercado de short stay em Curitiba cresceu <strong>+120% em anúncios ativos nos últimos 3 anos</strong>. Mesmo com mais oferta, a ocupação se manteve estável em 64% e a diária subiu 34,5% — sinal de demanda crescendo mais rápido que a oferta.</div>
     </div>
@@ -837,25 +858,25 @@ img { max-width: 100%; height: auto; }
   <!-- 13. REGIÕES ESTRATÉGICAS                -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-regioes">
-    <div class="sec-label">Regiões estratégicas: onde a Bicalho atua</div>
+    <div class="sec-label" data-i18n="sl_regioes">Regiões estratégicas: onde a Bicalho atua</div>
     <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
-      <div class="card-h">Água Verde</div>
+      <div class="card-h" data-i18n="ch_aguaverde">Água Verde</div>
       <div class="card-b">Um dos bairros com <strong>maior valorização de tíquete médio em 2025: +33%</strong>, chegando a R$ 1,3 milhão (Loft, dez/2025). O preço do metro quadrado avançou expressivamente, impulsionado pela alta demanda e pela escassez de terrenos. O bairro combina perfil residencial consolidado com excelente infraestrutura de comércio, gastronomia e mobilidade. A proximidade com o Batel — um dos metros quadrados mais valorizados de Curitiba (R$ 16.240/m²) — cria um efeito de valorização por contiguidade.<br><br>Para o Airbnb, Água Verde é destino recorrente de turistas que buscam <strong>localização central sem pagar o preço do Batel</strong>, com acesso fácil à Linha Turismo, ao Centro Histórico e ao eixo gastronômico da Sete de Setembro.</div>
     </div>
     <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
-      <div class="card-h">Bigorrilho</div>
+      <div class="card-h" data-i18n="ch_bigorrilho">Bigorrilho</div>
       <div class="card-b">O Bigorrilho registrou <strong>valorização de 23% no tíquete médio e +31% no preço por metro quadrado em 2025</strong>, chegando a R$ 15.061/m² (Loft, dez/2025). É o bairro mais gastronômico de Curitiba, com o eixo Batel Soho consolidado como referência de restaurantes, bares e vida noturna — o que atrai diretamente o turista de lazer que a cidade vem captando.<br><br>Para short stay, o Bigorrilho tem perfil duplo: serve tanto o turista de lazer em busca de experiências gastronômicas quanto o executivo que prefere um apartamento no estilo de vida de bairro a ficar em hotel. Diárias no Airbnb no Bigorrilho partem de R$ 107 e chegam a R$ 247 para studios, com altíssima avaliação de hóspedes.</div>
     </div>
     <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
-      <div class="card-h">Av. Iguaçu: novo eixo de expansão</div>
+      <div class="card-h" data-i18n="ch_aviguacu">Av. Iguaçu: novo eixo de expansão</div>
       <div class="card-b">A Avenida Iguaçu conecta o Centro ao Água Verde e ao eixo sul da cidade, com excelente acesso à Linha Turismo e aos principais equipamentos culturais. É um corredor em valorização, beneficiado pela pressão de demanda que transborda do Batel e do Água Verde — dois bairros que já operam com oferta restrita de novos lançamentos.<br><br>Para investimento em short stay, a localização é estratégica: está entre dois dos bairros mais buscados no Airbnb de Curitiba, com menor ticket de entrada e maior potencial de valorização nos próximos ciclos.</div>
     </div>
     <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
-      <div class="card-h">Sete de Setembro: eixo central nobre</div>
+      <div class="card-h" data-i18n="ch_setedeset">Sete de Setembro: eixo central nobre</div>
       <div class="card-b">A Sete de Setembro é um dos endereços mais tradicionais e valorizados de Curitiba, conectando o Centro ao Batel e ao Bigorrilho. O Centro liderou a alta de preço por metro quadrado em 2025, com <strong>+48%, chegando a R$ 10.250/m²</strong> (Loft, dez/2025). A localização favorece tanto o turista de lazer quanto o corporativo, com acesso direto ao Shopping Curitiba, ao Pátio Batel e à malha de transporte urbano.<br><br>Para short stay, o eixo Centro/Batel é onde estão os Airbnbs com as <strong>maiores diárias e maior taxa de ocupação</strong> da cidade — perfil ideal para studios compactos de alto padrão.</div>
     </div>
     <div class="card">
-      <div class="card-h">Por que essas regiões têm vantagem competitiva no Airbnb</div>
+      <div class="card-h" data-i18n="ch_vantagem">Por que essas regiões têm vantagem competitiva no Airbnb</div>
       <div class="card-b">Os empreendimentos da Bicalho estão concentrados em um raio estratégico que cobre exatamente as regiões mais buscadas por turistas e executivos no Airbnb de Curitiba. A proximidade com a Arena da Baixada (Água Verde/Portão), com o eixo gastronômico do Bigorrilho, com o Centro histórico e com a malha de transporte coloca esses imóveis em posição privilegiada para capturar <strong>demanda de shows, congressos, feriados e turismo de lazer</strong> — o segmento que mais cresceu em 2024 e 2025 e que sustenta as maiores diárias e ocupações do mercado curitibano.</div>
       <div class="ins">Um studio nessas regiões comprado como investimento tem dois motores de retorno simultâneos: <strong>valorização patrimonial acima da média da cidade</strong> (confirmada pelos dados Loft 2025) e <strong>renda de short stay consistente ao longo de todos os meses do ano</strong>, ancorada no calendário de eventos que Curitiba consolidou.</div>
     </div>
@@ -866,8 +887,8 @@ img { max-width: 100%; height: auto; }
   <!-- 14. NOTÍCIAS                            -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-noticias">
-    <div class="sec-label">Notícias</div>
-    <div style="font-size:12px;color:#aaa;margin-bottom:16px;">Curitiba em destaque — cobertura da imprensa</div>
+    <div class="sec-label" data-i18n="sl_noticias">Notícias</div>
+    <div style="font-size:12px;color:#aaa;margin-bottom:16px;" data-i18n="news_sub">Curitiba em destaque — cobertura da imprensa</div>
 
     <div class="news-grid">
 
@@ -985,7 +1006,7 @@ img { max-width: 100%; height: auto; }
     </div>
   </div>
   <img src="bicalho_logo.png" class="footer-logo footer-logo--bicalho" alt="Bicalho Empreendimentos">
-  <div class="footer-txt">Material interno · Curitiba 2026</div>
+  <div class="footer-txt" data-i18n="footer_material">Material interno · Curitiba 2026</div>
   <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial Imóveis">
 </div>
 
@@ -1064,8 +1085,181 @@ function toggleFontes() {
   }
 }
 
+// ── TRADUÇÕES PT / EN / ZH ────────────────────────────────
+var traducoes = {
+  en: {
+    cover_tag: 'Internal Training Material',
+    cover_title: 'Curitiba<br><span>in Motion</span>',
+    cover_sub: 'Tourism, Events & Real Estate Impact · 2024/2025',
+    pill_dados: 'Official Data',
+    pill_prefeitura: 'City of Curitiba',
+    sb_geral: 'Overview',
+    sb_reconhecimento: 'Recognition',
+    sb_fluxo: 'Tourist Flow',
+    sb_perfil: 'Visitor Profile',
+    sb_linha: 'Tourism Line',
+    sb_eventos: 'Events & Shows',
+    sb_natal: 'Christmas 2025',
+    sb_hotelaria: 'Hotels',
+    sb_aeroporto: 'Airport',
+    sb_estrangeiros: 'Foreign Tourists',
+    sb_investir: 'Why Invest',
+    sb_corporativo: 'Corporate Housing',
+    sb_airbnb: 'Airbnb',
+    sb_regioes: 'Strategic Areas',
+    sb_noticias: 'News',
+    sl_reconhecimento: 'International recognition',
+    sl_fluxo: 'Tourist flow overview',
+    sl_perfil: 'Visitor profile: a historic shift',
+    sl_linha: 'Tourism Line: the leisure tourism barometer',
+    sl_eventos: 'Events, shows and congresses',
+    sl_medicos: 'Curitiba as a medical events hub',
+    sl_estetico: 'Medical aesthetics & health tourism',
+    sl_mice: 'Corporate & MICE events',
+    sl_natal: 'Christmas in Curitiba 2025',
+    sl_hotelaria: 'Hotels and infrastructure',
+    sl_aeroporto: 'Airport and connectivity',
+    sl_estrangeiros: 'Foreign tourists in Paraná',
+    sl_investir: 'Why this drives the real estate market',
+    sl_corporativo: 'Corporate contract housing in Curitiba',
+    sl_airbnb: 'Airbnb in Curitiba: the short-stay market',
+    sl_regioes: 'Strategic regions: where Bicalho operates',
+    sl_noticias: 'News',
+    award_lp: 'Lonely Planet: Top 10 cities to visit in the world in 2025',
+    award_lp_sub: "The only Brazilian city on the most respected travel guide's list",
+    ch_lernumeros: 'How to read these numbers',
+    ch_primezirav: 'For the first time, leisure outpaced business travel',
+    ch_espacos: 'Main event venues in the city',
+    ch_iss: 'Municipal tax incentive — reduced ISS for events',
+    ch_cbmi: 'Medical congresses confirmed for 2025',
+    ch_estetico: 'Curitiba on the medical aesthetics map',
+    ch_mice: 'Curitiba as a MICE destination',
+    ch_natal: "Brazil's Biggest Christmas — 2025 edition",
+    ch_natal_sub: 'November 25 to December 23 (performances) · Decorations until January 6, 2026',
+    ch_ocupacao: 'Annual hotel occupancy rate evolution',
+    ch_indicadores: '2026 indicators confirm the trend',
+    ch_hoteis: 'Hotels and corporate chains',
+    ch_tstystems: 'Corporate short-stay: the T-Systems case',
+    ch_shows: 'Curitiba as the major shows and events capital in 2025',
+    ch_locacao: 'Short-stay vs. traditional rental',
+    ch_aguaverde: 'Água Verde',
+    ch_bigorrilho: 'Bigorrilho',
+    ch_aviguacu: 'Av. Iguaçu: the new expansion axis',
+    ch_setedeset: 'Sete de Setembro: the noble central axis',
+    ch_vantagem: 'Why these areas have a competitive edge on Airbnb',
+    news_sub: 'Curitiba in the spotlight — press coverage',
+    footer_material: 'Internal material · Curitiba 2026'
+  },
+  zh: {
+    cover_tag: '内部培训资料',
+    cover_title: '库里提巴<br><span>活力涌动</span>',
+    cover_sub: '旅游、活动与房地产影响 · 2024/2025',
+    pill_dados: '官方数据',
+    pill_prefeitura: '库里提巴市政府',
+    sb_geral: '总览',
+    sb_reconhecimento: '国际认可',
+    sb_fluxo: '旅游客流',
+    sb_perfil: '访客画像',
+    sb_linha: '旅游线路',
+    sb_eventos: '活动与演出',
+    sb_natal: '圣诞节 2025',
+    sb_hotelaria: '酒店业',
+    sb_aeroporto: '机场',
+    sb_estrangeiros: '境外游客',
+    sb_investir: '投资优势',
+    sb_corporativo: '商务住宿',
+    sb_airbnb: 'Airbnb',
+    sb_regioes: '战略区域',
+    sb_noticias: '新闻',
+    sl_reconhecimento: '国际认可',
+    sl_fluxo: '旅游客流概览',
+    sl_perfil: '访客画像：历史性转变',
+    sl_linha: '旅游线路：休闲旅游晴雨表',
+    sl_eventos: '活动、演出与大会',
+    sl_medicos: '库里提巴：医学会议枢纽',
+    sl_estetico: '医疗美容与健康旅游',
+    sl_mice: '商务与MICE活动',
+    sl_natal: '库里提巴圣诞节 2025',
+    sl_hotelaria: '酒店业与基础设施',
+    sl_aeroporto: '机场与连通性',
+    sl_estrangeiros: '巴拉那州境外游客',
+    sl_investir: '旅游业对房地产市场的驱动',
+    sl_corporativo: '库里提巴商务合同住宿',
+    sl_airbnb: '库里提巴Airbnb：短租市场',
+    sl_regioes: '战略区域：比卡略的布局',
+    sl_noticias: '新闻',
+    award_lp: 'Lonely Planet：2025年全球十大必游城市',
+    award_lp_sub: '全球最权威旅行指南榜单上唯一的巴西城市',
+    ch_lernumeros: '如何解读这些数据',
+    ch_primezirav: '首次：休闲旅游超越商务旅游',
+    ch_espacos: '城市主要活动场馆',
+    ch_iss: '市政税收激励——活动ISS税率下调',
+    ch_cbmi: '2025年已确认医学大会',
+    ch_estetico: '库里提巴的医疗美容版图',
+    ch_mice: '库里提巴：MICE目的地',
+    ch_natal: '巴西最大圣诞节——2025版',
+    ch_natal_sub: '11月25日至12月23日（演出期）· 装饰陈列至2026年1月6日',
+    ch_ocupacao: '年度酒店入住率变化',
+    ch_indicadores: '2026年数据印证趋势',
+    ch_hoteis: '酒店与企业连锁',
+    ch_tstystems: '商务短租：T-Systems案例',
+    ch_shows: '2025年：库里提巴成为大型演出之都',
+    ch_locacao: '短租 vs. 传统租赁',
+    ch_aguaverde: '绿水区（Água Verde）',
+    ch_bigorrilho: '比戈利略（Bigorrilho）',
+    ch_aviguacu: '伊瓜苏大道：新扩张轴线',
+    ch_setedeset: '九月七日街：核心高档轴线',
+    ch_vantagem: '这些区域在Airbnb上的竞争优势',
+    news_sub: '聚焦库里提巴——媒体报道',
+    footer_material: '内部资料 · 库里提巴 2026'
+  }
+};
+
+// ── TROCA DE IDIOMA ───────────────────────────────────────
+function trocarIdioma(lang) {
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (lang === 'pt') {
+      if (el.dataset.orig !== undefined) el.innerHTML = el.dataset.orig;
+    } else {
+      var t = traducoes[lang];
+      if (t && t[key] !== undefined) el.innerHTML = t[key];
+    }
+  });
+  // Atualiza lang global da página
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en' : 'zh-CN';
+  // Atualiza tooltips da sidebar
+  document.querySelectorAll('.sidebar-item[data-sb]').forEach(function(item) {
+    var sbKey = item.getAttribute('data-sb');
+    if (lang === 'pt') {
+      item.setAttribute('data-tooltip', item.dataset.origTooltip || '');
+    } else {
+      var t = traducoes[lang];
+      if (t && t[sbKey]) item.setAttribute('data-tooltip', t[sbKey]);
+    }
+  });
+  // Atualiza estado visual dos botões
+  document.querySelectorAll('.lang-btn').forEach(function(btn) {
+    btn.classList.toggle('lang-btn-active', btn.getAttribute('data-lang') === lang);
+  });
+  localStorage.setItem('idioma', lang);
+}
+
 // ── KPI CLICÁVEL (abre fonte) ─────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
+  // i18n: guarda conteúdo original em PT para restauração
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    if (el.dataset.orig === undefined) el.dataset.orig = el.innerHTML;
+  });
+  document.querySelectorAll('.sidebar-item[data-sb]').forEach(function(item) {
+    if (item.dataset.origTooltip === undefined) {
+      item.dataset.origTooltip = item.getAttribute('data-tooltip') || '';
+    }
+  });
+  // Restaura idioma salvo
+  var idiomaGuardado = localStorage.getItem('idioma');
+  if (idiomaGuardado && idiomaGuardado !== 'pt') trocarIdioma(idiomaGuardado);
+
   document.querySelectorAll('.kpi[data-fonte]').forEach(function(kpi) {
     kpi.addEventListener('click', function() {
       window.open(kpi.dataset.fonte, '_blank');
