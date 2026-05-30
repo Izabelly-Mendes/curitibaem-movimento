@@ -48,7 +48,7 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-heigh
 .section{display:none}
 .section.active{display:block}
 
-/* ── CARDS / TABLES ── */
+/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:'DM Sans',sans-serif}
 .btn-primary{background:#FF6B00;color:#fff}
 .btn-primary:hover{background:#e05a00}
@@ -62,9 +62,8 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-heigh
 
 .toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 
+/* ── PANEL ── */
 .panel{background:#fff;border-radius:14px;border:0.5px solid #e0ddd5}
-.panel-header{padding:18px 24px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between}
-.panel-header h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
 .panel-body{padding:0}
 
 .list-item{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:0.5px solid #f5f3ef;transition:background 0.1s}
@@ -106,32 +105,6 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-heigh
 .form-input,.form-textarea,.form-select{width:100%;border:0.5px solid #ddd;border-radius:8px;padding:10px 14px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;background:#fafafa}
 .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:#FF6B00;background:#fff}
 .form-textarea{min-height:100px;resize:vertical}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-
-/* ── EMPREENDIMENTOS ── */
-.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-.emp-card{background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;overflow:hidden}
-.emp-card-photo{height:140px;background:#f0ede6;overflow:hidden;position:relative}
-.emp-card-photo img{width:100%;height:100%;object-fit:cover}
-.emp-card-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:32px}
-.emp-card-body{padding:18px 20px}
-.emp-card-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px}
-.progress-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.progress-track{flex:1;height:8px;background:#f0ede6;border-radius:10px;overflow:hidden}
-.progress-fill{height:100%;background:#FF6B00;border-radius:10px;transition:width 0.3s}
-.progress-val{font-size:13px;font-weight:700;color:#FF6B00;width:36px;text-align:right}
-.emp-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:0.5px solid #f5f3ef}
-
-/* ── CLIENTES ── */
-.cliente-item{padding:16px 24px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;gap:16px}
-.cliente-item:last-child{border-bottom:none}
-.cliente-avatar{width:38px;height:38px;border-radius:50%;background:#FF6B00;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;flex-shrink:0}
-.cliente-info{flex:1;min-width:0}
-.cliente-name{font-size:14px;font-weight:600;margin-bottom:2px}
-.cliente-email{font-size:12px;color:#999;margin-bottom:4px}
-.cliente-link{font-size:11px;color:#FF6B00;font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
-.emps-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
-.emp-tag{background:#f0ede6;border-radius:4px;padding:2px 7px;font-size:11px;color:#666}
 
 /* ── RASCUNHOS ── */
 .draft-card{background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:12px;overflow:hidden}
@@ -140,22 +113,11 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-heigh
 .draft-date{font-size:11px;color:#aaa}
 .draft-preview{padding:14px 20px;font-size:13px;color:#666;line-height:1.65;max-height:120px;overflow:hidden;position:relative}
 .draft-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,#fff)}
-.draft-actions{padding:12px 20px;border-top:0.5px solid #f5f3ef;display:flex;gap:8px}
+.draft-actions{padding:12px 20px;border-top:0.5px solid #f5f3ef;display:flex;gap:8px;flex-wrap:wrap}
 .status-badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
 .status-pendente{background:rgba(245,158,11,0.1);color:#d97706}
 .status-aprovado{background:rgba(39,174,96,0.1);color:#219a52}
 .status-rejeitado{background:rgba(239,68,68,0.1);color:#dc2626}
-
-/* ── EDITOR VISUAL ── */
-.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.color-row{display:flex;align-items:center;gap:10px}
-.color-row input[type=color]{width:36px;height:36px;border:0.5px solid #ddd;border-radius:6px;cursor:pointer;padding:2px;background:#fafafa}
-.color-row .form-input{flex:1}
-.font-select-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.range-row{display:flex;align-items:center;gap:12px}
-.range-row input[type=range]{flex:1}
-.range-val{font-size:13px;font-weight:600;color:#FF6B00;min-width:36px}
-.section-divider{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin:24px 0 16px;padding-bottom:8px;border-bottom:0.5px solid #e0ddd5}
 
 /* ── TOASTS ── */
 #toast{position:fixed;bottom:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px}
@@ -164,16 +126,13 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-heigh
 .toast-item.error{border-left-color:#e74c3c}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 
-/* ── CHECKBOX GROUP ── */
-.check-group{display:flex;flex-direction:column;gap:8px}
-.check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:background 0.15s}
-.check-item:hover{background:#f5f3ef}
-.check-item input{width:16px;height:16px;accent-color:#FF6B00;cursor:pointer}
-.check-item label{cursor:pointer;font-size:13.5px}
-
-/* ── SLIDER ── */
-input[type=range]{-webkit-appearance:none;height:6px;background:#f0ede6;border-radius:6px;outline:none}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#FF6B00;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+/* ── ESTADOS ── */
+.empty-state{text-align:center;padding:60px 20px;color:#bbb}
+.empty-state .ico{font-size:48px;margin-bottom:12px}
+.empty-state p{font-size:14px}
+.error-state{text-align:center;padding:40px 20px;color:#e74c3c}
+.error-state .ico{font-size:40px;margin-bottom:10px}
+.error-state p{font-size:13.5px;margin-bottom:14px}
 
 /* ── MOBILE ── */
 @media(max-width:768px){
@@ -181,18 +140,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   .sidebar.open{transform:translateX(0)}
   .main{margin-left:0;padding:20px 16px}
   .mob-menu{display:flex;position:fixed;top:12px;left:12px;z-index:200;background:#1a1a1a;border:none;border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;color:#FF6B00;font-size:18px;cursor:pointer}
-  .config-grid,.form-row,.font-select-row{grid-template-columns:1fr}
 }
 @media(min-width:769px){.mob-menu{display:none}}
 
-.empty-state{text-align:center;padding:60px 20px;color:#bbb}
-.empty-state .ico{font-size:48px;margin-bottom:12px}
-.empty-state p{font-size:14px}
+input[type=range]{-webkit-appearance:none;height:6px;background:#f0ede6;border-radius:6px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#FF6B00;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-box">
     <img src="diferencial_logo.png" alt="Diferencial">
@@ -208,7 +165,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 <div id="app">
   <button class="mob-menu" onclick="toggleSidebar()">☰</button>
   <div class="layout">
-    <!-- SIDEBAR -->
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <img src="diferencial_logo.png" alt="Diferencial">
@@ -217,15 +173,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       <div style="padding:16px 0;flex:1">
         <div class="nav-item active" onclick="showSection('conteudo')" data-sec="conteudo">
           <span class="ni">📄</span> Conteúdo Geral
-        </div>
-        <div class="nav-item" onclick="showSection('aparencia')" data-sec="aparencia">
-          <span class="ni">🎨</span> Aparência Visual
-        </div>
-        <div class="nav-item" onclick="showSection('empreendimentos')" data-sec="empreendimentos">
-          <span class="ni">🏗️</span> Empreendimentos
-        </div>
-        <div class="nav-item" onclick="showSection('clientes')" data-sec="clientes">
-          <span class="ni">👥</span> Clientes
         </div>
         <div class="nav-item" onclick="showSection('rascunhos')" data-sec="rascunhos">
           <span class="ni">📝</span> Rascunhos
@@ -237,10 +184,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       </div>
     </nav>
 
-    <!-- MAIN -->
     <main class="main">
 
-      <!-- ── SEÇÃO: CONTEÚDO GERAL ── -->
+      <!-- CONTEÚDO GERAL -->
       <div class="section active" id="sec-conteudo">
         <div class="toolbar">
           <div>
@@ -251,108 +197,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
         </div>
         <div class="panel">
           <div id="blocos-list" class="panel-body">
-            <div class="empty-state"><div class="ico">📦</div><p>Carregando blocos...</p></div>
+            <div class="empty-state"><div class="ico">⏳</div><p>Carregando blocos...</p></div>
           </div>
         </div>
       </div>
 
-      <!-- ── SEÇÃO: APARÊNCIA VISUAL ── -->
-      <div class="section" id="sec-aparencia">
-        <div class="toolbar">
-          <div>
-            <div class="page-title">Aparência Visual</div>
-            <div class="page-sub">Edite como o portal do cliente é exibido</div>
-          </div>
-          <button class="btn btn-primary" onclick="saveConfig()">💾 Salvar aparência</button>
-        </div>
-        <div class="panel" style="padding:24px 28px">
-          <div class="section-divider">Cores Globais</div>
-          <div class="config-grid">
-            <div class="form-group">
-              <label class="form-label">Cor principal (destaques e botões)</label>
-              <div class="color-row">
-                <input type="color" id="cfg-cor-principal" value="#FF6B00">
-                <input type="text" class="form-input" id="cfg-cor-principal-txt" value="#FF6B00" onchange="syncColor('cfg-cor-principal','cfg-cor-principal-txt')">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Cor de fundo da página</label>
-              <div class="color-row">
-                <input type="color" id="cfg-cor-fundo" value="#f5f5f0">
-                <input type="text" class="form-input" id="cfg-cor-fundo-txt" value="#f5f5f0" onchange="syncColor('cfg-cor-fundo','cfg-cor-fundo-txt')">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Cor do header</label>
-              <div class="color-row">
-                <input type="color" id="cfg-cor-header" value="#1a1a1a">
-                <input type="text" class="form-input" id="cfg-cor-header-txt" value="#1a1a1a" onchange="syncColor('cfg-cor-header','cfg-cor-header-txt')">
-              </div>
-            </div>
-          </div>
-
-          <div class="section-divider">Tipografia</div>
-          <div class="config-grid">
-            <div class="form-group">
-              <label class="form-label">Fonte dos títulos</label>
-              <select class="form-select" id="cfg-fonte-titulo">
-                <option value="Syne">Syne (padrão)</option>
-                <option value="Georgia">Georgia</option>
-                <option value="Arial">Arial</option>
-                <option value="Helvetica">Helvetica</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Fonte do corpo</label>
-              <select class="form-select" id="cfg-fonte-corpo">
-                <option value="DM Sans">DM Sans (padrão)</option>
-                <option value="Arial">Arial</option>
-                <option value="Georgia">Georgia</option>
-                <option value="Times New Roman">Times New Roman</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Tamanho base da fonte: <span id="cfg-font-size-val">14px</span></label>
-              <div class="range-row">
-                <span style="font-size:12px;color:#999">12px</span>
-                <input type="range" id="cfg-font-size" min="12" max="18" value="14" oninput="document.getElementById('cfg-font-size-val').textContent=this.value+'px'">
-                <span style="font-size:12px;color:#999">18px</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── SEÇÃO: EMPREENDIMENTOS ── -->
-      <div class="section" id="sec-empreendimentos">
-        <div class="toolbar">
-          <div>
-            <div class="page-title">Empreendimentos</div>
-            <div class="page-sub">Gerencie as informações de cada empreendimento</div>
-          </div>
-        </div>
-        <div class="emp-grid" id="emp-grid">
-          <div class="empty-state"><div class="ico">🏗️</div><p>Carregando...</p></div>
-        </div>
-      </div>
-
-      <!-- ── SEÇÃO: CLIENTES ── -->
-      <div class="section" id="sec-clientes">
-        <div class="toolbar">
-          <div>
-            <div class="page-title">Clientes</div>
-            <div class="page-sub">Gerencie os links únicos de cada cliente</div>
-          </div>
-          <button class="btn btn-primary" onclick="openClienteModal()">＋ Novo cliente</button>
-        </div>
-        <div class="panel">
-          <div id="clientes-list" class="panel-body">
-            <div class="empty-state"><div class="ico">👥</div><p>Carregando...</p></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── SEÇÃO: RASCUNHOS ── -->
+      <!-- RASCUNHOS -->
       <div class="section" id="sec-rascunhos">
         <div class="toolbar">
           <div>
@@ -361,15 +211,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
           </div>
         </div>
         <div id="rascunhos-list">
-          <div class="empty-state"><div class="ico">📝</div><p>Carregando...</p></div>
+          <div class="empty-state"><div class="ico">⏳</div><p>Carregando rascunhos...</p></div>
         </div>
       </div>
 
     </main>
   </div>
 </div>
-
-<!-- ── MODAIS ── -->
 
 <!-- Modal: Bloco -->
 <div class="modal-overlay" id="modal-bloco">
@@ -395,8 +243,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Conteúdo</label>
-        <textarea class="form-textarea" id="bloco-conteudo" placeholder="Conteúdo do bloco (HTML permitido)"></textarea>
+        <label class="form-label">Conteúdo (HTML permitido)</label>
+        <textarea class="form-textarea" id="bloco-conteudo" placeholder="Conteúdo do bloco"></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">Ordem (menor = primeiro)</label>
@@ -417,101 +265,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   </div>
 </div>
 
-<!-- Modal: Empreendimento -->
-<div class="modal-overlay" id="modal-emp">
-  <div class="modal" style="max-width:640px">
-    <div class="modal-header">
-      <h3 id="modal-emp-titulo">Editar Empreendimento</h3>
-      <button class="modal-close" onclick="closeModal('modal-emp')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="emp-id">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Nome</label>
-          <input type="text" class="form-input" id="emp-nome">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Slug (URL)</label>
-          <input type="text" class="form-input" id="emp-slug">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Percentual de obra: <span id="emp-perc-val">0</span>%</label>
-        <div class="range-row">
-          <span style="font-size:12px;color:#999">0%</span>
-          <input type="range" id="emp-percentual" min="0" max="100" value="0" oninput="document.getElementById('emp-perc-val').textContent=this.value">
-          <span style="font-size:12px;color:#999">100%</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Descrição</label>
-        <textarea class="form-textarea" id="emp-descricao" placeholder="Descrição do empreendimento"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">URL da foto</label>
-        <input type="text" class="form-input" id="emp-foto" placeholder="https://...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Upload de foto</label>
-        <input type="file" id="emp-foto-upload" accept="image/*" onchange="handleFotoUpload()">
-        <div id="emp-foto-preview" style="margin-top:8px;display:none">
-          <img id="emp-foto-preview-img" style="max-height:120px;border-radius:8px;border:0.5px solid #ddd">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Próximas etapas</label>
-        <textarea class="form-textarea" id="emp-etapas" placeholder="Quais as próximas etapas da obra?"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Comunicados (aparece em destaque no portal)</label>
-        <textarea class="form-textarea" id="emp-comunicados" placeholder="Comunicados importantes para os clientes"></textarea>
-      </div>
-      <div class="form-group" style="display:flex;align-items:center;gap:12px">
-        <label class="toggle">
-          <input type="checkbox" id="emp-ativo" checked>
-          <span class="toggle-slider"></span>
-        </label>
-        <span style="font-size:13.5px">Empreendimento ativo</span>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-emp')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveEmp()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Cliente -->
-<div class="modal-overlay" id="modal-cliente">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modal-cliente-titulo">Novo Cliente</h3>
-      <button class="modal-close" onclick="closeModal('modal-cliente')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="cliente-id">
-      <div class="form-group">
-        <label class="form-label">Nome</label>
-        <input type="text" class="form-input" id="cliente-nome" placeholder="Nome completo">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-input" id="cliente-email" placeholder="email@exemplo.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Empreendimentos vinculados</label>
-        <div class="check-group" id="emp-checkboxes"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-cliente')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveCliente()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Rascunho editar -->
+<!-- Modal: Rascunho -->
 <div class="modal-overlay" id="modal-rascunho">
   <div class="modal" style="max-width:640px">
     <div class="modal-header">
@@ -536,71 +290,62 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   </div>
 </div>
 
-<!-- Toast container -->
 <div id="toast"></div>
 
-<!-- Supabase JS -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ══════════════════════════════════════════════════════════
-// CONFIG
-// Variáveis de ambiente (frontend — anon key é pública por design)
-// Configure no painel Vercel → Settings → Environment Variables:
-// SUPABASE_URL, SUPABASE_ANON_KEY
+// CONFIG — anon key pública por design do Supabase
+// Variáveis de ambiente no painel Vercel → Settings → Env Vars:
+//   SUPABASE_URL, SUPABASE_ANON_KEY
 // ══════════════════════════════════════════════════════════
 const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let allEmpreendimentos = [];
 
 // ── AUTH ──
 function checkAuth() {
   const pass = document.getElementById('auth-pass').value;
   if (pass === 'Bicalho@2025') {
     sessionStorage.setItem('admin-auth', '1');
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    init();
+    showApp();
   } else {
     document.getElementById('auth-err').style.display = 'block';
     document.getElementById('auth-pass').value = '';
   }
 }
-document.getElementById('auth-pass').addEventListener('keydown', e => { if (e.key === 'Enter') checkAuth(); });
+
+function showApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  init();
+}
 
 function logout() {
   sessionStorage.removeItem('admin-auth');
   location.reload();
 }
 
+document.getElementById('auth-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkAuth();
+});
+
+// Verifica sessão ao carregar — chama init() diretamente, sem esperar DOMContentLoaded
 if (sessionStorage.getItem('admin-auth') === '1') {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  document.addEventListener('DOMContentLoaded', init);
+  showApp();
 }
 
 // ── INIT ──
 async function init() {
-  await loadEmpreendimentos();
-  loadBlocos();
-  loadClientes();
-  loadRascunhos();
-  loadConfig();
-  // Sync color pickers com text inputs
-  ['cfg-cor-principal','cfg-cor-fundo','cfg-cor-header'].forEach(id => {
-    document.getElementById(id).addEventListener('input', function() {
-      document.getElementById(id+'-txt').value = this.value;
-    });
-  });
+  await Promise.all([loadBlocos(), loadRascunhos()]);
 }
 
-// ── NAVIGATION ──
+// ── NAVEGAÇÃO ──
 function showSection(sec) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('sec-'+sec).classList.add('active');
-  document.querySelector(`[data-sec="${sec}"]`).classList.add('active');
+  document.getElementById('sec-' + sec).classList.add('active');
+  document.querySelector('[data-sec="' + sec + '"]').classList.add('active');
   if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
 }
 
@@ -609,9 +354,9 @@ function toggleSidebar() {
 }
 
 // ── TOAST ──
-function toast(msg, type='info') {
+function toast(msg, type) {
   const t = document.createElement('div');
-  t.className = `toast-item ${type}`;
+  t.className = 'toast-item ' + (type || 'info');
   t.textContent = msg;
   document.getElementById('toast').appendChild(t);
   setTimeout(() => t.remove(), 3500);
@@ -628,9 +373,19 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
 // BLOCOS DE CONTEÚDO
 // ══════════════════════════════
 async function loadBlocos() {
-  const { data, error } = await sb.from('blocos_conteudo').select('*').order('ordem');
-  if (error) { toast('Erro ao carregar blocos: '+error.message, 'error'); return; }
-  renderBlocos(data || []);
+  const el = document.getElementById('blocos-list');
+  try {
+    const { data, error } = await sb.from('blocos_conteudo').select('*').order('ordem');
+    if (error) throw error;
+    renderBlocos(data || []);
+  } catch (err) {
+    el.innerHTML = `
+      <div class="error-state">
+        <div class="ico">⚠️</div>
+        <p>Erro ao carregar blocos.<br><small style="color:#aaa">${err.message}</small></p>
+        <button class="btn btn-ghost btn-sm" onclick="loadBlocos()">Tentar novamente</button>
+      </div>`;
+  }
 }
 
 function renderBlocos(blocos) {
@@ -642,14 +397,14 @@ function renderBlocos(blocos) {
   el.innerHTML = blocos.map(b => `
     <div class="list-item">
       <div class="item-info">
-        <div class="item-title">${escHtml(b.titulo||'(sem título)')}</div>
+        <div class="item-title">${esc(b.titulo || '(sem título)')}</div>
         <div class="item-sub" style="margin-top:4px">
-          <span class="badge badge-${b.tipo}">${b.tipo}</span>
+          <span class="badge badge-${b.tipo || 'card'}">${b.tipo || 'card'}</span>
           &nbsp;Ordem: ${b.ordem}
         </div>
       </div>
       <label class="toggle" title="Visível para cliente" style="margin-right:8px">
-        <input type="checkbox" ${b.visivel_cliente?'checked':''} onchange="toggleBloco('${b.id}',this.checked)">
+        <input type="checkbox" ${b.visivel_cliente ? 'checked' : ''} onchange="toggleBloco('${b.id}',this.checked)">
         <span class="toggle-slider"></span>
       </label>
       <div class="item-actions">
@@ -661,12 +416,14 @@ function renderBlocos(blocos) {
 }
 
 async function toggleBloco(id, visible) {
-  const { error } = await sb.from('blocos_conteudo').update({ visivel_cliente: visible, updated_at: new Date().toISOString() }).eq('id', id);
-  if (error) toast('Erro: '+error.message, 'error');
-  else toast(visible ? 'Bloco agora visível para clientes' : 'Bloco ocultado dos clientes', 'success');
+  const { error } = await sb.from('blocos_conteudo')
+    .update({ visivel_cliente: visible, updated_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast(visible ? 'Bloco agora visível para clientes' : 'Bloco ocultado dos clientes', 'success');
 }
 
-function openBlocoModal(bloco) {
+function openBlocoModal() {
   document.getElementById('bloco-id').value = '';
   document.getElementById('bloco-titulo').value = '';
   document.getElementById('bloco-conteudo').value = '';
@@ -704,8 +461,8 @@ async function saveBloco() {
   } else {
     ({ error } = await sb.from('blocos_conteudo').insert(payload));
   }
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  toast('Bloco salvo com sucesso!', 'success');
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('Bloco salvo!', 'success');
   closeModal('modal-bloco');
   loadBlocos();
 }
@@ -713,227 +470,34 @@ async function saveBloco() {
 async function deleteBloco(id) {
   if (!confirm('Excluir este bloco permanentemente?')) return;
   const { error } = await sb.from('blocos_conteudo').delete().eq('id', id);
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
   toast('Bloco excluído', 'success');
   loadBlocos();
-}
-
-// ══════════════════════════════
-// EMPREENDIMENTOS
-// ══════════════════════════════
-async function loadEmpreendimentos() {
-  const { data, error } = await sb.from('empreendimentos').select('*').order('nome');
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  allEmpreendimentos = data || [];
-  renderEmpreendimentos(allEmpreendimentos);
-  renderEmpCheckboxes();
-}
-
-function renderEmpreendimentos(emps) {
-  const el = document.getElementById('emp-grid');
-  if (!emps.length) {
-    el.innerHTML = '<div class="empty-state"><div class="ico">🏗️</div><p>Nenhum empreendimento encontrado.</p></div>';
-    return;
-  }
-  el.innerHTML = emps.map(e => `
-    <div class="emp-card">
-      <div class="emp-card-photo">
-        ${e.foto_url ? `<img src="${escHtml(e.foto_url)}" alt="${escHtml(e.nome)}">` : `<div class="emp-card-photo-placeholder">🏗️</div>`}
-      </div>
-      <div class="emp-card-body">
-        <div class="emp-card-name">${escHtml(e.nome)}</div>
-        <div class="progress-row">
-          <div class="progress-track"><div class="progress-fill" style="width:${e.percentual_obra}%"></div></div>
-          <span class="progress-val">${e.percentual_obra}%</span>
-        </div>
-        <div style="font-size:12px;color:#999;margin-bottom:6px">
-          ${e.ativo ? '<span style="color:#27ae60">● Ativo</span>' : '<span style="color:#e74c3c">● Inativo</span>'}
-          &nbsp;·&nbsp; Slug: <code style="font-size:11px">${escHtml(e.slug)}</code>
-        </div>
-        ${e.comunicados ? `<div style="background:rgba(255,107,0,0.08);border-left:3px solid #FF6B00;border-radius:0 6px 6px 0;padding:8px 12px;font-size:12px;color:#c85200;margin-bottom:10px">${escHtml(e.comunicados).substring(0,80)}...</div>` : ''}
-        <div class="emp-card-actions">
-          <button class="btn btn-primary btn-sm" onclick='openEmpModal(${JSON.stringify(e)})'>✏️ Editar</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderEmpCheckboxes() {
-  const el = document.getElementById('emp-checkboxes');
-  el.innerHTML = allEmpreendimentos.map(e => `
-    <div class="check-item">
-      <input type="checkbox" id="emp-chk-${e.id}" value="${e.id}">
-      <label for="emp-chk-${e.id}">${escHtml(e.nome)}</label>
-    </div>
-  `).join('');
-}
-
-function openEmpModal(emp) {
-  document.getElementById('emp-id').value = emp.id;
-  document.getElementById('emp-nome').value = emp.nome || '';
-  document.getElementById('emp-slug').value = emp.slug || '';
-  document.getElementById('emp-percentual').value = emp.percentual_obra || 0;
-  document.getElementById('emp-perc-val').textContent = emp.percentual_obra || 0;
-  document.getElementById('emp-descricao').value = emp.descricao || '';
-  document.getElementById('emp-foto').value = emp.foto_url || '';
-  document.getElementById('emp-etapas').value = emp.proximas_etapas || '';
-  document.getElementById('emp-comunicados').value = emp.comunicados || '';
-  document.getElementById('emp-ativo').checked = !!emp.ativo;
-  document.getElementById('modal-emp-titulo').textContent = 'Editar: '+emp.nome;
-  // Preview foto
-  if (emp.foto_url) {
-    document.getElementById('emp-foto-preview').style.display = 'block';
-    document.getElementById('emp-foto-preview-img').src = emp.foto_url;
-  } else {
-    document.getElementById('emp-foto-preview').style.display = 'none';
-  }
-  openModal('modal-emp');
-}
-
-function handleFotoUpload() {
-  const file = document.getElementById('emp-foto-upload').files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const b64 = e.target.result;
-    document.getElementById('emp-foto').value = b64;
-    document.getElementById('emp-foto-preview').style.display = 'block';
-    document.getElementById('emp-foto-preview-img').src = b64;
-  };
-  reader.readAsDataURL(file);
-}
-
-async function saveEmp() {
-  const id = document.getElementById('emp-id').value;
-  const payload = {
-    nome: document.getElementById('emp-nome').value,
-    slug: document.getElementById('emp-slug').value,
-    percentual_obra: parseInt(document.getElementById('emp-percentual').value) || 0,
-    descricao: document.getElementById('emp-descricao').value,
-    foto_url: document.getElementById('emp-foto').value,
-    proximas_etapas: document.getElementById('emp-etapas').value,
-    comunicados: document.getElementById('emp-comunicados').value,
-    ativo: document.getElementById('emp-ativo').checked,
-    updated_at: new Date().toISOString()
-  };
-  const { error } = await sb.from('empreendimentos').update(payload).eq('id', id);
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  toast('Empreendimento salvo!', 'success');
-  closeModal('modal-emp');
-  loadEmpreendimentos();
-}
-
-// ══════════════════════════════
-// CLIENTES
-// ══════════════════════════════
-async function loadClientes() {
-  const { data, error } = await sb.from('clientes').select('*').order('created_at', { ascending: false });
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  renderClientes(data || []);
-}
-
-function renderClientes(clientes) {
-  const el = document.getElementById('clientes-list');
-  if (!clientes.length) {
-    el.innerHTML = '<div class="empty-state"><div class="ico">👥</div><p>Nenhum cliente cadastrado ainda.</p></div>';
-    return;
-  }
-  el.innerHTML = clientes.map(c => {
-    const empNomes = (c.empreendimentos_ids || []).map(eid => {
-      const e = allEmpreendimentos.find(x => x.id === eid);
-      return e ? `<span class="emp-tag">${escHtml(e.nome)}</span>` : '';
-    }).join('');
-    const link = `${location.origin}/cliente.html?token=${c.token}`;
-    const initials = (c.nome||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-    return `
-      <div class="cliente-item">
-        <div class="cliente-avatar">${initials}</div>
-        <div class="cliente-info">
-          <div class="cliente-name">${escHtml(c.nome||'')}</div>
-          <div class="cliente-email">${escHtml(c.email||'')}</div>
-          <div class="cliente-link">${link}</div>
-          <div class="emps-tags" style="margin-top:4px">${empNomes}</div>
-        </div>
-        <div class="item-actions">
-          <button class="btn btn-ghost btn-sm" onclick="copyLink('${link}')" title="Copiar link">📋</button>
-          <button class="btn btn-ghost btn-sm" onclick='editCliente(${JSON.stringify(c)})'>✏️</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteCliente('${c.id}')">🗑️</button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function copyLink(link) {
-  navigator.clipboard.writeText(link).then(() => toast('Link copiado!', 'success'));
-}
-
-function openClienteModal() {
-  document.getElementById('cliente-id').value = '';
-  document.getElementById('cliente-nome').value = '';
-  document.getElementById('cliente-email').value = '';
-  document.querySelectorAll('#emp-checkboxes input').forEach(c => c.checked = false);
-  document.getElementById('modal-cliente-titulo').textContent = 'Novo Cliente';
-  openModal('modal-cliente');
-}
-
-function editCliente(c) {
-  document.getElementById('cliente-id').value = c.id;
-  document.getElementById('cliente-nome').value = c.nome || '';
-  document.getElementById('cliente-email').value = c.email || '';
-  document.querySelectorAll('#emp-checkboxes input').forEach(chk => {
-    chk.checked = (c.empreendimentos_ids || []).includes(chk.value);
-  });
-  document.getElementById('modal-cliente-titulo').textContent = 'Editar Cliente';
-  openModal('modal-cliente');
-}
-
-async function saveCliente() {
-  const id = document.getElementById('cliente-id').value;
-  const empIds = [...document.querySelectorAll('#emp-checkboxes input:checked')].map(c => c.value);
-  const payload = {
-    nome: document.getElementById('cliente-nome').value,
-    email: document.getElementById('cliente-email').value,
-    empreendimentos_ids: empIds
-  };
-  let error;
-  if (id) {
-    ({ error } = await sb.from('clientes').update(payload).eq('id', id));
-  } else {
-    payload.token = generateToken();
-    ({ error } = await sb.from('clientes').insert(payload));
-  }
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  toast('Cliente salvo!', 'success');
-  closeModal('modal-cliente');
-  loadClientes();
-}
-
-async function deleteCliente(id) {
-  if (!confirm('Excluir este cliente?')) return;
-  const { error } = await sb.from('clientes').delete().eq('id', id);
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  toast('Cliente removido', 'success');
-  loadClientes();
-}
-
-function generateToken() {
-  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-  return Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 }
 
 // ══════════════════════════════
 // RASCUNHOS
 // ══════════════════════════════
 async function loadRascunhos() {
-  const { data, error } = await sb.from('rascunhos_curadoria').select('*').order('created_at', { ascending: false });
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  const pendentes = (data || []).filter(r => r.status === 'pendente').length;
-  const badge = document.getElementById('rascunhos-badge');
-  if (pendentes > 0) { badge.textContent = pendentes; badge.style.display = 'inline-block'; }
-  else badge.style.display = 'none';
-  renderRascunhos(data || []);
+  const el = document.getElementById('rascunhos-list');
+  try {
+    const { data, error } = await sb.from('rascunhos_curadoria')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    const pendentes = (data || []).filter(r => r.status === 'pendente').length;
+    const badge = document.getElementById('rascunhos-badge');
+    if (pendentes > 0) { badge.textContent = pendentes; badge.style.display = 'inline-block'; }
+    else badge.style.display = 'none';
+    renderRascunhos(data || []);
+  } catch (err) {
+    el.innerHTML = `
+      <div class="error-state">
+        <div class="ico">⚠️</div>
+        <p>Erro ao carregar rascunhos.<br><small style="color:#aaa">${err.message}</small></p>
+        <button class="btn btn-ghost btn-sm" onclick="loadRascunhos()">Tentar novamente</button>
+      </div>`;
+  }
 }
 
 function renderRascunhos(rascunhos) {
@@ -945,16 +509,16 @@ function renderRascunhos(rascunhos) {
   el.innerHTML = rascunhos.map(r => `
     <div class="draft-card">
       <div class="draft-header">
-        <span class="draft-title">${escHtml(r.titulo||'Sem título')}</span>
+        <span class="draft-title">${esc(r.titulo || 'Sem título')}</span>
         <div style="display:flex;align-items:center;gap:10px">
           <span class="status-badge status-${r.status}">${r.status}</span>
           <span class="draft-date">${new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
         </div>
       </div>
-      <div class="draft-preview">${r.conteudo||''}</div>
-      ${r.status==='pendente' ? `
+      <div class="draft-preview">${r.conteudo || ''}</div>
+      ${r.status === 'pendente' ? `
       <div class="draft-actions">
-        <button class="btn btn-success btn-sm" onclick="aprovarDireto('${r.id}','${escAttr(r.titulo)}',\`${escAttr(r.conteudo)}\`)">✓ Aprovar e publicar</button>
+        <button class="btn btn-success btn-sm" onclick="aprovarDireto('${r.id}')">✓ Aprovar e publicar</button>
         <button class="btn btn-ghost btn-sm" onclick='abrirEdicaoRascunho(${JSON.stringify(r)})'>✏️ Editar antes</button>
         <button class="btn btn-danger btn-sm" onclick="rejeitarRascunho('${r.id}')">✕ Rejeitar</button>
       </div>` : ''}
@@ -977,16 +541,22 @@ async function aprovarRascunho() {
   closeModal('modal-rascunho');
 }
 
-async function aprovarDireto(id, titulo, conteudo) {
-  await publicarRascunho(id, titulo, conteudo);
+async function aprovarDireto(id) {
+  // Busca os dados do rascunho para publicar
+  const { data, error } = await sb.from('rascunhos_curadoria').select('titulo,conteudo').eq('id', id).single();
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  await publicarRascunho(id, data.titulo, data.conteudo);
 }
 
 async function publicarRascunho(id, titulo, conteudo) {
-  const { error: e1 } = await sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id);
-  const { error: e2 } = await sb.from('blocos_conteudo').insert({
-    titulo, conteudo, tipo: 'noticia', visivel_cliente: true, ordem: 99
-  });
-  if (e1 || e2) { toast('Erro ao publicar', 'error'); return; }
+  const [r1, r2] = await Promise.all([
+    sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id),
+    sb.from('blocos_conteudo').insert({ titulo, conteudo, tipo: 'noticia', visivel_cliente: true, ordem: 99 })
+  ]);
+  if (r1.error || r2.error) {
+    toast('Erro ao publicar: ' + (r1.error?.message || r2.error?.message), 'error');
+    return;
+  }
   toast('Rascunho aprovado e publicado!', 'success');
   loadRascunhos();
   loadBlocos();
@@ -995,62 +565,14 @@ async function publicarRascunho(id, titulo, conteudo) {
 async function rejeitarRascunho(id) {
   if (!confirm('Rejeitar este rascunho?')) return;
   const { error } = await sb.from('rascunhos_curadoria').update({ status: 'rejeitado' }).eq('id', id);
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
   toast('Rascunho rejeitado', 'success');
   loadRascunhos();
 }
 
-// ══════════════════════════════
-// CONFIG VISUAL
-// ══════════════════════════════
-async function loadConfig() {
-  const { data } = await sb.from('config_visual').select('*').limit(1).single();
-  if (!data) return;
-  document.getElementById('cfg-cor-principal').value = data.cor_principal || '#FF6B00';
-  document.getElementById('cfg-cor-principal-txt').value = data.cor_principal || '#FF6B00';
-  document.getElementById('cfg-cor-fundo').value = data.cor_fundo || '#f5f5f0';
-  document.getElementById('cfg-cor-fundo-txt').value = data.cor_fundo || '#f5f5f0';
-  document.getElementById('cfg-cor-header').value = data.cor_header || '#1a1a1a';
-  document.getElementById('cfg-cor-header-txt').value = data.cor_header || '#1a1a1a';
-  document.getElementById('cfg-fonte-titulo').value = data.fonte_titulo || 'Syne';
-  document.getElementById('cfg-fonte-corpo').value = data.fonte_corpo || 'DM Sans';
-  document.getElementById('cfg-font-size').value = data.tamanho_fonte || 14;
-  document.getElementById('cfg-font-size-val').textContent = (data.tamanho_fonte||14)+'px';
-}
-
-async function saveConfig() {
-  const payload = {
-    cor_principal: document.getElementById('cfg-cor-principal').value,
-    cor_fundo: document.getElementById('cfg-cor-fundo').value,
-    cor_header: document.getElementById('cfg-cor-header').value,
-    fonte_titulo: document.getElementById('cfg-fonte-titulo').value,
-    fonte_corpo: document.getElementById('cfg-fonte-corpo').value,
-    tamanho_fonte: parseInt(document.getElementById('cfg-font-size').value),
-    updated_at: new Date().toISOString()
-  };
-  // Upsert: update first row or insert
-  const { data: existing } = await sb.from('config_visual').select('id').limit(1).single();
-  let error;
-  if (existing) {
-    ({ error } = await sb.from('config_visual').update(payload).eq('id', existing.id));
-  } else {
-    ({ error } = await sb.from('config_visual').insert(payload));
-  }
-  if (error) { toast('Erro: '+error.message, 'error'); return; }
-  toast('Aparência salva! O portal do cliente foi atualizado.', 'success');
-}
-
-function syncColor(pickerId, txtId) {
-  const val = document.getElementById(txtId).value;
-  if (/^#[0-9a-fA-F]{6}$/.test(val)) document.getElementById(pickerId).value = val;
-}
-
 // ── UTILS ──
-function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escAttr(s) {
-  return String(s||'').replace(/`/g,'\\`').replace(/\$/g,'\\$');
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
 </body>

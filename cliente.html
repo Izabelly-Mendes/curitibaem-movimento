@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="../diferencial_logo.png">
+<link rel="icon" type="image/png" href="diferencial_logo.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Curitiba em Movimento">
-<title>Curitiba em Movimento</title>
+<title>Curitiba em Movimento · Bicalho Imóveis</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -24,113 +24,62 @@ body{font-family:var(--fonte-corpo);background:var(--cor-fundo);color:#1a1a1a;fo
 .header{background:var(--cor-header);padding:0 24px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid rgba(255,255,255,0.07)}
 .header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
 .header-logo{height:30px;filter:brightness(0) invert(1)}
-.header-right{display:flex;align-items:center;gap:12px}
-.header-greeting{font-size:13px;color:rgba(255,255,255,0.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
-.lang-btn{background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.7);transition:all 0.15s}
+.header-right{display:flex;align-items:center;gap:8px}
+.lang-btn{background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 9px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.7);transition:all 0.15s;line-height:1.4}
 .lang-btn:hover{background:rgba(255,255,255,0.16)}
 .lang-btn.active{background:rgba(255,107,0,0.2);border-color:rgba(255,107,0,0.4);color:#FF6B00}
 
-/* ── NAV ANCHOR ── */
-.nav-anchor{background:rgba(255,255,255,0.04);border-bottom:0.5px solid rgba(255,255,255,0.06);padding:0 24px}
-.nav-anchor-inner{max-width:1100px;margin:0 auto;display:flex;gap:0;overflow-x:auto}
-.nav-anchor a{padding:10px 16px;font-size:12.5px;color:rgba(255,255,255,0.45);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.15s}
-.nav-anchor a:hover{color:rgba(255,255,255,0.8)}
-.nav-anchor a.active-nav{color:var(--cor-principal);border-bottom-color:var(--cor-principal)}
-
-/* ── INVALID ── */
-#invalid-screen{display:none;min-height:80vh;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:16px}
-#invalid-screen .ico{font-size:64px}
-#invalid-screen h2{font-family:var(--fonte-titulo);font-size:24px}
-#invalid-screen p{color:#888;font-size:14px}
-
-/* ── MAIN ── */
-.container{max-width:1100px;margin:0 auto;padding:36px 24px 64px}
+/* ── CONTAINER ── */
+.container{max-width:1100px;margin:0 auto;padding:40px 24px 72px}
 
 /* ── SECTION LABEL ── */
 .sec-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cor-principal);margin-bottom:20px;display:flex;align-items:center;gap:10px}
 .sec-label::after{content:'';flex:1;height:0.5px;background:#ddd}
 
-/* ── EMPREENDIMENTOS ── */
-.emp-section{margin-bottom:48px}
-.emp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
-
-.emp-card{background:#fff;border-radius:16px;border:0.5px solid #e0ddd5;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.04)}
-.emp-photo{height:180px;overflow:hidden;position:relative;background:#f0ede6}
-.emp-photo img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
-.emp-card:hover .emp-photo img{transform:scale(1.04)}
-.emp-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:#ccc}
-.emp-badge{position:absolute;top:12px;right:12px;background:var(--cor-principal);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px}
-.emp-body{padding:20px 22px}
-.emp-name{font-family:var(--fonte-titulo);font-size:17px;font-weight:700;margin-bottom:12px}
-.prog-label{font-size:11.5px;color:#888;margin-bottom:6px;display:flex;justify-content:space-between}
-.prog-track{height:8px;background:#f0ede6;border-radius:10px;overflow:hidden;margin-bottom:14px}
-.prog-fill{height:100%;background:var(--cor-principal);border-radius:10px;transition:width 0.6s ease}
-.emp-updated{font-size:11px;color:#bbb;margin-bottom:12px}
-
-.emp-info-row{margin-bottom:14px}
-.emp-info-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#aaa;margin-bottom:5px}
-.emp-info-text{font-size:13.5px;color:#555;line-height:1.65}
-
-.comunicado{background:var(--cor-principal);border-radius:10px;padding:14px 16px;margin-top:14px}
-.comunicado-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.7);margin-bottom:6px}
-.comunicado-text{font-size:13.5px;color:#fff;line-height:1.6}
-
-/* ── BLOCOS DE CONTEÚDO ── */
-.blocos-section{margin-bottom:48px}
+/* ── BLOCOS ── */
 .blocos-grid{display:grid;gap:14px}
 
 .bloco-card{background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:22px 24px}
-.bloco-card.tipo-insight,.bloco-card.tipo-kpi-dark{background:#1a1a1a;border-color:#1a1a1a}
-.bloco-card.tipo-insight-box{background:rgba(255,107,0,0.06);border-left:3px solid var(--cor-principal);border-radius:0 8px 8px 0;border-top:none;border-right:none;border-bottom:none}
-
-.bloco-titulo{font-family:var(--fonte-titulo);font-size:15px;font-weight:700;margin-bottom:8px}
-.bloco-card.tipo-insight .bloco-titulo,.bloco-card.tipo-kpi-dark .bloco-titulo{color:#fff}
-.bloco-conteudo{font-size:13.5px;color:#555;line-height:1.72}
-.bloco-card.tipo-insight .bloco-conteudo{color:rgba(255,255,255,0.6)}
-.bloco-conteudo strong{color:#1a1a1a;font-weight:700}
-.bloco-card.tipo-insight .bloco-conteudo strong{color:#fff}
-.bloco-conteudo .hl{color:var(--cor-principal);font-weight:700}
+.bloco-card.tipo-insight{background:#1a1a1a;border-color:#1a1a1a}
+.bloco-card.tipo-insight-box{background:rgba(255,107,0,0.06);border-left:3px solid var(--cor-principal);border-top:none;border-right:none;border-bottom:none;border-radius:0 8px 8px 0}
 
 .bloco-tipo-badge{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--cor-principal);margin-bottom:6px}
+.bloco-titulo{font-family:var(--fonte-titulo);font-size:15px;font-weight:700;margin-bottom:8px;color:#1a1a1a}
+.bloco-card.tipo-insight .bloco-titulo{color:#fff}
+.bloco-conteudo{font-size:13.5px;color:#555;line-height:1.72}
+.bloco-card.tipo-insight .bloco-conteudo{color:rgba(255,255,255,0.6)}
+.bloco-conteudo strong{color:#1a1a1a}
+.bloco-card.tipo-insight .bloco-conteudo strong{color:#fff}
 
-/* ── KPI GRID ── */
-.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:14px}
-.kpi{background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;padding:18px 16px}
-.kpi.dk{background:#1a1a1a;border-color:#1a1a1a}
-.kpi-num{font-family:'Georgia',serif;font-size:27px;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
-.kpi-num span{color:var(--cor-principal)}
-.kpi.dk .kpi-num{color:var(--cor-principal)}
-.kpi-lbl{font-size:12px;color:#888;line-height:1.5}
-.kpi.dk .kpi-lbl{color:rgba(255,255,255,0.5)}
+/* ── LOADING ── */
+.loading{text-align:center;padding:80px 20px;color:#bbb}
+.spinner{width:32px;height:32px;border:3px solid #f0ede6;border-top-color:var(--cor-principal);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── ERRO ── */
+.error-state{text-align:center;padding:60px 20px;color:#e74c3c}
+.error-state .ico{font-size:48px;margin-bottom:12px}
+.error-state p{font-size:14px;margin-bottom:16px}
+.retry-btn{display:inline-block;background:#f5f5f0;border:0.5px solid #ddd;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-family:var(--fonte-corpo);color:#555}
+.retry-btn:hover{background:#eee}
 
 /* ── FOOTER ── */
 .footer{background:#1a1a1a;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .footer-txt{font-size:11px;color:rgba(255,255,255,0.3)}
 .footer-logo{height:26px;filter:brightness(0) invert(1);opacity:0.3}
 
-/* ── LOADING ── */
-.loading{text-align:center;padding:80px 20px;color:#bbb}
-.loading .spinner{width:32px;height:32px;border:3px solid #f0ede6;border-top-color:var(--cor-principal);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px}
-@keyframes spin{to{transform:rotate(360deg)}}
-
 /* ── MOBILE ── */
 @media(max-width:640px){
-  .header-greeting{display:none}
-  .container{padding:24px 16px 48px}
-  .emp-cards{grid-template-columns:1fr}
-  .nav-anchor-inner{gap:0}
-  .nav-anchor a{padding:10px 12px;font-size:12px}
+  .container{padding:28px 16px 56px}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header" id="site-header">
+<header class="header">
   <div class="header-inner">
     <img src="diferencial_logo.png" class="header-logo" alt="Diferencial" onerror="this.style.display='none'">
     <div class="header-right">
-      <span class="header-greeting" id="greeting"></span>
       <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt">🇧🇷 PT</button>
       <button class="lang-btn" onclick="setLang('en')" id="btn-en">🇺🇸 EN</button>
       <button class="lang-btn" onclick="setLang('zh')" id="btn-zh">🇨🇳 ZH</button>
@@ -138,53 +87,15 @@ body{font-family:var(--fonte-corpo);background:var(--cor-fundo);color:#1a1a1a;fo
   </div>
 </header>
 
-<!-- NAV -->
-<nav class="nav-anchor" id="site-nav" style="display:none">
-  <div class="nav-anchor-inner">
-    <a href="#empreendimentos" class="active-nav" data-i18n="nav_emp">Meus Empreendimentos</a>
-    <a href="#conteudo" data-i18n="nav_cwr">Curitiba em Movimento</a>
-  </div>
-</nav>
-
-<!-- CONTEÚDO PRINCIPAL -->
-<div id="main-content" style="display:none">
-  <div class="container">
-
-    <!-- EMPREENDIMENTOS -->
-    <section class="emp-section" id="empreendimentos">
-      <div class="sec-label" data-i18n="sec_emp">Meus Empreendimentos</div>
-      <div class="emp-cards" id="emp-cards">
-        <div class="loading"><div class="spinner"></div><p>Carregando...</p></div>
-      </div>
-    </section>
-
-    <!-- BLOCOS CURITIBA EM MOVIMENTO -->
-    <section class="blocos-section" id="conteudo">
-      <div class="sec-label" data-i18n="sec_cwr">Curitiba em Movimento</div>
-      <div class="blocos-grid" id="blocos-grid">
-        <div class="loading"><div class="spinner"></div><p>Carregando...</p></div>
-      </div>
-    </section>
-
+<div id="main-content" class="container">
+  <div class="sec-label" id="sec-label-cwr">Curitiba em Movimento</div>
+  <div class="blocos-grid" id="blocos-grid">
+    <div class="loading"><div class="spinner"></div><p id="loading-txt">Carregando conteúdo...</p></div>
   </div>
 </div>
 
-<!-- TELA INVÁLIDA -->
-<div id="invalid-screen" style="display:none;flex-direction:column">
-  <div class="ico">🔒</div>
-  <h2 data-i18n="invalid_title">Link inválido ou expirado</h2>
-  <p data-i18n="invalid_sub">Este link de acesso não foi encontrado. Entre em contato com a Diferencial.</p>
-</div>
-
-<!-- LOADING INICIAL -->
-<div id="loading-screen" class="loading" style="min-height:60vh;display:flex;align-items:center;justify-content:center;flex-direction:column">
-  <div class="spinner"></div>
-  <p>Carregando seu portal...</p>
-</div>
-
-<!-- FOOTER -->
-<footer class="footer" id="site-footer" style="display:none">
-  <span class="footer-txt" data-i18n="footer_txt">Curitiba em Movimento · Bicalho Imóveis × Diferencial</span>
+<footer class="footer">
+  <span class="footer-txt" id="footer-txt">Curitiba em Movimento · Bicalho Imóveis × Diferencial</span>
   <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial" onerror="this.style.display='none'">
 </footer>
 
@@ -192,6 +103,8 @@ body{font-family:var(--fonte-corpo);background:var(--cor-fundo);color:#1a1a1a;fo
 <script>
 // ══════════════════════════════════════════════════════════
 // CONFIG — anon key pública por design do Supabase
+// Variáveis de ambiente no painel Vercel → Settings → Env Vars:
+//   SUPABASE_URL, SUPABASE_ANON_KEY
 // ══════════════════════════════════════════════════════════
 const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
@@ -200,202 +113,110 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ── I18N ──
 const i18n = {
   pt: {
-    nav_emp: 'Meus Empreendimentos', nav_cwr: 'Curitiba em Movimento',
-    sec_emp: 'Meus Empreendimentos', sec_cwr: 'Curitiba em Movimento',
-    invalid_title: 'Link inválido ou expirado', invalid_sub: 'Este link não foi encontrado. Entre em contato com a Diferencial.',
-    footer_txt: 'Curitiba em Movimento · Bicalho Imóveis × Diferencial',
-    obra_progress: 'Progresso da obra', proximas_etapas: 'Próximas etapas',
-    comunicados: 'Comunicado', updated: 'Atualizado em', no_emp: 'Nenhum empreendimento vinculado.',
-    greeting_prefix: 'Olá,'
+    sec_cwr: 'Curitiba em Movimento',
+    footer: 'Curitiba em Movimento · Bicalho Imóveis × Diferencial',
+    loading: 'Carregando conteúdo...',
+    vazio: 'Nenhum conteúdo disponível no momento.',
+    erro: 'Erro ao carregar o conteúdo.',
+    tentar: 'Tentar novamente'
   },
   en: {
-    nav_emp: 'My Properties', nav_cwr: 'Curitiba in Motion',
-    sec_emp: 'My Properties', sec_cwr: 'Curitiba in Motion',
-    invalid_title: 'Invalid or expired link', invalid_sub: 'This access link was not found. Contact Diferencial.',
-    footer_txt: 'Curitiba in Motion · Bicalho Properties × Diferencial',
-    obra_progress: 'Construction progress', proximas_etapas: 'Next steps',
-    comunicados: 'Notice', updated: 'Updated on', no_emp: 'No properties linked.',
-    greeting_prefix: 'Hello,'
+    sec_cwr: 'Curitiba in Motion',
+    footer: 'Curitiba in Motion · Bicalho Properties × Diferencial',
+    loading: 'Loading content...',
+    vazio: 'No content available at this time.',
+    erro: 'Error loading content.',
+    tentar: 'Try again'
   },
   zh: {
-    nav_emp: '我的项目', nav_cwr: '库里提巴动态',
-    sec_emp: '我的项目', sec_cwr: '库里提巴动态',
-    invalid_title: '链接无效或已过期', invalid_sub: '此访问链接未找到。请联系 Diferencial。',
-    footer_txt: '库里提巴动态 · Bicalho 房产 × Diferencial',
-    obra_progress: '工程进度', proximas_etapas: '下一步骤',
-    comunicados: '公告', updated: '更新于', no_emp: '暂无关联项目。',
-    greeting_prefix: '您好,'
+    sec_cwr: '库里提巴动态',
+    footer: '库里提巴动态 · Bicalho 房产 × Diferencial',
+    loading: '加载中...',
+    vazio: '暂无可用内容。',
+    erro: '加载内容时出错。',
+    tentar: '重试'
   }
 };
+
 let lang = localStorage.getItem('portal-lang') || 'pt';
-let clienteNome = '';
 
 function setLang(l) {
   lang = l;
   localStorage.setItem('portal-lang', l);
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (i18n[l][key]) el.textContent = i18n[l][key];
-  });
-  document.getElementById('btn-pt').classList.toggle('active', l==='pt');
-  document.getElementById('btn-en').classList.toggle('active', l==='en');
-  document.getElementById('btn-zh').classList.toggle('active', l==='zh');
-  if (clienteNome) {
-    document.getElementById('greeting').textContent = `${i18n[l].greeting_prefix} ${clienteNome.split(' ')[0]}`;
-  }
-  // Re-render empreendimentos com novo idioma
-  if (window._empreendimentos) renderEmpreendimentos(window._empreendimentos);
+  document.getElementById('btn-pt').classList.toggle('active', l === 'pt');
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('btn-zh').classList.toggle('active', l === 'zh');
+  document.getElementById('sec-label-cwr').textContent = i18n[l].sec_cwr;
+  document.getElementById('footer-txt').textContent = i18n[l].footer;
+  document.title = i18n[l].sec_cwr + ' · Bicalho Imóveis';
 }
 
 // ── INIT ──
 async function init() {
-  const params = new URLSearchParams(location.search);
-  const token = params.get('token');
-
-  if (!token) { showInvalid(); return; }
-
-  // Busca cliente
-  const { data: cliente, error } = await sb.from('clientes').select('*').eq('token', token).single();
-  if (error || !cliente) { showInvalid(); return; }
-
-  clienteNome = cliente.nome || '';
-  document.title = `Portal ${clienteNome} · Curitiba em Movimento`;
-
-  // Aplica config visual
-  await applyConfig();
-
-  // Mostra UI
-  document.getElementById('loading-screen').style.display = 'none';
-  document.getElementById('main-content').style.display = 'block';
-  document.getElementById('site-nav').style.display = 'block';
-  document.getElementById('site-footer').style.display = 'flex';
-
-  // Idioma inicial
   setLang(lang);
 
-  // Carrega empreendimentos do cliente
-  if (cliente.empreendimentos_ids && cliente.empreendimentos_ids.length > 0) {
-    const { data: emps } = await sb.from('empreendimentos')
+  // Aplica config visual do Supabase
+  try {
+    const { data: cfg } = await sb.from('config_visual').select('*').limit(1).single();
+    if (cfg) applyConfig(cfg);
+  } catch (_) { /* usa defaults */ }
+
+  // Carrega blocos
+  await loadBlocos();
+}
+
+function applyConfig(cfg) {
+  const r = document.documentElement;
+  if (cfg.cor_principal) r.style.setProperty('--cor-principal', cfg.cor_principal);
+  if (cfg.cor_fundo)     r.style.setProperty('--cor-fundo', cfg.cor_fundo);
+  if (cfg.cor_header)    r.style.setProperty('--cor-header', cfg.cor_header);
+  if (cfg.fonte_titulo)  r.style.setProperty('--fonte-titulo', `'${cfg.fonte_titulo}', sans-serif`);
+  if (cfg.fonte_corpo)   r.style.setProperty('--fonte-corpo', `'${cfg.fonte_corpo}', sans-serif`);
+  if (cfg.tamanho_fonte) r.style.setProperty('--font-size', cfg.tamanho_fonte + 'px');
+}
+
+async function loadBlocos() {
+  const el = document.getElementById('blocos-grid');
+  try {
+    const { data, error } = await sb
+      .from('blocos_conteudo')
       .select('*')
-      .in('id', cliente.empreendimentos_ids)
-      .eq('ativo', true);
-    window._empreendimentos = emps || [];
-    renderEmpreendimentos(emps || []);
-  } else {
-    document.getElementById('emp-cards').innerHTML = `<p style="color:#aaa;font-size:13px">${i18n[lang].no_emp}</p>`;
-    window._empreendimentos = [];
+      .eq('visivel_cliente', true)
+      .order('ordem');
+    if (error) throw error;
+    renderBlocos(data || []);
+  } catch (err) {
+    const t = i18n[lang];
+    el.innerHTML = `
+      <div class="error-state">
+        <div class="ico">⚠️</div>
+        <p>${t.erro}<br><small style="color:#aaa;font-size:12px">${err.message}</small></p>
+        <button class="retry-btn" onclick="loadBlocos()">${t.tentar}</button>
+      </div>`;
   }
-
-  // Carrega blocos de conteúdo
-  const { data: blocos } = await sb.from('blocos_conteudo')
-    .select('*')
-    .eq('visivel_cliente', true)
-    .order('ordem');
-  renderBlocos(blocos || []);
 }
 
-async function applyConfig() {
-  const { data } = await sb.from('config_visual').select('*').limit(1).single();
-  if (!data) return;
-  const root = document.documentElement;
-  if (data.cor_principal) root.style.setProperty('--cor-principal', data.cor_principal);
-  if (data.cor_fundo)     root.style.setProperty('--cor-fundo', data.cor_fundo);
-  if (data.cor_header)    root.style.setProperty('--cor-header', data.cor_header);
-  if (data.fonte_titulo)  root.style.setProperty('--fonte-titulo', `'${data.fonte_titulo}', sans-serif`);
-  if (data.fonte_corpo)   root.style.setProperty('--fonte-corpo', `'${data.fonte_corpo}', sans-serif`);
-  if (data.tamanho_fonte) root.style.setProperty('--font-size', data.tamanho_fonte+'px');
-}
-
-function showInvalid() {
-  document.getElementById('loading-screen').style.display = 'none';
-  const inv = document.getElementById('invalid-screen');
-  inv.style.display = 'flex';
-  setLang(lang);
-}
-
-// ── RENDER EMPREENDIMENTOS ──
-function renderEmpreendimentos(emps) {
-  const el = document.getElementById('emp-cards');
-  const t = i18n[lang];
-  if (!emps.length) {
-    el.innerHTML = `<p style="color:#aaa;font-size:13px">${t.no_emp}</p>`;
-    return;
-  }
-  el.innerHTML = emps.map(e => {
-    const updated = e.updated_at ? new Date(e.updated_at).toLocaleDateString(lang==='zh'?'zh-CN':lang==='en'?'en-US':'pt-BR') : '';
-    return `
-    <div class="emp-card">
-      <div class="emp-photo">
-        ${e.foto_url
-          ? `<img src="${escHtml(e.foto_url)}" alt="${escHtml(e.nome)}" loading="lazy">`
-          : `<div class="emp-photo-placeholder">🏗️</div>`}
-        <span class="emp-badge">${e.percentual_obra}%</span>
-      </div>
-      <div class="emp-body">
-        <div class="emp-name">${escHtml(e.nome)}</div>
-        <div class="prog-label">
-          <span>${t.obra_progress}</span>
-          <span><strong>${e.percentual_obra}%</strong></span>
-        </div>
-        <div class="prog-track">
-          <div class="prog-fill" style="width:${e.percentual_obra}%"></div>
-        </div>
-        ${updated ? `<div class="emp-updated">${t.updated} ${updated}</div>` : ''}
-        ${e.descricao ? `<div class="emp-info-row"><div class="emp-info-text">${escHtml(e.descricao)}</div></div>` : ''}
-        ${e.proximas_etapas ? `
-          <div class="emp-info-row">
-            <div class="emp-info-label">${t.proximas_etapas}</div>
-            <div class="emp-info-text">${escHtml(e.proximas_etapas)}</div>
-          </div>` : ''}
-        ${e.comunicados ? `
-          <div class="comunicado">
-            <div class="comunicado-label">📢 ${t.comunicados}</div>
-            <div class="comunicado-text">${escHtml(e.comunicados)}</div>
-          </div>` : ''}
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ── RENDER BLOCOS ──
 function renderBlocos(blocos) {
   const el = document.getElementById('blocos-grid');
+  const t = i18n[lang];
   if (!blocos.length) {
-    el.innerHTML = '<p style="color:#aaa;font-size:13px;text-align:center;padding:40px">Nenhum conteúdo disponível no momento.</p>';
+    el.innerHTML = `<p style="color:#aaa;font-size:13.5px;text-align:center;padding:60px 0">${t.vazio}</p>`;
     return;
   }
   el.innerHTML = blocos.map(b => {
-    const tipoClass = {
-      kpi: '',
-      card: '',
-      insight: 'tipo-insight',
-      noticia: '',
-      evento: ''
-    }[b.tipo] || '';
-
+    const tipoClass = b.tipo === 'insight' ? 'tipo-insight' : '';
     return `
-    <div class="bloco-card ${tipoClass}">
-      <div class="bloco-tipo-badge">${b.tipo||'card'}</div>
-      ${b.titulo ? `<div class="bloco-titulo">${escHtml(b.titulo)}</div>` : ''}
-      <div class="bloco-conteudo">${b.conteudo||''}</div>
-    </div>`;
+      <div class="bloco-card ${tipoClass}">
+        <div class="bloco-tipo-badge">${b.tipo || 'card'}</div>
+        ${b.titulo ? `<div class="bloco-titulo">${esc(b.titulo)}</div>` : ''}
+        <div class="bloco-conteudo">${b.conteudo || ''}</div>
+      </div>`;
   }).join('');
 }
 
-function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-// Smooth scroll para âncoras
-document.querySelectorAll('.nav-anchor a').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(a.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-    document.querySelectorAll('.nav-anchor a').forEach(x => x.classList.remove('active-nav'));
-    a.classList.add('active-nav');
-  });
-});
 
 init();
 </script>
