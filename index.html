@@ -302,6 +302,9 @@ img { max-width: 100%; height: auto; }
     transform: translateX(-100%);
   }
   .sidebar.mobile-open { transform: translateX(0); }
+  /* Labels sempre visíveis quando o menu mobile está aberto */
+  .sidebar .label,
+  .sidebar.collapsed .label { opacity: 1 !important; pointer-events: auto !important; }
   #sidebar-mobile-btn { display: flex !important; }
   .main-wrapper { margin-left: 0 !important; }
   .main-wrapper.collapsed { margin-left: 0 !important; }
@@ -403,10 +406,10 @@ img { max-width: 100%; height: auto; }
   <!-- Header row: logo + seletor de idiomas -->
   <div style="display:flex;align-items:center;margin-bottom:48px;">
     <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis" style="margin-bottom:0;flex-shrink:0;">
-    <div style="display:flex;align-items:center;gap:6px;margin-left:auto;position:relative;z-index:10;pointer-events:auto;">
-      <button class="lang-btn lang-btn-active" data-lang="pt" onclick="trocarIdioma('pt')" title="Português" style="pointer-events:auto;cursor:pointer;">🇧🇷</button>
-      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" title="English" style="pointer-events:auto;cursor:pointer;">🇺🇸</button>
-      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" title="中文" style="pointer-events:auto;cursor:pointer;">🇨🇳</button>
+    <div id="lang-selector" style="display:flex;align-items:center;gap:8px;margin-left:auto;position:relative;z-index:9999;pointer-events:auto;">
+      <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(255,255,255,0.1);border:1.5px solid #FF6B00;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">&#127463;&#127479;</button>
+      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px;line-height:1;opacity:0.45;pointer-events:auto;-webkit-tap-highlight-color:transparent;">&#127482;&#127480;</button>
+      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px;line-height:1;opacity:0.45;pointer-events:auto;-webkit-tap-highlight-color:transparent;">&#127464;&#127475;</button>
     </div>
   </div>
   <div class="cover-tag" data-pt="Material de treinamento interno" data-en="Internal Training Material" data-zh="内部培训资料">Material de treinamento interno</div>
@@ -1073,9 +1076,14 @@ function trocarIdioma(lang) {
       item.setAttribute('data-tooltip', item.getAttribute('data-tip-' + lang) || '');
     }
   });
-  // Visual dos botões
+  // Visual dos botões (inline style — classe lang-btn-active mantida como backup)
   document.querySelectorAll('.lang-btn').forEach(function(btn) {
-    btn.classList.toggle('lang-btn-active', btn.getAttribute('data-lang') === lang);
+    var ativo = btn.getAttribute('data-lang') === lang;
+    btn.style.opacity = ativo ? '1' : '0.45';
+    btn.style.borderColor = ativo ? '#FF6B00' : 'rgba(255,255,255,0.2)';
+    btn.style.borderWidth = ativo ? '1.5px' : '1px';
+    btn.style.background = ativo ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)';
+    btn.classList.toggle('lang-btn-active', ativo);
   });
   document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en' : 'zh-CN';
   localStorage.setItem('idioma', lang);
@@ -1086,9 +1094,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var salvo = localStorage.getItem('idioma') || 'pt';
   trocarIdioma(salvo);
   if (window.innerWidth <= 768) {
-    var sidebar = document.getElementById('sidebar');
+    // Mobile: mostra o botão hambúrguer.
+    // NÃO adicionar 'collapsed' — no mobile a sidebar se esconde via
+    // CSS transform: translateX(-100%), não via width. Collapsed ocultaria
+    // os labels quando o menu abre.
     var btn = document.getElementById('sidebar-mobile-btn');
-    if (sidebar) sidebar.classList.add('collapsed');
     if (btn) btn.style.display = 'flex';
   }
 });
