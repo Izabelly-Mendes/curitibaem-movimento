@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="diferencial_logo.png">
+<title>Painel Bicalho — Administração</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
+
+/* ── AUTH ── */
+#auth-screen{position:fixed;inset:0;background:#1a1a1a;display:flex;align-items:center;justify-content:center;z-index:9999}
+.auth-box{background:#242424;border:0.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:40px;width:360px;text-align:center}
+.auth-box img{height:40px;filter:brightness(0) invert(1);margin-bottom:28px}
+.auth-box h2{font-family:'Syne',sans-serif;color:#fff;font-size:20px;margin-bottom:8px}
+.auth-box p{color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:24px}
+.auth-input{width:100%;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;color:#fff;font-size:14px;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:12px;transition:border-color 0.2s}
+.auth-input:focus{border-color:#FF6B00}
+.auth-btn{width:100%;background:#FF6B00;color:#fff;border:none;border-radius:8px;padding:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s}
+.auth-btn:hover{background:#e05a00}
+.auth-err{color:#ff4444;font-size:12px;margin-top:10px;display:none}
+
+/* ── LAYOUT ── */
+#app{display:none;min-height:100vh}
+.layout{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{width:240px;background:#1a1a1a;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.sidebar-header{padding:24px 20px;border-bottom:0.5px solid rgba(255,255,255,0.08)}
+.sidebar-header img{height:32px;filter:brightness(0) invert(1);margin-bottom:12px;display:block}
+.sidebar-header span{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,0.5);cursor:pointer;font-size:13.5px;transition:all 0.15s;border-left:3px solid transparent}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,0.04)}
+.nav-item.active{color:#FF6B00;background:rgba(255,107,0,0.08);border-left-color:#FF6B00}
+.nav-item .ni{font-size:16px;width:20px;text-align:center}
+.sidebar-footer{padding:16px 20px;border-top:0.5px solid rgba(255,255,255,0.08);margin-top:auto}
+.logout-btn{width:100%;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px;color:rgba(255,255,255,0.4);font-size:12.5px;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.logout-btn:hover{background:rgba(255,68,68,0.15);border-color:rgba(255,68,68,0.3);color:#ff6b6b}
+
+/* ── MAIN ── */
+.main{margin-left:240px;flex:1;padding:32px 40px;min-height:100vh}
+.page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px}
+.page-sub{font-size:13px;color:#888;margin-bottom:28px}
+
+/* ── SECTIONS ── */
+.section{display:none}
+.section.active{display:block}
+
+/* ── CARDS / TABLES ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:#FF6B00;color:#fff}
+.btn-primary:hover{background:#e05a00}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:6px}
+.btn-ghost{background:rgba(0,0,0,0.05);color:#555;border:0.5px solid #ddd}
+.btn-ghost:hover{background:#eee}
+.btn-danger{background:rgba(255,68,68,0.08);color:#c0392b;border:0.5px solid rgba(255,68,68,0.2)}
+.btn-danger:hover{background:rgba(255,68,68,0.15)}
+.btn-success{background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25)}
+.btn-success:hover{background:rgba(39,174,96,0.2)}
+
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+
+.panel{background:#fff;border-radius:14px;border:0.5px solid #e0ddd5}
+.panel-header{padding:18px 24px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between}
+.panel-header h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.panel-body{padding:0}
+
+.list-item{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:0.5px solid #f5f3ef;transition:background 0.1s}
+.list-item:last-child{border-bottom:none}
+.list-item:hover{background:#fafaf8}
+.item-info{flex:1;min-width:0}
+.item-title{font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-sub{font-size:12px;color:#999}
+.item-actions{display:flex;gap:8px;flex-shrink:0}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
+.badge-kpi{background:rgba(59,130,246,0.1);color:#2563eb}
+.badge-card{background:rgba(16,185,129,0.1);color:#059669}
+.badge-insight{background:rgba(245,158,11,0.1);color:#d97706}
+.badge-noticia{background:rgba(139,92,246,0.1);color:#7c3aed}
+.badge-evento{background:rgba(236,72,153,0.1);color:#be185d}
+
+/* ── TOGGLE ── */
+.toggle{position:relative;display:inline-block;width:40px;height:22px;cursor:pointer;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:22px;transition:0.2s}
+.toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.2s}
+.toggle input:checked+.toggle-slider{background:#FF6B00}
+.toggle input:checked+.toggle-slider:before{transform:translateX(18px)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-header{padding:20px 24px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:#999;line-height:1;padding:4px}
+.modal-body{padding:24px;overflow-y:auto}
+.modal-footer{padding:16px 24px;border-top:0.5px solid #f0ede6;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0}
+
+/* ── FORM ── */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em}
+.form-input,.form-textarea,.form-select{width:100%;border:0.5px solid #ddd;border-radius:8px;padding:10px 14px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;background:#fafafa}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:#FF6B00;background:#fff}
+.form-textarea{min-height:100px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ── EMPREENDIMENTOS ── */
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.emp-card{background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;overflow:hidden}
+.emp-card-photo{height:140px;background:#f0ede6;overflow:hidden;position:relative}
+.emp-card-photo img{width:100%;height:100%;object-fit:cover}
+.emp-card-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:32px}
+.emp-card-body{padding:18px 20px}
+.emp-card-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px}
+.progress-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.progress-track{flex:1;height:8px;background:#f0ede6;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:#FF6B00;border-radius:10px;transition:width 0.3s}
+.progress-val{font-size:13px;font-weight:700;color:#FF6B00;width:36px;text-align:right}
+.emp-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:0.5px solid #f5f3ef}
+
+/* ── CLIENTES ── */
+.cliente-item{padding:16px 24px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;gap:16px}
+.cliente-item:last-child{border-bottom:none}
+.cliente-avatar{width:38px;height:38px;border-radius:50%;background:#FF6B00;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;flex-shrink:0}
+.cliente-info{flex:1;min-width:0}
+.cliente-name{font-size:14px;font-weight:600;margin-bottom:2px}
+.cliente-email{font-size:12px;color:#999;margin-bottom:4px}
+.cliente-link{font-size:11px;color:#FF6B00;font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
+.emps-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.emp-tag{background:#f0ede6;border-radius:4px;padding:2px 7px;font-size:11px;color:#666}
+
+/* ── RASCUNHOS ── */
+.draft-card{background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:12px;overflow:hidden}
+.draft-header{padding:16px 20px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;justify-content:space-between}
+.draft-title{font-weight:600;font-size:14px}
+.draft-date{font-size:11px;color:#aaa}
+.draft-preview{padding:14px 20px;font-size:13px;color:#666;line-height:1.65;max-height:120px;overflow:hidden;position:relative}
+.draft-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,#fff)}
+.draft-actions{padding:12px 20px;border-top:0.5px solid #f5f3ef;display:flex;gap:8px}
+.status-badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.status-pendente{background:rgba(245,158,11,0.1);color:#d97706}
+.status-aprovado{background:rgba(39,174,96,0.1);color:#219a52}
+.status-rejeitado{background:rgba(239,68,68,0.1);color:#dc2626}
+
+/* ── EDITOR VISUAL ── */
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.color-row{display:flex;align-items:center;gap:10px}
+.color-row input[type=color]{width:36px;height:36px;border:0.5px solid #ddd;border-radius:6px;cursor:pointer;padding:2px;background:#fafafa}
+.color-row .form-input{flex:1}
+.font-select-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.range-row{display:flex;align-items:center;gap:12px}
+.range-row input[type=range]{flex:1}
+.range-val{font-size:13px;font-weight:600;color:#FF6B00;min-width:36px}
+.section-divider{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888;margin:24px 0 16px;padding-bottom:8px;border-bottom:0.5px solid #e0ddd5}
+
+/* ── TOASTS ── */
+#toast{position:fixed;bottom:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px}
+.toast-item{background:#1a1a1a;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;border-left:3px solid #FF6B00;box-shadow:0 4px 20px rgba(0,0,0,0.3);animation:slideIn 0.3s ease;max-width:320px}
+.toast-item.success{border-left-color:#27ae60}
+.toast-item.error{border-left-color:#e74c3c}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ── CHECKBOX GROUP ── */
+.check-group{display:flex;flex-direction:column;gap:8px}
+.check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:background 0.15s}
+.check-item:hover{background:#f5f3ef}
+.check-item input{width:16px;height:16px;accent-color:#FF6B00;cursor:pointer}
+.check-item label{cursor:pointer;font-size:13.5px}
+
+/* ── SLIDER ── */
+input[type=range]{-webkit-appearance:none;height:6px;background:#f0ede6;border-radius:6px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#FF6B00;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform 0.3s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:20px 16px}
+  .mob-menu{display:flex;position:fixed;top:12px;left:12px;z-index:200;background:#1a1a1a;border:none;border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;color:#FF6B00;font-size:18px;cursor:pointer}
+  .config-grid,.form-row,.font-select-row{grid-template-columns:1fr}
+}
+@media(min-width:769px){.mob-menu{display:none}}
+
+.empty-state{text-align:center;padding:60px 20px;color:#bbb}
+.empty-state .ico{font-size:48px;margin-bottom:12px}
+.empty-state p{font-size:14px}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <img src="diferencial_logo.png" alt="Diferencial">
+    <h2>Painel Administrativo</h2>
+    <p>Bicalho Imóveis · Área restrita</p>
+    <input type="password" id="auth-pass" class="auth-input" placeholder="Senha de acesso" autocomplete="current-password">
+    <button class="auth-btn" onclick="checkAuth()">Entrar</button>
+    <p class="auth-err" id="auth-err">Senha incorreta. Tente novamente.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <button class="mob-menu" onclick="toggleSidebar()">☰</button>
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <img src="diferencial_logo.png" alt="Diferencial">
+        <span>Painel Bicalho</span>
+      </div>
+      <div style="padding:16px 0;flex:1">
+        <div class="nav-item active" onclick="showSection('conteudo')" data-sec="conteudo">
+          <span class="ni">📄</span> Conteúdo Geral
+        </div>
+        <div class="nav-item" onclick="showSection('aparencia')" data-sec="aparencia">
+          <span class="ni">🎨</span> Aparência Visual
+        </div>
+        <div class="nav-item" onclick="showSection('empreendimentos')" data-sec="empreendimentos">
+          <span class="ni">🏗️</span> Empreendimentos
+        </div>
+        <div class="nav-item" onclick="showSection('clientes')" data-sec="clientes">
+          <span class="ni">👥</span> Clientes
+        </div>
+        <div class="nav-item" onclick="showSection('rascunhos')" data-sec="rascunhos">
+          <span class="ni">📝</span> Rascunhos
+          <span id="rascunhos-badge" style="margin-left:auto;background:#FF6B00;color:#fff;border-radius:20px;font-size:10px;padding:2px 7px;display:none"></span>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="logout()">↩ Sair</button>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- ── SEÇÃO: CONTEÚDO GERAL ── -->
+      <div class="section active" id="sec-conteudo">
+        <div class="toolbar">
+          <div>
+            <div class="page-title">Conteúdo Geral</div>
+            <div class="page-sub">Blocos visíveis no portal do cliente</div>
+          </div>
+          <button class="btn btn-primary" onclick="openBlocoModal()">＋ Adicionar bloco</button>
+        </div>
+        <div class="panel">
+          <div id="blocos-list" class="panel-body">
+            <div class="empty-state"><div class="ico">📦</div><p>Carregando blocos...</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SEÇÃO: APARÊNCIA VISUAL ── -->
+      <div class="section" id="sec-aparencia">
+        <div class="toolbar">
+          <div>
+            <div class="page-title">Aparência Visual</div>
+            <div class="page-sub">Edite como o portal do cliente é exibido</div>
+          </div>
+          <button class="btn btn-primary" onclick="saveConfig()">💾 Salvar aparência</button>
+        </div>
+        <div class="panel" style="padding:24px 28px">
+          <div class="section-divider">Cores Globais</div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label class="form-label">Cor principal (destaques e botões)</label>
+              <div class="color-row">
+                <input type="color" id="cfg-cor-principal" value="#FF6B00">
+                <input type="text" class="form-input" id="cfg-cor-principal-txt" value="#FF6B00" onchange="syncColor('cfg-cor-principal','cfg-cor-principal-txt')">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cor de fundo da página</label>
+              <div class="color-row">
+                <input type="color" id="cfg-cor-fundo" value="#f5f5f0">
+                <input type="text" class="form-input" id="cfg-cor-fundo-txt" value="#f5f5f0" onchange="syncColor('cfg-cor-fundo','cfg-cor-fundo-txt')">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cor do header</label>
+              <div class="color-row">
+                <input type="color" id="cfg-cor-header" value="#1a1a1a">
+                <input type="text" class="form-input" id="cfg-cor-header-txt" value="#1a1a1a" onchange="syncColor('cfg-cor-header','cfg-cor-header-txt')">
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider">Tipografia</div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label class="form-label">Fonte dos títulos</label>
+              <select class="form-select" id="cfg-fonte-titulo">
+                <option value="Syne">Syne (padrão)</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Arial">Arial</option>
+                <option value="Helvetica">Helvetica</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fonte do corpo</label>
+              <select class="form-select" id="cfg-fonte-corpo">
+                <option value="DM Sans">DM Sans (padrão)</option>
+                <option value="Arial">Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Times New Roman">Times New Roman</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tamanho base da fonte: <span id="cfg-font-size-val">14px</span></label>
+              <div class="range-row">
+                <span style="font-size:12px;color:#999">12px</span>
+                <input type="range" id="cfg-font-size" min="12" max="18" value="14" oninput="document.getElementById('cfg-font-size-val').textContent=this.value+'px'">
+                <span style="font-size:12px;color:#999">18px</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SEÇÃO: EMPREENDIMENTOS ── -->
+      <div class="section" id="sec-empreendimentos">
+        <div class="toolbar">
+          <div>
+            <div class="page-title">Empreendimentos</div>
+            <div class="page-sub">Gerencie as informações de cada empreendimento</div>
+          </div>
+        </div>
+        <div class="emp-grid" id="emp-grid">
+          <div class="empty-state"><div class="ico">🏗️</div><p>Carregando...</p></div>
+        </div>
+      </div>
+
+      <!-- ── SEÇÃO: CLIENTES ── -->
+      <div class="section" id="sec-clientes">
+        <div class="toolbar">
+          <div>
+            <div class="page-title">Clientes</div>
+            <div class="page-sub">Gerencie os links únicos de cada cliente</div>
+          </div>
+          <button class="btn btn-primary" onclick="openClienteModal()">＋ Novo cliente</button>
+        </div>
+        <div class="panel">
+          <div id="clientes-list" class="panel-body">
+            <div class="empty-state"><div class="ico">👥</div><p>Carregando...</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SEÇÃO: RASCUNHOS ── -->
+      <div class="section" id="sec-rascunhos">
+        <div class="toolbar">
+          <div>
+            <div class="page-title">Rascunhos de Curadoria</div>
+            <div class="page-sub">Conteúdo gerado automaticamente aguardando aprovação</div>
+          </div>
+        </div>
+        <div id="rascunhos-list">
+          <div class="empty-state"><div class="ico">📝</div><p>Carregando...</p></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ── MODAIS ── -->
+
+<!-- Modal: Bloco -->
+<div class="modal-overlay" id="modal-bloco">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-bloco-titulo">Novo Bloco</h3>
+      <button class="modal-close" onclick="closeModal('modal-bloco')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="bloco-id">
+      <div class="form-group">
+        <label class="form-label">Título</label>
+        <input type="text" class="form-input" id="bloco-titulo" placeholder="Título do bloco">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select class="form-select" id="bloco-tipo">
+          <option value="card">Card</option>
+          <option value="kpi">KPI</option>
+          <option value="insight">Insight</option>
+          <option value="noticia">Notícia</option>
+          <option value="evento">Evento</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Conteúdo</label>
+        <textarea class="form-textarea" id="bloco-conteudo" placeholder="Conteúdo do bloco (HTML permitido)"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ordem (menor = primeiro)</label>
+        <input type="number" class="form-input" id="bloco-ordem" value="0">
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:12px">
+        <label class="toggle">
+          <input type="checkbox" id="bloco-visivel" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span style="font-size:13.5px">Visível no portal do cliente</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-bloco')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveBloco()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Empreendimento -->
+<div class="modal-overlay" id="modal-emp">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <h3 id="modal-emp-titulo">Editar Empreendimento</h3>
+      <button class="modal-close" onclick="closeModal('modal-emp')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="emp-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nome</label>
+          <input type="text" class="form-input" id="emp-nome">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Slug (URL)</label>
+          <input type="text" class="form-input" id="emp-slug">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Percentual de obra: <span id="emp-perc-val">0</span>%</label>
+        <div class="range-row">
+          <span style="font-size:12px;color:#999">0%</span>
+          <input type="range" id="emp-percentual" min="0" max="100" value="0" oninput="document.getElementById('emp-perc-val').textContent=this.value">
+          <span style="font-size:12px;color:#999">100%</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descrição</label>
+        <textarea class="form-textarea" id="emp-descricao" placeholder="Descrição do empreendimento"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL da foto</label>
+        <input type="text" class="form-input" id="emp-foto" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Upload de foto</label>
+        <input type="file" id="emp-foto-upload" accept="image/*" onchange="handleFotoUpload()">
+        <div id="emp-foto-preview" style="margin-top:8px;display:none">
+          <img id="emp-foto-preview-img" style="max-height:120px;border-radius:8px;border:0.5px solid #ddd">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Próximas etapas</label>
+        <textarea class="form-textarea" id="emp-etapas" placeholder="Quais as próximas etapas da obra?"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Comunicados (aparece em destaque no portal)</label>
+        <textarea class="form-textarea" id="emp-comunicados" placeholder="Comunicados importantes para os clientes"></textarea>
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:12px">
+        <label class="toggle">
+          <input type="checkbox" id="emp-ativo" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span style="font-size:13.5px">Empreendimento ativo</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-emp')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEmp()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cliente -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-cliente-titulo">Novo Cliente</h3>
+      <button class="modal-close" onclick="closeModal('modal-cliente')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cliente-id">
+      <div class="form-group">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-input" id="cliente-nome" placeholder="Nome completo">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="cliente-email" placeholder="email@exemplo.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Empreendimentos vinculados</label>
+        <div class="check-group" id="emp-checkboxes"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-cliente')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCliente()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Rascunho editar -->
+<div class="modal-overlay" id="modal-rascunho">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <h3>Editar rascunho</h3>
+      <button class="modal-close" onclick="closeModal('modal-rascunho')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="rascunho-id">
+      <div class="form-group">
+        <label class="form-label">Título</label>
+        <input type="text" class="form-input" id="rascunho-titulo">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Conteúdo</label>
+        <textarea class="form-textarea" id="rascunho-conteudo" style="min-height:200px"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-rascunho')">Cancelar</button>
+      <button class="btn btn-success" onclick="aprovarRascunho()">✓ Aprovar e publicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast"></div>
+
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ══════════════════════════════════════════════════════════
+// CONFIG
+// Variáveis de ambiente (frontend — anon key é pública por design)
+// Configure no painel Vercel → Settings → Environment Variables:
+// SUPABASE_URL, SUPABASE_ANON_KEY
+// ══════════════════════════════════════════════════════════
+const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let allEmpreendimentos = [];
+
+// ── AUTH ──
+function checkAuth() {
+  const pass = document.getElementById('auth-pass').value;
+  if (pass === 'Bicalho@2025') {
+    sessionStorage.setItem('admin-auth', '1');
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('auth-err').style.display = 'block';
+    document.getElementById('auth-pass').value = '';
+  }
+}
+document.getElementById('auth-pass').addEventListener('keydown', e => { if (e.key === 'Enter') checkAuth(); });
+
+function logout() {
+  sessionStorage.removeItem('admin-auth');
+  location.reload();
+}
+
+if (sessionStorage.getItem('admin-auth') === '1') {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.addEventListener('DOMContentLoaded', init);
+}
+
+// ── INIT ──
+async function init() {
+  await loadEmpreendimentos();
+  loadBlocos();
+  loadClientes();
+  loadRascunhos();
+  loadConfig();
+  // Sync color pickers com text inputs
+  ['cfg-cor-principal','cfg-cor-fundo','cfg-cor-header'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function() {
+      document.getElementById(id+'-txt').value = this.value;
+    });
+  });
+}
+
+// ── NAVIGATION ──
+function showSection(sec) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-'+sec).classList.add('active');
+  document.querySelector(`[data-sec="${sec}"]`).classList.add('active');
+  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ── TOAST ──
+function toast(msg, type='info') {
+  const t = document.createElement('div');
+  t.className = `toast-item ${type}`;
+  t.textContent = msg;
+  document.getElementById('toast').appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ── MODAIS ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ══════════════════════════════
+// BLOCOS DE CONTEÚDO
+// ══════════════════════════════
+async function loadBlocos() {
+  const { data, error } = await sb.from('blocos_conteudo').select('*').order('ordem');
+  if (error) { toast('Erro ao carregar blocos: '+error.message, 'error'); return; }
+  renderBlocos(data || []);
+}
+
+function renderBlocos(blocos) {
+  const el = document.getElementById('blocos-list');
+  if (!blocos.length) {
+    el.innerHTML = '<div class="empty-state"><div class="ico">📦</div><p>Nenhum bloco cadastrado. Adicione o primeiro!</p></div>';
+    return;
+  }
+  el.innerHTML = blocos.map(b => `
+    <div class="list-item">
+      <div class="item-info">
+        <div class="item-title">${escHtml(b.titulo||'(sem título)')}</div>
+        <div class="item-sub" style="margin-top:4px">
+          <span class="badge badge-${b.tipo}">${b.tipo}</span>
+          &nbsp;Ordem: ${b.ordem}
+        </div>
+      </div>
+      <label class="toggle" title="Visível para cliente" style="margin-right:8px">
+        <input type="checkbox" ${b.visivel_cliente?'checked':''} onchange="toggleBloco('${b.id}',this.checked)">
+        <span class="toggle-slider"></span>
+      </label>
+      <div class="item-actions">
+        <button class="btn btn-ghost btn-sm" onclick='editBloco(${JSON.stringify(b)})'>✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteBloco('${b.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function toggleBloco(id, visible) {
+  const { error } = await sb.from('blocos_conteudo').update({ visivel_cliente: visible, updated_at: new Date().toISOString() }).eq('id', id);
+  if (error) toast('Erro: '+error.message, 'error');
+  else toast(visible ? 'Bloco agora visível para clientes' : 'Bloco ocultado dos clientes', 'success');
+}
+
+function openBlocoModal(bloco) {
+  document.getElementById('bloco-id').value = '';
+  document.getElementById('bloco-titulo').value = '';
+  document.getElementById('bloco-conteudo').value = '';
+  document.getElementById('bloco-tipo').value = 'card';
+  document.getElementById('bloco-ordem').value = '0';
+  document.getElementById('bloco-visivel').checked = true;
+  document.getElementById('modal-bloco-titulo').textContent = 'Novo Bloco';
+  openModal('modal-bloco');
+}
+
+function editBloco(b) {
+  document.getElementById('bloco-id').value = b.id;
+  document.getElementById('bloco-titulo').value = b.titulo || '';
+  document.getElementById('bloco-conteudo').value = b.conteudo || '';
+  document.getElementById('bloco-tipo').value = b.tipo || 'card';
+  document.getElementById('bloco-ordem').value = b.ordem || 0;
+  document.getElementById('bloco-visivel').checked = !!b.visivel_cliente;
+  document.getElementById('modal-bloco-titulo').textContent = 'Editar Bloco';
+  openModal('modal-bloco');
+}
+
+async function saveBloco() {
+  const id = document.getElementById('bloco-id').value;
+  const payload = {
+    titulo: document.getElementById('bloco-titulo').value,
+    conteudo: document.getElementById('bloco-conteudo').value,
+    tipo: document.getElementById('bloco-tipo').value,
+    ordem: parseInt(document.getElementById('bloco-ordem').value) || 0,
+    visivel_cliente: document.getElementById('bloco-visivel').checked,
+    updated_at: new Date().toISOString()
+  };
+  let error;
+  if (id) {
+    ({ error } = await sb.from('blocos_conteudo').update(payload).eq('id', id));
+  } else {
+    ({ error } = await sb.from('blocos_conteudo').insert(payload));
+  }
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  toast('Bloco salvo com sucesso!', 'success');
+  closeModal('modal-bloco');
+  loadBlocos();
+}
+
+async function deleteBloco(id) {
+  if (!confirm('Excluir este bloco permanentemente?')) return;
+  const { error } = await sb.from('blocos_conteudo').delete().eq('id', id);
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  toast('Bloco excluído', 'success');
+  loadBlocos();
+}
+
+// ══════════════════════════════
+// EMPREENDIMENTOS
+// ══════════════════════════════
+async function loadEmpreendimentos() {
+  const { data, error } = await sb.from('empreendimentos').select('*').order('nome');
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  allEmpreendimentos = data || [];
+  renderEmpreendimentos(allEmpreendimentos);
+  renderEmpCheckboxes();
+}
+
+function renderEmpreendimentos(emps) {
+  const el = document.getElementById('emp-grid');
+  if (!emps.length) {
+    el.innerHTML = '<div class="empty-state"><div class="ico">🏗️</div><p>Nenhum empreendimento encontrado.</p></div>';
+    return;
+  }
+  el.innerHTML = emps.map(e => `
+    <div class="emp-card">
+      <div class="emp-card-photo">
+        ${e.foto_url ? `<img src="${escHtml(e.foto_url)}" alt="${escHtml(e.nome)}">` : `<div class="emp-card-photo-placeholder">🏗️</div>`}
+      </div>
+      <div class="emp-card-body">
+        <div class="emp-card-name">${escHtml(e.nome)}</div>
+        <div class="progress-row">
+          <div class="progress-track"><div class="progress-fill" style="width:${e.percentual_obra}%"></div></div>
+          <span class="progress-val">${e.percentual_obra}%</span>
+        </div>
+        <div style="font-size:12px;color:#999;margin-bottom:6px">
+          ${e.ativo ? '<span style="color:#27ae60">● Ativo</span>' : '<span style="color:#e74c3c">● Inativo</span>'}
+          &nbsp;·&nbsp; Slug: <code style="font-size:11px">${escHtml(e.slug)}</code>
+        </div>
+        ${e.comunicados ? `<div style="background:rgba(255,107,0,0.08);border-left:3px solid #FF6B00;border-radius:0 6px 6px 0;padding:8px 12px;font-size:12px;color:#c85200;margin-bottom:10px">${escHtml(e.comunicados).substring(0,80)}...</div>` : ''}
+        <div class="emp-card-actions">
+          <button class="btn btn-primary btn-sm" onclick='openEmpModal(${JSON.stringify(e)})'>✏️ Editar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderEmpCheckboxes() {
+  const el = document.getElementById('emp-checkboxes');
+  el.innerHTML = allEmpreendimentos.map(e => `
+    <div class="check-item">
+      <input type="checkbox" id="emp-chk-${e.id}" value="${e.id}">
+      <label for="emp-chk-${e.id}">${escHtml(e.nome)}</label>
+    </div>
+  `).join('');
+}
+
+function openEmpModal(emp) {
+  document.getElementById('emp-id').value = emp.id;
+  document.getElementById('emp-nome').value = emp.nome || '';
+  document.getElementById('emp-slug').value = emp.slug || '';
+  document.getElementById('emp-percentual').value = emp.percentual_obra || 0;
+  document.getElementById('emp-perc-val').textContent = emp.percentual_obra || 0;
+  document.getElementById('emp-descricao').value = emp.descricao || '';
+  document.getElementById('emp-foto').value = emp.foto_url || '';
+  document.getElementById('emp-etapas').value = emp.proximas_etapas || '';
+  document.getElementById('emp-comunicados').value = emp.comunicados || '';
+  document.getElementById('emp-ativo').checked = !!emp.ativo;
+  document.getElementById('modal-emp-titulo').textContent = 'Editar: '+emp.nome;
+  // Preview foto
+  if (emp.foto_url) {
+    document.getElementById('emp-foto-preview').style.display = 'block';
+    document.getElementById('emp-foto-preview-img').src = emp.foto_url;
+  } else {
+    document.getElementById('emp-foto-preview').style.display = 'none';
+  }
+  openModal('modal-emp');
+}
+
+function handleFotoUpload() {
+  const file = document.getElementById('emp-foto-upload').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b64 = e.target.result;
+    document.getElementById('emp-foto').value = b64;
+    document.getElementById('emp-foto-preview').style.display = 'block';
+    document.getElementById('emp-foto-preview-img').src = b64;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveEmp() {
+  const id = document.getElementById('emp-id').value;
+  const payload = {
+    nome: document.getElementById('emp-nome').value,
+    slug: document.getElementById('emp-slug').value,
+    percentual_obra: parseInt(document.getElementById('emp-percentual').value) || 0,
+    descricao: document.getElementById('emp-descricao').value,
+    foto_url: document.getElementById('emp-foto').value,
+    proximas_etapas: document.getElementById('emp-etapas').value,
+    comunicados: document.getElementById('emp-comunicados').value,
+    ativo: document.getElementById('emp-ativo').checked,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await sb.from('empreendimentos').update(payload).eq('id', id);
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  toast('Empreendimento salvo!', 'success');
+  closeModal('modal-emp');
+  loadEmpreendimentos();
+}
+
+// ══════════════════════════════
+// CLIENTES
+// ══════════════════════════════
+async function loadClientes() {
+  const { data, error } = await sb.from('clientes').select('*').order('created_at', { ascending: false });
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  renderClientes(data || []);
+}
+
+function renderClientes(clientes) {
+  const el = document.getElementById('clientes-list');
+  if (!clientes.length) {
+    el.innerHTML = '<div class="empty-state"><div class="ico">👥</div><p>Nenhum cliente cadastrado ainda.</p></div>';
+    return;
+  }
+  el.innerHTML = clientes.map(c => {
+    const empNomes = (c.empreendimentos_ids || []).map(eid => {
+      const e = allEmpreendimentos.find(x => x.id === eid);
+      return e ? `<span class="emp-tag">${escHtml(e.nome)}</span>` : '';
+    }).join('');
+    const link = `${location.origin}/cliente.html?token=${c.token}`;
+    const initials = (c.nome||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    return `
+      <div class="cliente-item">
+        <div class="cliente-avatar">${initials}</div>
+        <div class="cliente-info">
+          <div class="cliente-name">${escHtml(c.nome||'')}</div>
+          <div class="cliente-email">${escHtml(c.email||'')}</div>
+          <div class="cliente-link">${link}</div>
+          <div class="emps-tags" style="margin-top:4px">${empNomes}</div>
+        </div>
+        <div class="item-actions">
+          <button class="btn btn-ghost btn-sm" onclick="copyLink('${link}')" title="Copiar link">📋</button>
+          <button class="btn btn-ghost btn-sm" onclick='editCliente(${JSON.stringify(c)})'>✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCliente('${c.id}')">🗑️</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function copyLink(link) {
+  navigator.clipboard.writeText(link).then(() => toast('Link copiado!', 'success'));
+}
+
+function openClienteModal() {
+  document.getElementById('cliente-id').value = '';
+  document.getElementById('cliente-nome').value = '';
+  document.getElementById('cliente-email').value = '';
+  document.querySelectorAll('#emp-checkboxes input').forEach(c => c.checked = false);
+  document.getElementById('modal-cliente-titulo').textContent = 'Novo Cliente';
+  openModal('modal-cliente');
+}
+
+function editCliente(c) {
+  document.getElementById('cliente-id').value = c.id;
+  document.getElementById('cliente-nome').value = c.nome || '';
+  document.getElementById('cliente-email').value = c.email || '';
+  document.querySelectorAll('#emp-checkboxes input').forEach(chk => {
+    chk.checked = (c.empreendimentos_ids || []).includes(chk.value);
+  });
+  document.getElementById('modal-cliente-titulo').textContent = 'Editar Cliente';
+  openModal('modal-cliente');
+}
+
+async function saveCliente() {
+  const id = document.getElementById('cliente-id').value;
+  const empIds = [...document.querySelectorAll('#emp-checkboxes input:checked')].map(c => c.value);
+  const payload = {
+    nome: document.getElementById('cliente-nome').value,
+    email: document.getElementById('cliente-email').value,
+    empreendimentos_ids: empIds
+  };
+  let error;
+  if (id) {
+    ({ error } = await sb.from('clientes').update(payload).eq('id', id));
+  } else {
+    payload.token = generateToken();
+    ({ error } = await sb.from('clientes').insert(payload));
+  }
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  toast('Cliente salvo!', 'success');
+  closeModal('modal-cliente');
+  loadClientes();
+}
+
+async function deleteCliente(id) {
+  if (!confirm('Excluir este cliente?')) return;
+  const { error } = await sb.from('clientes').delete().eq('id', id);
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  toast('Cliente removido', 'success');
+  loadClientes();
+}
+
+function generateToken() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  return Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+// ══════════════════════════════
+// RASCUNHOS
+// ══════════════════════════════
+async function loadRascunhos() {
+  const { data, error } = await sb.from('rascunhos_curadoria').select('*').order('created_at', { ascending: false });
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  const pendentes = (data || []).filter(r => r.status === 'pendente').length;
+  const badge = document.getElementById('rascunhos-badge');
+  if (pendentes > 0) { badge.textContent = pendentes; badge.style.display = 'inline-block'; }
+  else badge.style.display = 'none';
+  renderRascunhos(data || []);
+}
+
+function renderRascunhos(rascunhos) {
+  const el = document.getElementById('rascunhos-list');
+  if (!rascunhos.length) {
+    el.innerHTML = '<div class="empty-state"><div class="ico">📝</div><p>Nenhum rascunho encontrado.</p></div>';
+    return;
+  }
+  el.innerHTML = rascunhos.map(r => `
+    <div class="draft-card">
+      <div class="draft-header">
+        <span class="draft-title">${escHtml(r.titulo||'Sem título')}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="status-badge status-${r.status}">${r.status}</span>
+          <span class="draft-date">${new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
+        </div>
+      </div>
+      <div class="draft-preview">${r.conteudo||''}</div>
+      ${r.status==='pendente' ? `
+      <div class="draft-actions">
+        <button class="btn btn-success btn-sm" onclick="aprovarDireto('${r.id}','${escAttr(r.titulo)}',\`${escAttr(r.conteudo)}\`)">✓ Aprovar e publicar</button>
+        <button class="btn btn-ghost btn-sm" onclick='abrirEdicaoRascunho(${JSON.stringify(r)})'>✏️ Editar antes</button>
+        <button class="btn btn-danger btn-sm" onclick="rejeitarRascunho('${r.id}')">✕ Rejeitar</button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function abrirEdicaoRascunho(r) {
+  document.getElementById('rascunho-id').value = r.id;
+  document.getElementById('rascunho-titulo').value = r.titulo || '';
+  document.getElementById('rascunho-conteudo').value = r.conteudo || '';
+  openModal('modal-rascunho');
+}
+
+async function aprovarRascunho() {
+  const id = document.getElementById('rascunho-id').value;
+  const titulo = document.getElementById('rascunho-titulo').value;
+  const conteudo = document.getElementById('rascunho-conteudo').value;
+  await publicarRascunho(id, titulo, conteudo);
+  closeModal('modal-rascunho');
+}
+
+async function aprovarDireto(id, titulo, conteudo) {
+  await publicarRascunho(id, titulo, conteudo);
+}
+
+async function publicarRascunho(id, titulo, conteudo) {
+  const { error: e1 } = await sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id);
+  const { error: e2 } = await sb.from('blocos_conteudo').insert({
+    titulo, conteudo, tipo: 'noticia', visivel_cliente: true, ordem: 99
+  });
+  if (e1 || e2) { toast('Erro ao publicar', 'error'); return; }
+  toast('Rascunho aprovado e publicado!', 'success');
+  loadRascunhos();
+  loadBlocos();
+}
+
+async function rejeitarRascunho(id) {
+  if (!confirm('Rejeitar este rascunho?')) return;
+  const { error } = await sb.from('rascunhos_curadoria').update({ status: 'rejeitado' }).eq('id', id);
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  toast('Rascunho rejeitado', 'success');
+  loadRascunhos();
+}
+
+// ══════════════════════════════
+// CONFIG VISUAL
+// ══════════════════════════════
+async function loadConfig() {
+  const { data } = await sb.from('config_visual').select('*').limit(1).single();
+  if (!data) return;
+  document.getElementById('cfg-cor-principal').value = data.cor_principal || '#FF6B00';
+  document.getElementById('cfg-cor-principal-txt').value = data.cor_principal || '#FF6B00';
+  document.getElementById('cfg-cor-fundo').value = data.cor_fundo || '#f5f5f0';
+  document.getElementById('cfg-cor-fundo-txt').value = data.cor_fundo || '#f5f5f0';
+  document.getElementById('cfg-cor-header').value = data.cor_header || '#1a1a1a';
+  document.getElementById('cfg-cor-header-txt').value = data.cor_header || '#1a1a1a';
+  document.getElementById('cfg-fonte-titulo').value = data.fonte_titulo || 'Syne';
+  document.getElementById('cfg-fonte-corpo').value = data.fonte_corpo || 'DM Sans';
+  document.getElementById('cfg-font-size').value = data.tamanho_fonte || 14;
+  document.getElementById('cfg-font-size-val').textContent = (data.tamanho_fonte||14)+'px';
+}
+
+async function saveConfig() {
+  const payload = {
+    cor_principal: document.getElementById('cfg-cor-principal').value,
+    cor_fundo: document.getElementById('cfg-cor-fundo').value,
+    cor_header: document.getElementById('cfg-cor-header').value,
+    fonte_titulo: document.getElementById('cfg-fonte-titulo').value,
+    fonte_corpo: document.getElementById('cfg-fonte-corpo').value,
+    tamanho_fonte: parseInt(document.getElementById('cfg-font-size').value),
+    updated_at: new Date().toISOString()
+  };
+  // Upsert: update first row or insert
+  const { data: existing } = await sb.from('config_visual').select('id').limit(1).single();
+  let error;
+  if (existing) {
+    ({ error } = await sb.from('config_visual').update(payload).eq('id', existing.id));
+  } else {
+    ({ error } = await sb.from('config_visual').insert(payload));
+  }
+  if (error) { toast('Erro: '+error.message, 'error'); return; }
+  toast('Aparência salva! O portal do cliente foi atualizado.', 'success');
+}
+
+function syncColor(pickerId, txtId) {
+  const val = document.getElementById(txtId).value;
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) document.getElementById(pickerId).value = val;
+}
+
+// ── UTILS ──
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s||'').replace(/`/g,'\\`').replace(/\$/g,'\\$');
+}
+</script>
+</body>
+</html>
