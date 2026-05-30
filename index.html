@@ -103,11 +103,13 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   position: absolute; top: -80px; right: -80px;
   width: 320px; height: 320px; border-radius: 50%;
   background: rgba(255,107,0,0.07);
+  pointer-events: none;
 }
 .cover-circle2 {
   position: absolute; bottom: -100px; left: 60px;
   width: 220px; height: 220px; border-radius: 50%;
   background: rgba(255,107,0,0.04);
+  pointer-events: none;
 }
 .logo-img { height: 48px; filter: brightness(0) invert(1); margin-bottom: 52px; display: block; }
 .cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #FF6B00; margin-bottom: 14px; }
@@ -401,10 +403,10 @@ img { max-width: 100%; height: auto; }
   <!-- Header row: logo + seletor de idiomas -->
   <div style="display:flex;align-items:center;margin-bottom:48px;">
     <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis" style="margin-bottom:0;flex-shrink:0;">
-    <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
-      <button class="lang-btn lang-btn-active" data-lang="pt" onclick="trocarIdioma('pt')" title="Português">🇧🇷</button>
-      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" title="English">🇺🇸</button>
-      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" title="中文">🇨🇳</button>
+    <div style="display:flex;align-items:center;gap:6px;margin-left:auto;position:relative;z-index:10;pointer-events:auto;">
+      <button class="lang-btn lang-btn-active" data-lang="pt" onclick="trocarIdioma('pt')" title="Português" style="pointer-events:auto;cursor:pointer;">🇧🇷</button>
+      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" title="English" style="pointer-events:auto;cursor:pointer;">🇺🇸</button>
+      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" title="中文" style="pointer-events:auto;cursor:pointer;">🇨🇳</button>
     </div>
   </div>
   <div class="cover-tag" data-pt="Material de treinamento interno" data-en="Internal Training Material" data-zh="内部培训资料">Material de treinamento interno</div>
