@@ -146,6 +146,7 @@ img { max-width: 100%; height: auto; }
   .cover { padding: 32px 20px 28px; }
   .cover-title { font-size: 28px; }
   .body { padding: 20px 16px 36px; }
+  #novidades-semana { padding: 0 16px; }
   .kpi-grid { grid-template-columns: 1fr 1fr; }
   .kpi2 { grid-template-columns: 1fr; }
   .kpi3 { grid-template-columns: 1fr 1fr; }
@@ -204,6 +205,9 @@ img { max-width: 100%; height: auto; }
       <div class="pill" data-pt="Prefeitura de Curitiba" data-en="City of Curitiba" data-zh="库里提巴市政府">Prefeitura de Curitiba</div>
     </div>
   </div>
+
+  <!-- Novidades da semana (curadoria automática aprovada) -->
+  <div id="novidades-semana" style="display:none;padding:0 48px;margin-top:28px"></div>
 
   <div class="body">
     <div id="secoes-container">
@@ -325,10 +329,38 @@ function esc(s) {
   return String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// ── Novidades da semana ──
+async function carregarNovidades() {
+  const { data } = await sb
+    .from('rascunhos_curadoria')
+    .select('*')
+    .eq('status', 'aprovado')
+    .order('created_at', { ascending: false })
+    .limit(1);
+
+  const container = document.getElementById('novidades-semana');
+  if (data && data.length > 0) {
+    const n = data[0];
+    container.style.display = 'block';
+    container.innerHTML = `
+      <div style="background:#1a1a1a;border-left:4px solid #FF6B00;border-radius:12px;padding:22px 24px;margin-bottom:0">
+        <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FF6B00;display:block;margin-bottom:10px">✦ Novidades da semana</span>
+        <div style="font-family:'Syne','Arial',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:10px">${n.titulo || ''}</div>
+        <div style="font-size:13.5px;color:rgba(255,255,255,0.7);line-height:1.65">${n.conteudo || ''}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:14px">${new Date(n.created_at).toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'})}</div>
+      </div>`;
+  } else {
+    container.style.display = 'none';
+  }
+}
+
 // ── Realtime — atualiza sem recarregar ──
 sb.channel('portal-cliente')
   .on('postgres_changes', { event: '*', schema: 'public', table: 'blocos_conteudo' }, () => {
     carregarBlocos();
+  })
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'rascunhos_curadoria' }, () => {
+    carregarNovidades();
   })
   .subscribe();
 
@@ -397,6 +429,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sidebar-mobile-btn').style.display = 'flex';
   }
   carregarBlocos();
+  carregarNovidades();
 });
 </script>
 </body>

@@ -6,7 +6,6 @@
 <link rel="icon" type="image/png" href="diferencial_logo.png">
 <title>Painel Bicalho — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:100vh;overflow:hidden}
@@ -145,16 +144,7 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 .news-item:nth-child(4){grid-column:2/4;grid-row:2}
 .news-row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:12px}
 
-/* ── EDIT PANEL (right, slides in) ── */
-.edit-panel{width:0;background:#fff;border-left:0.5px solid #e0ddd5;display:flex;flex-direction:column;transition:width 0.25s ease;overflow:hidden;flex-shrink:0}
-.edit-panel.open{width:380px}
-.edit-panel-header{padding:16px 20px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.edit-panel-header h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
-.edit-close{background:none;border:none;font-size:18px;cursor:pointer;color:#999;padding:4px}
-.edit-body{flex:1;overflow-y:auto;padding:18px}
-.edit-body::-webkit-scrollbar{width:4px}
-.edit-body::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
-.edit-footer{padding:14px 20px;border-top:0.5px solid #f0ede6;display:flex;gap:8px;flex-shrink:0}
+/* ── INLINE EDITING ── */
 .form-group{margin-bottom:14px}
 .form-label{display:block;font-size:11.5px;font-weight:600;color:#666;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em}
 .form-input,.form-select{width:100%;border:0.5px solid #ddd;border-radius:7px;padding:9px 12px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;background:#fafafa}
@@ -166,6 +156,23 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 .toggle-slider:before{content:'';position:absolute;width:15px;height:15px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.2s}
 .toggle input:checked+.toggle-slider{background:#FF6B00}
 .toggle input:checked+.toggle-slider:before{transform:translateX(17px)}
+
+.card-editando{border:2px solid #FF6B00 !important;box-shadow:0 4px 24px rgba(255,107,0,0.15) !important;border-radius:14px;padding:20px;background:#fff}
+.format-toolbar{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#f5f5f0;border-radius:8px;margin-bottom:8px;flex-wrap:wrap}
+.fmt-btn{width:28px;height:28px;border:0.5px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.fmt-btn:hover{border-color:#FF6B00;color:#FF6B00}
+.font-size-select,.font-family-select{height:28px;border:0.5px solid #ddd;border-radius:6px;background:#fff;font-size:11px;padding:0 6px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.color-picker{width:28px;height:28px;border:0.5px solid #ddd;border-radius:6px;padding:2px;cursor:pointer}
+.edit-field{width:100%;min-height:40px;border:0.5px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:12px;transition:border-color 0.2s;background:#fafafa}
+.edit-field:focus{border-color:#FF6B00;background:#fff}
+[contenteditable="true"]{outline:none;min-height:60px}
+.card-link-field{width:100%;height:36px;border:0.5px solid #e0ddd5;border-radius:8px;padding:0 12px;font-size:13px;color:#555;margin-bottom:14px;font-family:'DM Sans',sans-serif;outline:none;background:#fafafa}
+.card-link-field:focus{border-color:#FF6B00}
+.card-acoes-edicao{display:flex;gap:8px;justify-content:flex-end}
+.btn-cancelar{padding:8px 18px;border-radius:8px;border:0.5px solid #ddd;background:#f5f5f0;color:#555;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px}
+.btn-salvar{padding:8px 18px;border-radius:8px;border:none;background:#FF6B00;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600}
+.btn-salvar:hover{background:#e05a00}
+.edit-label-small{font-size:11.5px;color:#888;margin-bottom:4px;display:block}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:'DM Sans',sans-serif}
@@ -192,12 +199,6 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 .toast.success{border-left-color:#27ae60}
 .toast.error{border-left-color:#e74c3c}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-
-/* Quill override */
-.ql-container{font-size:13.5px;font-family:'DM Sans',sans-serif}
-.ql-editor{min-height:160px}
-.ql-toolbar{border-radius:7px 7px 0 0}
-.ql-container{border-radius:0 0 7px 7px}
 
 /* ── TABS ── */
 .tab-section{display:none}
@@ -281,53 +282,6 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
         </div>
       </div>
 
-      <!-- EDIT PANEL (right, slides in) -->
-      <div class="edit-panel" id="edit-panel">
-        <div class="edit-panel-header">
-          <h3>Editar bloco</h3>
-          <button class="edit-close" onclick="fecharEditPanel()">✕</button>
-        </div>
-        <div class="edit-body">
-          <input type="hidden" id="edit-id">
-          <div class="form-group">
-            <label class="form-label">Título</label>
-            <input type="text" class="form-input" id="edit-titulo" placeholder="Título do bloco">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tipo</label>
-            <select class="form-select" id="edit-tipo">
-              <option value="card">Card</option>
-              <option value="kpi">KPI</option>
-              <option value="insight">Insight</option>
-              <option value="noticia">Notícia</option>
-              <option value="evento">Evento</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Conteúdo</label>
-            <div id="quill-editor"></div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Conteúdo HTML bruto</label>
-            <textarea id="edit-conteudo-html" style="width:100%;min-height:80px;border:0.5px solid #ddd;border-radius:7px;padding:9px 12px;font-size:12px;font-family:monospace;resize:vertical;outline:none;background:#fafafa" placeholder="HTML direto (opcional — sobrepõe o editor acima)"></textarea>
-            <p style="font-size:11px;color:#aaa;margin-top:4px">Se preenchido, o HTML bruto prevalece sobre o editor visual.</p>
-          </div>
-          <div class="form-group">
-            <div class="toggle-row">
-              <label class="toggle">
-                <input type="checkbox" id="edit-visivel" checked>
-                <span class="toggle-slider"></span>
-              </label>
-              <span style="font-size:13.5px">Visível no portal do cliente</span>
-            </div>
-          </div>
-        </div>
-        <div class="edit-footer">
-          <button class="btn btn-ghost" onclick="fecharEditPanel()">Cancelar</button>
-          <button class="btn btn-primary" onclick="salvarBloco()">💾 Salvar</button>
-        </div>
-      </div>
-
     </div><!-- /tab-editor -->
 
     <!-- TAB: RASCUNHOS -->
@@ -388,7 +342,6 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 <script>
 // ══════════════════════════════════════════════════════
 // CONFIG
@@ -398,7 +351,6 @@ const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allBlocos = [];
-let quillEditor = null;
 let editingBlocoId = null;
 
 // ── AUTH ──
@@ -425,7 +377,6 @@ if (sessionStorage.getItem('admin-auth') === '1') showApp();
 
 // ── INIT ──
 async function init() {
-  quillEditor = new Quill('#quill-editor', { theme: 'snow', placeholder: 'Conteúdo do bloco...' });
   await Promise.all([loadBlocos(), loadRascunhos()]);
 
   // Realtime
@@ -469,7 +420,7 @@ function renderListaBlocos(blocos) {
         <div class="bloco-tipo">${b.tipo || 'card'} · ${b.ordem}</div>
       </div>
       <span class="bloco-toggle ${b.visivel_cliente ? '' : 'hidden'}" onclick="toggleVisivel('${b.id}',${!b.visivel_cliente})" title="${b.visivel_cliente ? 'Ocultar do cliente' : 'Mostrar ao cliente'}">${b.visivel_cliente ? '👁️' : '🙈'}</span>
-      <button class="bloco-edit-btn" onclick="abrirEditPanel('${b.id}')" title="Editar">✏️</button>
+      <button class="bloco-edit-btn" onclick="abrirEdicaoInlineFromPanel('${b.id}')" title="Editar">✏️</button>
       <button class="bloco-del-btn" onclick="deletarBloco('${b.id}')" title="Excluir">🗑️</button>
     </div>
   `).join('');
@@ -493,20 +444,20 @@ function renderListaBlocos(blocos) {
 
 function renderPreviewBlocos(blocos) {
   const el = document.getElementById('preview-blocos');
-  const visiveis = blocos.filter(b => b.visivel_cliente);
-  if (!visiveis.length) {
-    el.innerHTML = '<div style="text-align:center;padding:40px;color:#bbb;font-size:13px">Nenhum bloco visível. Ative a visibilidade no painel lateral.</div>';
+  if (!blocos.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#bbb;font-size:13px">Nenhum bloco. Clique em Popular no painel esquerdo.</div>';
     return;
   }
-  el.innerHTML = visiveis.map(b => `
-    <div class="bloco-wrapper" data-id="${b.id}">
-      <div class="bloco-overlay" onclick="abrirEditPanel('${b.id}')">
+  el.innerHTML = blocos.map(b => `
+    <div class="bloco-wrapper" id="bloco-${b.id}" data-id="${b.id}" style="${!b.visivel_cliente ? 'opacity:0.4' : ''}">
+      ${!b.visivel_cliente ? `<div style="position:absolute;top:6px;left:10px;z-index:12;background:rgba(0,0,0,0.55);color:#fff;font-size:10px;padding:2px 8px;border-radius:20px">Oculto</div>` : ''}
+      <div class="bloco-overlay" onclick="abrirEdicaoInline('${b.id}')">
         <div class="bloco-acoes">
-          <button class="bloco-btn" onclick="event.stopPropagation();abrirEditPanel('${b.id}')" title="Editar">✏️</button>
-          <button class="bloco-btn" onclick="event.stopPropagation();toggleVisivel('${b.id}',false)" title="Ocultar">🙈</button>
+          <button class="bloco-btn" onclick="event.stopPropagation();abrirEdicaoInline('${b.id}')" title="Editar">✏️</button>
+          <button class="bloco-btn" onclick="event.stopPropagation();toggleVisivel('${b.id}',${!b.visivel_cliente})" title="${b.visivel_cliente ? 'Ocultar' : 'Mostrar'}">${b.visivel_cliente ? '🙈' : '👁️'}</button>
         </div>
       </div>
-      <div style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:18px 20px;margin-bottom:8px">
+      <div id="bloco-inner-${b.id}" style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:18px 20px;margin-bottom:8px">
         ${b.conteudo || `<p style="color:#bbb;font-size:13px;text-align:center;padding:20px">${esc(b.titulo || 'Bloco sem conteúdo')}</p>`}
       </div>
     </div>
@@ -528,40 +479,136 @@ async function deletarBloco(id) {
   else toast('Bloco excluído', 'success');
 }
 
-// ── EDIT PANEL ──
-function abrirEditPanel(id) {
+// ── EDIÇÃO INLINE NOS CARDS ──
+function abrirEdicaoInlineFromPanel(id) {
+  // Garante que estamos na aba editor e rola até o bloco
+  switchTab('editor');
+  setTimeout(() => {
+    const wrapper = document.getElementById('bloco-' + id);
+    if (wrapper) {
+      wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => abrirEdicaoInline(id), 300);
+    } else {
+      abrirEdicaoInline(id);
+    }
+  }, 100);
+}
+
+function abrirEdicaoInline(id) {
   const bloco = allBlocos.find(b => b.id === id);
   if (!bloco) return;
+
+  fecharTodasEdicoes(false); // fecha sem recarregar
   editingBlocoId = id;
-  document.getElementById('edit-id').value = id;
-  document.getElementById('edit-titulo').value = bloco.titulo || '';
-  document.getElementById('edit-tipo').value = bloco.tipo || 'card';
-  document.getElementById('edit-visivel').checked = !!bloco.visivel_cliente;
-  document.getElementById('edit-conteudo-html').value = bloco.conteudo || '';
-  if (quillEditor) quillEditor.root.innerHTML = bloco.conteudo || '';
-  document.getElementById('edit-panel').classList.add('open');
+
+  const wrapper = document.getElementById('bloco-' + id);
+  if (!wrapper) return;
+
+  // Remove o overlay para não interferir durante edição
+  const overlay = wrapper.querySelector('.bloco-overlay');
+  if (overlay) overlay.style.display = 'none';
+
+  const inner = document.getElementById('bloco-inner-' + id);
+  if (!inner) return;
+
+  inner.classList.add('card-editando');
+  inner.innerHTML = `
+    <div style="font-size:11px;color:#FF6B00;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px">✏️ Editando: ${esc(bloco.titulo || 'bloco')}</div>
+
+    <label class="edit-label-small">Título do bloco</label>
+    <div class="format-toolbar">
+      <select class="font-size-select" onchange="aplicarEstiloSel('titulo-${id}','fontSize',this.value)">
+        <option value="14px">Pequeno</option><option value="18px" selected>Normal</option><option value="24px">Grande</option><option value="32px">Muito grande</option>
+      </select>
+      <select class="font-family-select" onchange="aplicarFonteSel('titulo-${id}',this.value)">
+        <option value="'Syne',sans-serif" selected>Syne</option><option value="'DM Sans',sans-serif">DM Sans</option><option value="Arial,sans-serif">Arial</option><option value="Georgia,serif">Georgia</option>
+      </select>
+      <input type="color" class="color-picker" value="#1a1a1a" oninput="aplicarCorSel('titulo-${id}',this.value)" title="Cor do título">
+      <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('titulo-${id}','bold')"><b>B</b></button>
+      <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('titulo-${id}','italic')"><i>I</i></button>
+    </div>
+    <div id="titulo-${id}" contenteditable="true" class="edit-field" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#1a1a1a">${bloco.titulo || ''}</div>
+
+    <label class="edit-label-small">Conteúdo</label>
+    <div class="format-toolbar">
+      <select class="font-size-select" onchange="aplicarEstiloSel('conteudo-${id}','fontSize',this.value)">
+        <option value="12px">Pequeno</option><option value="14px" selected>Normal</option><option value="18px">Médio</option><option value="24px">Grande</option>
+      </select>
+      <select class="font-family-select" onchange="aplicarFonteSel('conteudo-${id}',this.value)">
+        <option value="'DM Sans',sans-serif" selected>DM Sans</option><option value="'Syne',sans-serif">Syne</option><option value="Arial,sans-serif">Arial</option><option value="Georgia,serif">Georgia</option>
+      </select>
+      <input type="color" class="color-picker" value="#555555" oninput="aplicarCorSel('conteudo-${id}',this.value)" title="Cor do texto">
+      <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('conteudo-${id}','bold')"><b>B</b></button>
+      <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('conteudo-${id}','italic')"><i>I</i></button>
+      <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('conteudo-${id}','underline')"><u>U</u></button>
+    </div>
+    <div id="conteudo-${id}" contenteditable="true" class="edit-field" style="min-height:120px;font-size:14px">${bloco.conteudo || ''}</div>
+
+    <label class="edit-label-small">Link de fonte (opcional)</label>
+    <input type="url" class="card-link-field" id="link-${id}" placeholder="https://..." value="${esc(bloco.link_fonte || '')}">
+
+    <label class="edit-label-small" style="margin-bottom:8px">
+      <input type="checkbox" id="visivel-${id}" ${bloco.visivel_cliente ? 'checked' : ''} style="accent-color:#FF6B00;margin-right:6px">
+      Visível no portal do cliente
+    </label>
+
+    <div class="card-acoes-edicao" style="margin-top:4px">
+      <button class="btn-cancelar" onclick="fecharTodasEdicoes(true)">Cancelar</button>
+      <button class="btn-salvar" onclick="salvarEdicaoInline('${id}')">💾 Salvar</button>
+    </div>
+  `;
 }
 
-function fecharEditPanel() {
-  document.getElementById('edit-panel').classList.remove('open');
-  editingBlocoId = null;
+function focusAndExec(elId, cmd) {
+  const el = document.getElementById(elId);
+  if (el) { el.focus(); document.execCommand(cmd); }
 }
 
-async function salvarBloco() {
-  const id = document.getElementById('edit-id').value;
-  const htmlBruto = document.getElementById('edit-conteudo-html').value.trim();
-  const conteudo = htmlBruto || (quillEditor ? quillEditor.root.innerHTML : '');
+function aplicarEstiloSel(elId, prop, val) {
+  const el = document.getElementById(elId);
+  if (el) el.style[prop] = val;
+}
+
+function aplicarFonteSel(elId, val) {
+  const el = document.getElementById(elId);
+  if (el) el.style.fontFamily = val;
+}
+
+function aplicarCorSel(elId, val) {
+  const el = document.getElementById(elId);
+  if (el) el.style.color = val;
+}
+
+async function salvarEdicaoInline(id) {
+  const tituloEl = document.getElementById('titulo-' + id);
+  const conteudoEl = document.getElementById('conteudo-' + id);
+  const linkEl = document.getElementById('link-' + id);
+  const visivelEl = document.getElementById('visivel-' + id);
+  if (!tituloEl || !conteudoEl) return;
+
   const payload = {
-    titulo: document.getElementById('edit-titulo').value,
-    tipo: document.getElementById('edit-tipo').value,
-    visivel_cliente: document.getElementById('edit-visivel').checked,
-    conteudo: conteudo,
+    titulo: tituloEl.innerText.trim(),
+    conteudo: conteudoEl.innerHTML,
+    link_fonte: linkEl ? linkEl.value : null,
+    visivel_cliente: visivelEl ? visivelEl.checked : true,
     updated_at: new Date().toISOString()
   };
+
   const { error } = await sb.from('blocos_conteudo').update(payload).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Bloco salvo!', 'success');
-  fecharEditPanel();
+  if (error) { toast('Erro ao salvar: ' + error.message, 'error'); return; }
+  toast('✅ Bloco salvo com sucesso!', 'success');
+  editingBlocoId = null;
+  await loadBlocos();
+}
+
+function fecharTodasEdicoes(recarregar = true) {
+  document.querySelectorAll('.card-editando').forEach(el => {
+    el.classList.remove('card-editando');
+  });
+  // Restaura overlays
+  document.querySelectorAll('.bloco-overlay').forEach(el => el.style.display = '');
+  editingBlocoId = null;
+  if (recarregar) loadBlocos();
 }
 
 // ── CRIAR BLOCO ──
@@ -638,7 +685,7 @@ async function aprovarRascunho(id) {
     sb.from('blocos_conteudo').insert({ titulo: r.titulo, conteudo: r.conteudo, tipo: 'noticia', visivel_cliente: true, ordem: maxOrdem + 1, slug: slugify(r.titulo || 'curadoria') })
   ]);
   if (r1.error || r2.error) { toast('Erro ao publicar', 'error'); return; }
-  toast('Rascunho aprovado e publicado!', 'success');
+  toast('✅ Publicado! Aparecerá no portal como "Novidades da semana".', 'success');
 }
 
 async function rejeitarRascunho(id) {
@@ -838,7 +885,15 @@ async function seedConteudo() {
 </div>`
     },
     {
-      slug: 'noticias', titulo: 'Notícias', tipo: 'noticia', ordem: 14,
+      slug: 'av-iguacu', titulo: 'Av. Iguaçu: novo eixo de expansão', tipo: 'card', ordem: 14,
+      conteudo: `<div class="sec-label" data-pt="Av. Iguaçu: novo eixo de expansão" data-en="Av. Iguaçu: the new expansion axis">Av. Iguaçu: novo eixo de expansão</div>
+<div class="card" style="border-left:3px solid #FF6B00;border-radius:0 14px 14px 0;">
+  <div class="card-h">Av. Iguaçu: novo eixo de expansão</div>
+  <div class="card-b">A Avenida Iguaçu conecta o Centro ao Água Verde e ao eixo sul da cidade, com excelente acesso à Linha Turismo e aos principais equipamentos culturais. É um corredor em valorização, beneficiado pela pressão de demanda que transborda do Batel e do Água Verde, dois bairros que já operam com oferta restrita de novos lançamentos.<br><br>Para investimento em short stay, a localização é estratégica: está entre dois dos bairros mais buscados no Airbnb de Curitiba, com menor ticket de entrada e maior potencial de valorização nos próximos ciclos.</div>
+</div>`
+    },
+    {
+      slug: 'noticias', titulo: 'Notícias', tipo: 'noticia', ordem: 15,
       conteudo: `<div class="sec-label" data-pt="Notícias" data-en="News">Notícias</div>
 <div style="font-size:12px;color:#aaa;margin-bottom:16px;">Curitiba em destaque, cobertura da imprensa</div>
 <div class="news-grid">
