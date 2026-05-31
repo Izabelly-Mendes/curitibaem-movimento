@@ -3,222 +3,401 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="apple-touch-icon" href="diferencial_logo.png">
 <link rel="icon" type="image/png" href="diferencial_logo.png">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Curitiba em Movimento">
 <title>Curitiba em Movimento · Bicalho Imóveis</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --cor-principal: #FF6B00;
-  --cor-fundo: #f5f5f0;
-  --cor-header: #1a1a1a;
-  --fonte-titulo: 'Syne', sans-serif;
-  --fonte-corpo: 'DM Sans', sans-serif;
-  --font-size: 14px;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; color: #1a1a1a; display: flex; flex-direction: column; min-height: 100vh; }
+
+.sidebar {
+  position: fixed; top: 0; left: 0;
+  height: 100vh; width: 220px;
+  background: #1a1a1a; z-index: 1000;
+  transition: width 0.3s ease; overflow: hidden;
+  display: flex; flex-direction: column;
+  border-right: 0.5px solid rgba(255,255,255,0.08);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--fonte-corpo);background:var(--cor-fundo);color:#1a1a1a;font-size:var(--font-size);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
+.sidebar.collapsed { width: 56px; overflow: visible; }
+.sidebar-toggle { padding: 16px; cursor: pointer; color: #FF6B00; font-size: 18px; border: none; background: none; text-align: left; white-space: nowrap; border-bottom: 0.5px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+.sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 8px 0; }
+.sidebar-nav::-webkit-scrollbar { width: 3px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+.sidebar-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 12.5px; white-space: nowrap; transition: color 0.15s, background 0.15s; cursor: pointer; }
+.sidebar-item:hover { color: #FF6B00; background: rgba(255,107,0,0.07); }
+.sidebar-item.menu-ativo { color: #FF6B00; background: rgba(255,107,0,0.1); }
+.sidebar-item .label { opacity: 1; transition: opacity 0.2s; }
+.sidebar.collapsed .label { opacity: 0; pointer-events: none; }
+.sidebar.collapsed .sidebar-nav { overflow: visible; }
+.sidebar.collapsed .sidebar-item { position: relative; }
+.sidebar.collapsed .sidebar-item::after { content: attr(data-tooltip); position: absolute; left: 60px; top: 50%; transform: translateY(-50%); background: #2a2a2a; color: rgba(255,255,255,0.85); font-size: 11.5px; white-space: nowrap; padding: 5px 10px; border-radius: 6px; border: 0.5px solid rgba(255,255,255,0.12); opacity: 0; pointer-events: none; transition: opacity 0.15s; z-index: 1200; }
+.sidebar.collapsed .sidebar-item:hover::after { opacity: 1; }
 
-/* ── HEADER ── */
-.header{background:var(--cor-header);padding:0 24px;position:sticky;top:0;z-index:100;border-bottom:0.5px solid rgba(255,255,255,0.07)}
-.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
-.header-logo{height:30px;filter:brightness(0) invert(1)}
-.header-right{display:flex;align-items:center;gap:8px}
-.lang-btn{background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 9px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.7);transition:all 0.15s;line-height:1.4}
-.lang-btn:hover{background:rgba(255,255,255,0.16)}
-.lang-btn.active{background:rgba(255,107,0,0.2);border-color:rgba(255,107,0,0.4);color:#FF6B00}
+.main-wrapper { margin-left: 220px; transition: margin-left 0.3s ease; flex: 1; display: flex; flex-direction: column; }
+.main-wrapper.collapsed { margin-left: 56px; }
 
-/* ── CONTAINER ── */
-.container{max-width:1100px;margin:0 auto;padding:40px 24px 72px;flex:1}
+.secao { display: none; }
+.secao.ativa { display: block; }
 
-/* ── SECTION LABEL ── */
-.sec-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--cor-principal);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.sec-label::after{content:'';flex:1;height:0.5px;background:#ddd}
+.cover { background: #1a1a1a; padding: 52px 48px 44px; position: relative; overflow: hidden; }
+.cover-circle1 { position: absolute; top: -80px; right: -80px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,107,0,0.07); pointer-events: none; }
+.cover-circle2 { position: absolute; bottom: -100px; left: 60px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,107,0,0.04); pointer-events: none; }
+.logo-img { height: 48px; filter: brightness(0) invert(1); margin-bottom: 52px; display: block; }
+.cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #FF6B00; margin-bottom: 14px; }
+.cover-title { font-family: 'Cambria', 'Georgia', serif; font-size: 44px; font-weight: bold; color: #fff; line-height: 1.05; margin-bottom: 14px; }
+.cover-title span { color: #FF6B00; }
+.cover-sub { font-size: 15px; color: rgba(255,255,255,0.45); font-weight: 400; margin-bottom: 36px; }
+.pills { display: flex; gap: 9px; flex-wrap: wrap; }
+.pill { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.14); border-radius: 100px; padding: 6px 14px; font-size: 11.5px; color: rgba(255,255,255,0.6); }
+.pill.o { background: rgba(255,107,0,0.14); border-color: rgba(255,107,0,0.3); color: #FF6B00; }
 
-/* ── BLOCOS ── */
-.blocos-grid{display:grid;gap:14px}
+.body { padding: 40px 48px 56px; flex: 1; }
+.sec-label { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #FF6B00; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.sec-label::after { content: ''; flex: 1; height: 0.5px; background: #ddd; }
+.kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+.kpi2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.kpi3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+.kpi { background: #fff; border-radius: 12px; border: 0.5px solid #e0ddd5; padding: 18px 16px; }
+.kpi.dk { background: #1a1a1a; border-color: #1a1a1a; }
+.kpi-num { font-family: 'Cambria', 'Georgia', serif; font-size: 27px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 4px; letter-spacing: -0.02em; }
+.kpi-num span { color: #FF6B00; }
+.kpi.dk .kpi-num { color: #FF6B00; }
+.kpi-lbl { font-size: 12px; color: #888; line-height: 1.5; }
+.kpi.dk .kpi-lbl { color: rgba(255,255,255,0.5); }
+.kpi-src { font-size: 10px; color: #bbb; margin-top: 6px; }
+.kpi.dk .kpi-src { color: rgba(255,255,255,0.25); }
+.card { background: #fff; border-radius: 14px; border: 0.5px solid #e0ddd5; padding: 22px 24px; margin-bottom: 14px; }
+.card-h { font-family: 'Cambria', 'Georgia', serif; font-size: 15px; font-weight: bold; margin-bottom: 8px; }
+.card-b { font-size: 13.5px; color: #555; line-height: 1.72; }
+.card-b strong { color: #1a1a1a; font-weight: 700; }
+.hl { color: #FF6B00; font-weight: 700; }
+.ins { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.65; }
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bar-lbl { font-size: 12px; color: #555; width: 90px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 6px; background: #f0ede6; border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 10px; background: #FF6B00; }
+.bar-val { font-size: 12px; font-weight: 700; color: #1a1a1a; width: 36px; text-align: right; }
+.award { background: #1a1a1a; border-radius: 12px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.award-ico { width: 42px; height: 42px; background: rgba(255,107,0,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.award strong { font-family: 'Cambria', 'Georgia', serif; font-size: 14px; font-weight: bold; color: #fff; display: block; margin-bottom: 3px; }
+.award span { font-size: 12px; color: rgba(255,255,255,0.4); }
+.divider { height: 0.5px; background: #e0ddd5; margin: 32px 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.tag { background: #f5f5f0; border: 0.5px solid #ddd; border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: #555; }
+.tag.o { background: rgba(255,107,0,0.07); border-color: rgba(255,107,0,0.2); color: #c85200; }
+.insight-box { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.65; }
+.insight-box p { margin: 0; }
 
-.bloco-card{background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:22px 24px}
-.bloco-card.tipo-insight{background:#1a1a1a;border-color:#1a1a1a}
-.bloco-card.tipo-insight-box{background:rgba(255,107,0,0.06);border-left:3px solid var(--cor-principal);border-top:none;border-right:none;border-bottom:none;border-radius:0 8px 8px 0}
+/* NEWS */
+.news-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: auto; gap: 6px; margin-bottom: 6px; }
+.news-item { position: relative; overflow: hidden; border-radius: 10px; cursor: pointer; min-height: 220px; max-height: 320px; background: #1a1a1a; display: block; text-decoration: none; }
+.news-item img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform 0.4s ease; }
+.news-item:hover img { transform: scale(1.04); }
+.news-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 60%, transparent 100%); padding: 20px 16px 14px; pointer-events: none; }
+.news-tag { font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #FF6B00; margin-bottom: 6px; display: block; }
+.news-title { font-family: 'Cambria', 'Georgia', serif; font-size: 15px; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 6px; }
+.news-item.featured .news-title { font-size: 22px; }
+.news-item.featured { min-height: 400px; max-height: 500px; }
+.news-desc { font-size: 11.5px; color: rgba(255,255,255,0.65); line-height: 1.5; display: none; }
+.news-item.featured .news-desc { display: block; }
+.news-source { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 6px; display: block; }
+.news-item:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
+.news-item:nth-child(2) { grid-column: 2; grid-row: 1; }
+.news-item:nth-child(3) { grid-column: 3; grid-row: 1; }
+.news-item:nth-child(4) { grid-column: 2 / 4; grid-row: 2; }
+.news-grid .news-item:not(.featured) { height: 220px; }
+.news-row2 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 16px; }
+.news-row2 .news-item { height: 220px; }
+.news-item::after { content: '↗ Ler notícia'; position: absolute; top: 12px; right: 12px; background: rgba(255,107,0,0.9); color: #fff; font-size: 10px; font-weight: 600; padding: 4px 8px; border-radius: 20px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.news-item:hover::after { opacity: 1; }
 
-.bloco-tipo-badge{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--cor-principal);margin-bottom:6px}
-.bloco-titulo{font-family:var(--fonte-titulo);font-size:15px;font-weight:700;margin-bottom:8px;color:#1a1a1a}
-.bloco-card.tipo-insight .bloco-titulo{color:#fff}
-.bloco-conteudo{font-size:13.5px;color:#555;line-height:1.72}
-.bloco-card.tipo-insight .bloco-conteudo{color:rgba(255,255,255,0.6)}
-.bloco-conteudo strong{color:#1a1a1a}
-.bloco-card.tipo-insight .bloco-conteudo strong{color:#fff}
+/* FOOTER */
+.footer { background: #1a1a1a; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: auto; }
+.footer-txt { font-size: 11px; color: rgba(255,255,255,0.3); }
+.footer-logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.35; }
+.footer-logo--bicalho { height: 30px; }
+.lang-btn { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 4px 7px; cursor: pointer; font-size: 15px; line-height: 1; transition: background 0.15s, border-color 0.15s; }
+.lang-btn:hover { background: rgba(255,255,255,0.16); }
+.lang-btn-active { background: rgba(255,107,0,0.18); border-color: rgba(255,107,0,0.45); }
+.footer-src { font-size: 11px; color: rgba(255,255,255,0.35); text-decoration: none; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 4px 10px; transition: color 0.15s, border-color 0.15s; }
+.footer-src:hover { color: #FF6B00; border-color: rgba(255,107,0,0.3); }
 
-/* ── LOADING ── */
-.loading{text-align:center;padding:80px 20px;color:#bbb}
-.spinner{width:32px;height:32px;border:3px solid #f0ede6;border-top-color:var(--cor-principal);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 12px}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* LOADING / STATES */
+.loading-state { text-align: center; padding: 80px 20px; color: #bbb; }
+.loading-spinner { width: 32px; height: 32px; border: 3px solid #f0ede6; border-top-color: #FF6B00; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state { text-align: center; padding: 60px 20px; color: #bbb; }
+.empty-state .ico { font-size: 48px; margin-bottom: 12px; }
 
-/* ── ERRO ── */
-.error-state{text-align:center;padding:60px 20px;color:#e74c3c}
-.error-state .ico{font-size:48px;margin-bottom:12px}
-.error-state p{font-size:14px;margin-bottom:16px}
-.retry-btn{display:inline-block;background:#f5f5f0;border:0.5px solid #ddd;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-family:var(--fonte-corpo);color:#555}
-.retry-btn:hover{background:#eee}
+img { max-width: 100%; height: auto; }
 
-/* ── FOOTER ── */
-.footer{background:#1a1a1a;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.footer-txt{font-size:11px;color:rgba(255,255,255,0.3)}
-.footer-logo{height:26px;filter:brightness(0) invert(1);opacity:0.3}
-
-/* ── MOBILE ── */
-@media(max-width:640px){
-  .container{padding:28px 16px 56px}
+@media (max-width: 768px) {
+  .sidebar { width: 220px; transform: translateX(-100%); transition: transform 0.3s ease; }
+  .sidebar.collapsed { width: 220px; transform: translateX(-100%); }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .sidebar .label, .sidebar.collapsed .label { opacity: 1 !important; pointer-events: auto !important; }
+  #sidebar-mobile-btn { display: flex !important; }
+  .main-wrapper { margin-left: 0 !important; }
+  .main-wrapper.collapsed { margin-left: 0 !important; }
+  .cover { padding: 32px 20px 28px; }
+  .cover-title { font-size: 28px; }
+  .body { padding: 20px 16px 36px; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .kpi2 { grid-template-columns: 1fr; }
+  .kpi3 { grid-template-columns: 1fr 1fr; }
+  .footer { flex-direction: column; align-items: center; gap: 12px; padding: 20px 16px; text-align: center; }
+  .news-grid { grid-template-columns: 1fr 1fr; }
+  .news-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  .news-item:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .news-item:nth-child(3) { grid-column: 2; grid-row: 2; }
+  .news-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
+  .news-row2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .kpi-grid, .kpi3 { grid-template-columns: 1fr; }
+  .cover-title { font-size: 24px; }
+  .news-grid { grid-template-columns: 1fr; }
+  .news-item:nth-child(n) { grid-column: 1; grid-row: auto; }
+  .news-row2 { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <img src="diferencial_logo.png" class="header-logo" alt="Diferencial" onerror="this.style.display='none'">
-    <div class="header-right">
-      <button class="lang-btn active" onclick="setLang('pt')" id="btn-pt">🇧🇷 PT</button>
-      <button class="lang-btn" onclick="setLang('en')" id="btn-en">🇺🇸 EN</button>
-      <button class="lang-btn" onclick="setLang('zh')" id="btn-zh">🇨🇳 ZH</button>
+<button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" style="display:none;position:fixed;top:14px;left:14px;z-index:1100;background:#1a1a1a;border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#FF6B00;line-height:1;">☰</button>
+<div id="sidebar-overlay" onclick="toggleMobileSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;"></div>
+
+<nav class="sidebar" id="sidebar">
+  <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="sidebar-nav" id="sidebar-nav">
+    <a href="javascript:void(0)" onclick="navegarSecao('geral',this)" class="sidebar-item menu-ativo" data-tooltip="Geral" data-sec="geral">
+      <span class="label" data-pt="Geral" data-en="Overview">Geral</span>
+    </a>
+    <!-- dynamic nav items injected here by JS -->
+  </div>
+</nav>
+
+<div class="main-wrapper" id="main-wrapper">
+
+  <div class="cover" id="secao-geral">
+    <div class="cover-circle1"></div>
+    <div class="cover-circle2"></div>
+    <div style="display:flex;align-items:center;margin-bottom:48px;">
+      <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis" style="margin-bottom:0;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+        <button class="lang-btn lang-btn-active" data-lang="pt" onclick="trocarIdioma('pt')">🇧🇷</button>
+        <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')">🇺🇸</button>
+        <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')">🇨🇳</button>
+      </div>
+    </div>
+    <div class="cover-title" data-pt="Curitiba em<br><span>movimento</span>" data-en="Curitiba<br><span>in Motion</span>" data-zh="库里提巴<br><span>活力涌动</span>">Curitiba em<br><span>movimento</span></div>
+    <div class="cover-sub" data-pt="Turismo, eventos e oportunidades de investimento · 2024/2025" data-en="Tourism, events and investment opportunities · 2024/2025" data-zh="旅游、活动与投资机会 · 2024/2025">Turismo, eventos e oportunidades de investimento · 2024/2025</div>
+    <div class="pills">
+      <div class="pill o" data-pt="Dados oficiais" data-en="Official Data" data-zh="官方数据">Dados oficiais</div>
+      <div class="pill">IMT</div>
+      <div class="pill">SEHA</div>
+      <div class="pill">Embratur</div>
+      <div class="pill" data-pt="Prefeitura de Curitiba" data-en="City of Curitiba" data-zh="库里提巴市政府">Prefeitura de Curitiba</div>
     </div>
   </div>
-</header>
 
-<div id="main-content" class="container">
-  <div class="sec-label" id="sec-label-cwr">Curitiba em Movimento</div>
-  <div class="blocos-grid" id="blocos-grid">
-    <div class="loading"><div class="spinner"></div><p id="loading-txt">Carregando conteúdo...</p></div>
+  <div class="body">
+    <div id="secoes-container">
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Carregando conteúdo...</p>
+      </div>
+    </div>
   </div>
-</div>
 
-<footer class="footer">
-  <span class="footer-txt" id="footer-txt">Curitiba em Movimento · Bicalho Imóveis × Diferencial</span>
-  <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial" onerror="this.style.display='none'">
-</footer>
+  <div class="footer">
+    <div style="width:100%;border-top:0.5px solid rgba(255,255,255,0.1);padding-top:20px;margin-bottom:20px;">
+      <button onclick="toggleFontes()" style="background:none;border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:7px 14px;color:rgba(255,255,255,0.45);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+        <span data-pt="Fontes" data-en="Sources" data-zh="数据来源">Fontes</span> <span id="fontes-arrow" style="display:inline-block;transition:transform 0.3s;font-size:12px;">▾</span>
+      </button>
+      <div id="fontes-panel" style="display:none;margin-top:14px;"><div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <a class="footer-src" href="https://turismo.curitiba.pr.gov.br" target="_blank">IMT / Prefeitura de Curitiba</a>
+        <a class="footer-src" href="https://www.sehapr.com.br" target="_blank">SEHA</a>
+        <a class="footer-src" href="https://www.curitibacvb.com.br" target="_blank">Curitiba CVB</a>
+        <a class="footer-src" href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank">Airbtics, Airbnb Curitiba</a>
+        <a class="footer-src" href="https://www.loft.com.br/blog/mercado-imobiliario/curitiba" target="_blank">Loft, Valorização por bairro</a>
+        <a class="footer-src" href="https://www.lonelyplanet.com/best-in-travel" target="_blank">Lonely Planet, Top Destinos 2025</a>
+      </div></div>
+    </div>
+    <img src="bicalho_logo.png" class="footer-logo footer-logo--bicalho" alt="Bicalho Empreendimentos">
+    <div class="footer-txt" data-pt="Curitiba em Movimento · Bicalho Imóveis × Diferencial" data-en="Curitiba in Motion · Bicalho Properties × Diferencial" data-zh="库里提巴动态 · Bicalho 房产 × Diferencial">Curitiba em Movimento · Bicalho Imóveis × Diferencial</div>
+    <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial Imóveis">
+  </div>
+
+</div><!-- /main-wrapper -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ══════════════════════════════════════════════════════════
-// CONFIG — anon key pública por design do Supabase
-// Variáveis de ambiente no painel Vercel → Settings → Env Vars:
-//   SUPABASE_URL, SUPABASE_ANON_KEY
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CONFIG — anon key é pública por design do Supabase
+// ══════════════════════════════════════════════════════
 const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ── I18N ──
-const i18n = {
-  pt: {
-    sec_cwr: 'Curitiba em Movimento',
-    footer: 'Curitiba em Movimento · Bicalho Imóveis × Diferencial',
-    loading: 'Carregando conteúdo...',
-    vazio: 'Nenhum conteúdo disponível no momento.',
-    erro: 'Erro ao carregar o conteúdo.',
-    tentar: 'Tentar novamente'
-  },
-  en: {
-    sec_cwr: 'Curitiba in Motion',
-    footer: 'Curitiba in Motion · Bicalho Properties × Diferencial',
-    loading: 'Loading content...',
-    vazio: 'No content available at this time.',
-    erro: 'Error loading content.',
-    tentar: 'Try again'
-  },
-  zh: {
-    sec_cwr: '库里提巴动态',
-    footer: '库里提巴动态 · Bicalho 房产 × Diferencial',
-    loading: '加载中...',
-    vazio: '暂无可用内容。',
-    erro: '加载内容时出错。',
-    tentar: '重试'
-  }
-};
+let blocosBD = [];
+let idiomaAtual = localStorage.getItem('idioma') || 'pt';
 
-let lang = localStorage.getItem('portal-lang') || 'pt';
-
-function setLang(l) {
-  lang = l;
-  localStorage.setItem('portal-lang', l);
-  document.getElementById('btn-pt').classList.toggle('active', l === 'pt');
-  document.getElementById('btn-en').classList.toggle('active', l === 'en');
-  document.getElementById('btn-zh').classList.toggle('active', l === 'zh');
-  document.getElementById('sec-label-cwr').textContent = i18n[l].sec_cwr;
-  document.getElementById('footer-txt').textContent = i18n[l].footer;
-  document.title = i18n[l].sec_cwr + ' · Bicalho Imóveis';
-}
-
-// ── INIT ──
-async function init() {
-  setLang(lang);
-
-  // Aplica config visual do Supabase
-  try {
-    const { data: cfg } = await sb.from('config_visual').select('*').limit(1).single();
-    if (cfg) applyConfig(cfg);
-  } catch (_) { /* usa defaults */ }
-
-  // Carrega blocos
-  await loadBlocos();
-}
-
-function applyConfig(cfg) {
-  const r = document.documentElement;
-  if (cfg.cor_principal) r.style.setProperty('--cor-principal', cfg.cor_principal);
-  if (cfg.cor_fundo)     r.style.setProperty('--cor-fundo', cfg.cor_fundo);
-  if (cfg.cor_header)    r.style.setProperty('--cor-header', cfg.cor_header);
-  if (cfg.fonte_titulo)  r.style.setProperty('--fonte-titulo', `'${cfg.fonte_titulo}', sans-serif`);
-  if (cfg.fonte_corpo)   r.style.setProperty('--fonte-corpo', `'${cfg.fonte_corpo}', sans-serif`);
-  if (cfg.tamanho_fonte) r.style.setProperty('--font-size', cfg.tamanho_fonte + 'px');
-}
-
-async function loadBlocos() {
-  const el = document.getElementById('blocos-grid');
+// ── Carregar e renderizar blocos ──
+async function carregarBlocos() {
   try {
     const { data, error } = await sb
       .from('blocos_conteudo')
       .select('*')
       .eq('visivel_cliente', true)
       .order('ordem');
+
     if (error) throw error;
-    renderBlocos(data || []);
+    blocosBD = data || [];
+    renderizarBlocos(blocosBD);
   } catch (err) {
-    const t = i18n[lang];
-    el.innerHTML = `
-      <div class="error-state">
-        <div class="ico">⚠️</div>
-        <p>${t.erro}<br><small style="color:#aaa;font-size:12px">${err.message}</small></p>
-        <button class="retry-btn" onclick="loadBlocos()">${t.tentar}</button>
+    document.getElementById('secoes-container').innerHTML = `
+      <div style="text-align:center;padding:60px 20px;color:#e74c3c">
+        <div style="font-size:40px;margin-bottom:12px">⚠️</div>
+        <p>Erro ao carregar conteúdo: ${err.message}</p>
+        <button onclick="carregarBlocos()" style="margin-top:14px;background:#FF6B00;color:#fff;border:none;border-radius:8px;padding:10px 20px;cursor:pointer;font-size:13px">Tentar novamente</button>
       </div>`;
   }
 }
 
-function renderBlocos(blocos) {
-  const el = document.getElementById('blocos-grid');
-  const t = i18n[lang];
+function renderizarBlocos(blocos) {
+  const container = document.getElementById('secoes-container');
+  const nav = document.getElementById('sidebar-nav');
+
+  // Remove itens dinâmicos da sidebar (mantém só o primeiro item "Geral")
+  const firstItem = nav.querySelector('.sidebar-item[data-sec="geral"]');
+  nav.innerHTML = '';
+  if (firstItem) nav.appendChild(firstItem);
+
   if (!blocos.length) {
-    el.innerHTML = `<p style="color:#aaa;font-size:13.5px;text-align:center;padding:60px 0">${t.vazio}</p>`;
+    container.innerHTML = `<div class="empty-state"><div class="ico">📄</div><p>Nenhum conteúdo disponível no momento.</p></div>`;
     return;
   }
-  el.innerHTML = blocos.map(b => {
-    const tipoClass = b.tipo === 'insight' ? 'tipo-insight' : '';
-    return `
-      <div class="bloco-card ${tipoClass}">
-        <div class="bloco-tipo-badge">${b.tipo || 'card'}</div>
-        ${b.titulo ? `<div class="bloco-titulo">${esc(b.titulo)}</div>` : ''}
-        <div class="bloco-conteudo">${b.conteudo || ''}</div>
-      </div>`;
+
+  // Constrói HTML das seções
+  const html = blocos.map(b => {
+    const slug = b.slug || slugify(b.titulo || b.id);
+    const secId = 'secao-' + slug;
+    return `<div class="secao ativa" id="${secId}" data-bloco-id="${b.id}" data-slug="${slug}">
+      ${b.conteudo || ''}
+      <div class="divider"></div>
+    </div>`;
   }).join('');
+
+  container.innerHTML = html;
+
+  // Popula sidebar com itens dinâmicos
+  blocos.forEach(b => {
+    const slug = b.slug || slugify(b.titulo || b.id);
+    const secId = 'secao-' + slug;
+    const label = b.titulo || 'Seção';
+    const item = document.createElement('a');
+    item.href = 'javascript:void(0)';
+    item.className = 'sidebar-item';
+    item.setAttribute('data-tooltip', label);
+    item.setAttribute('data-sec', slug);
+    item.setAttribute('onclick', `navegarSecao('${slug}',this)`);
+    item.innerHTML = `<span class="label" data-pt="${esc(label)}">${esc(label)}</span>`;
+    nav.appendChild(item);
+  });
+
+  // Aplica idioma atual ao conteúdo recém-inserido
+  trocarIdioma(idiomaAtual);
+}
+
+function slugify(text) {
+  return String(text).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-init();
+// ── Realtime — atualiza sem recarregar ──
+sb.channel('portal-cliente')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'blocos_conteudo' }, () => {
+    carregarBlocos();
+  })
+  .subscribe();
+
+// ── Navegação sidebar ──
+function navegarSecao(id, el) {
+  document.querySelectorAll('.secao').forEach(s => s.classList.remove('ativa'));
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('menu-ativo'));
+  if (id === 'geral') {
+    document.querySelectorAll('.secao').forEach(s => s.classList.add('ativa'));
+  } else {
+    const alvo = document.getElementById('secao-' + id);
+    if (alvo) alvo.classList.add('ativa');
+  }
+  if (el) el.classList.add('menu-ativo');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebar-overlay').style.display = 'none';
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+  document.getElementById('main-wrapper').classList.toggle('collapsed');
+}
+
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const isOpen = sidebar.classList.contains('mobile-open');
+  sidebar.classList.toggle('mobile-open', !isOpen);
+  overlay.style.display = isOpen ? 'none' : 'block';
+}
+
+function toggleFontes() {
+  const panel = document.getElementById('fontes-panel');
+  const arrow = document.getElementById('fontes-arrow');
+  const open = panel.style.display === 'none';
+  panel.style.display = open ? 'block' : 'none';
+  arrow.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+// ── Troca de idioma ──
+function trocarIdioma(lang) {
+  idiomaAtual = lang;
+  localStorage.setItem('idioma', lang);
+  document.querySelectorAll('[data-pt]').forEach(el => {
+    const texto = el.getAttribute('data-' + lang);
+    if (texto !== null) el.innerHTML = texto;
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    const ativo = btn.getAttribute('data-lang') === lang;
+    btn.style.opacity = ativo ? '1' : '0.45';
+    btn.style.borderColor = ativo ? '#FF6B00' : 'rgba(255,255,255,0.2)';
+    btn.style.borderWidth = ativo ? '1.5px' : '1px';
+    btn.style.background = ativo ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)';
+    btn.classList.toggle('lang-btn-active', ativo);
+  });
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en' : 'zh-CN';
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+  trocarIdioma(idiomaAtual);
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar-mobile-btn').style.display = 'flex';
+  }
+  carregarBlocos();
+});
 </script>
 </body>
 </html>

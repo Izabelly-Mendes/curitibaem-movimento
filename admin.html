@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="diferencial_logo.png">
-<title>Painel Bicalho — Administração</title>
+<title>Painel Bicalho — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:100vh;overflow:hidden}
 
 /* ── AUTH ── */
 #auth-screen{position:fixed;inset:0;background:#1a1a1a;display:flex;align-items:center;justify-content:center;z-index:9999}
@@ -22,129 +23,189 @@ body{font-family:'DM Sans',sans-serif;background:#f5f5f0;color:#1a1a1a;min-heigh
 .auth-btn:hover{background:#e05a00}
 .auth-err{color:#ff4444;font-size:12px;margin-top:10px;display:none}
 
-/* ── LAYOUT ── */
-#app{display:none;min-height:100vh}
-.layout{display:flex;min-height:100vh}
+/* ── APP LAYOUT ── */
+#app{display:none;height:100vh;flex-direction:column}
+.app-header{background:#1a1a1a;height:52px;display:flex;align-items:center;padding:0 20px;gap:16px;border-bottom:0.5px solid rgba(255,255,255,0.08);flex-shrink:0;z-index:50}
+.app-header img{height:28px;filter:brightness(0) invert(1)}
+.app-header-title{font-family:'Syne',sans-serif;color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;margin-left:4px}
+.app-header-spacer{flex:1}
+.tab-btn{background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 14px;color:rgba(255,255,255,0.5);font-size:12.5px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.tab-btn.active{background:rgba(255,107,0,0.15);border-color:rgba(255,107,0,0.4);color:#FF6B00}
+.logout-btn{background:none;border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.logout-btn:hover{border-color:rgba(255,68,68,0.4);color:#ff6b6b}
 
-/* ── SIDEBAR ── */
-.sidebar{width:240px;background:#1a1a1a;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
-.sidebar-header{padding:24px 20px;border-bottom:0.5px solid rgba(255,255,255,0.08)}
-.sidebar-header img{height:32px;filter:brightness(0) invert(1);margin-bottom:12px;display:block}
-.sidebar-header span{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.1em;text-transform:uppercase}
-.nav-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,0.5);cursor:pointer;font-size:13.5px;transition:all 0.15s;border-left:3px solid transparent}
-.nav-item:hover{color:#fff;background:rgba(255,255,255,0.04)}
-.nav-item.active{color:#FF6B00;background:rgba(255,107,0,0.08);border-left-color:#FF6B00}
-.nav-item .ni{font-size:16px;width:20px;text-align:center}
-.sidebar-footer{padding:16px 20px;border-top:0.5px solid rgba(255,255,255,0.08);margin-top:auto}
-.logout-btn{width:100%;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px;color:rgba(255,255,255,0.4);font-size:12.5px;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
-.logout-btn:hover{background:rgba(255,68,68,0.15);border-color:rgba(255,68,68,0.3);color:#ff6b6b}
+.app-body{display:flex;flex:1;overflow:hidden}
 
-/* ── MAIN ── */
-.main{margin-left:240px;flex:1;padding:32px 40px;min-height:100vh}
-.page-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px}
-.page-sub{font-size:13px;color:#888;margin-bottom:28px}
+/* ── LEFT PANEL ── */
+.left-panel{width:280px;background:#1a1a1a;display:flex;flex-direction:column;border-right:0.5px solid rgba(255,255,255,0.08);flex-shrink:0;overflow:hidden}
+.left-panel-header{padding:16px;border-bottom:0.5px solid rgba(255,255,255,0.08);flex-shrink:0}
+.left-panel-header h3{font-family:'Syne',sans-serif;color:#fff;font-size:13px;font-weight:700;margin-bottom:10px}
+.add-btn{width:100%;background:#FF6B00;color:#fff;border:none;border-radius:8px;padding:9px;font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-btn:hover{background:#e05a00}
+.left-panel-body{flex:1;overflow-y:auto;padding:8px}
+.left-panel-body::-webkit-scrollbar{width:3px}
+.left-panel-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
 
-/* ── SECTIONS ── */
-.section{display:none}
-.section.active{display:block}
+/* ── BLOCO ITEM (left list) ── */
+.bloco-item{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:default;transition:background 0.1s;background:rgba(255,255,255,0.03);margin-bottom:4px;border:0.5px solid rgba(255,255,255,0.06)}
+.bloco-item:hover{background:rgba(255,255,255,0.06)}
+.bloco-drag{color:rgba(255,255,255,0.2);cursor:grab;font-size:14px;flex-shrink:0;padding:2px}
+.bloco-drag:active{cursor:grabbing}
+.bloco-info{flex:1;min-width:0}
+.bloco-name{font-size:12.5px;color:rgba(255,255,255,0.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.bloco-tipo{font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em}
+.bloco-toggle{flex-shrink:0;cursor:pointer;font-size:17px;transition:opacity 0.15s;line-height:1}
+.bloco-toggle.hidden{opacity:0.25}
+.bloco-edit-btn{background:rgba(255,107,0,0.15);border:none;border-radius:5px;width:26px;height:26px;cursor:pointer;color:#FF6B00;font-size:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.bloco-edit-btn:hover{background:rgba(255,107,0,0.3)}
+.bloco-del-btn{background:rgba(255,68,68,0.1);border:none;border-radius:5px;width:26px;height:26px;cursor:pointer;color:#e74c3c;font-size:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.bloco-del-btn:hover{background:rgba(255,68,68,0.2)}
+
+/* ── RASCUNHOS section in left panel ── */
+.section-divider-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.25);padding:12px 10px 6px}
+.rascunho-item{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px;margin-bottom:6px}
+.rascunho-titulo{font-size:12px;color:rgba(255,255,255,0.65);margin-bottom:6px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rascunho-date{font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:8px}
+.rascunho-btns{display:flex;gap:5px}
+.rascunho-btns button{flex:1;border:none;border-radius:5px;padding:5px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600}
+.btn-aprovar{background:rgba(39,174,96,0.15);color:#27ae60}
+.btn-aprovar:hover{background:rgba(39,174,96,0.25)}
+.btn-rejeitar{background:rgba(239,68,68,0.1);color:#e74c3c}
+.btn-rejeitar:hover{background:rgba(239,68,68,0.2)}
+.badge-pendente{background:rgba(245,158,11,0.2);color:#d97706;border-radius:20px;font-size:10px;padding:1px 7px;font-weight:700;margin-left:6px}
+
+/* ── PREVIEW AREA ── */
+.preview-area{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#f5f5f0}
+.preview-toolbar{background:#fff;border-bottom:0.5px solid #e0ddd5;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.preview-toolbar-label{font-size:11.5px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:0.08em}
+.preview-link{font-size:11.5px;color:#FF6B00;text-decoration:none;font-family:monospace}
+.preview-link:hover{text-decoration:underline}
+.preview-scroll{flex:1;overflow-y:auto;padding:20px}
+.preview-scroll::-webkit-scrollbar{width:6px}
+.preview-scroll::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
+
+/* ── BLOCOS NA PRÉVIA ── */
+.bloco-wrapper{position:relative;margin-bottom:8px}
+.bloco-overlay{position:absolute;inset:-4px;opacity:0;transition:opacity 0.2s;border:2px solid transparent;border-radius:16px;cursor:pointer;z-index:10;pointer-events:all}
+.bloco-wrapper:hover .bloco-overlay{opacity:1;border-color:#FF6B00;background:rgba(255,107,0,0.03)}
+.bloco-acoes{position:absolute;top:8px;right:8px;display:flex;gap:6px;z-index:11}
+.bloco-btn{width:32px;height:32px;border-radius:8px;background:#1a1a1a;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#FF6B00;font-size:14px;transition:background 0.15s}
+.bloco-btn:hover{background:#333}
+
+/* Preview CSS (same as cliente.html) */
+.preview-cover{background:#1a1a1a;padding:40px;border-radius:12px;margin-bottom:12px;position:relative;overflow:hidden}
+.preview-cover::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,107,0,0.07);pointer-events:none}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FF6B00;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:0.5px;background:#ddd}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.kpi2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.kpi3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.kpi{background:#fff;border-radius:10px;border:0.5px solid #e0ddd5;padding:14px}
+.kpi.dk{background:#1a1a1a;border-color:#1a1a1a}
+.kpi-num{font-family:'Georgia',serif;font-size:24px;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
+.kpi-num span{color:#FF6B00}
+.kpi.dk .kpi-num{color:#FF6B00}
+.kpi-lbl{font-size:11px;color:#888;line-height:1.4}
+.kpi.dk .kpi-lbl{color:rgba(255,255,255,0.5)}
+.kpi-src{font-size:10px;color:#bbb;margin-top:4px}
+.kpi.dk .kpi-src{color:rgba(255,255,255,0.25)}
+.card{background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;padding:18px;margin-bottom:12px}
+.card-h{font-family:'Georgia',serif;font-size:14px;font-weight:bold;margin-bottom:6px}
+.card-b{font-size:13px;color:#555;line-height:1.65}
+.card-b strong{color:#1a1a1a;font-weight:700}
+.hl{color:#FF6B00;font-weight:700}
+.ins{background:rgba(255,107,0,0.06);border-left:3px solid #FF6B00;border-radius:0 8px 8px 0;padding:11px 14px;margin-top:10px;font-size:12.5px;color:#c85200;line-height:1.6}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.bar-lbl{font-size:11.5px;color:#555;width:80px;flex-shrink:0}
+.bar-track{flex:1;height:5px;background:#f0ede6;border-radius:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;background:#FF6B00}
+.bar-val{font-size:11.5px;font-weight:700;color:#1a1a1a;width:34px;text-align:right}
+.award{background:#1a1a1a;border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.award-ico{width:38px;height:38px;background:rgba(255,107,0,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.award strong{font-family:'Georgia',serif;font-size:13px;font-weight:bold;color:#fff;display:block;margin-bottom:3px}
+.award span{font-size:11.5px;color:rgba(255,255,255,0.4)}
+.divider{height:0.5px;background:#e0ddd5;margin:20px 0}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.tag{background:#f5f5f0;border:0.5px solid #ddd;border-radius:5px;padding:3px 9px;font-size:11px;color:#555}
+.tag.o{background:rgba(255,107,0,0.07);border-color:rgba(255,107,0,0.2);color:#c85200}
+.insight-box{background:rgba(255,107,0,0.06);border-left:3px solid #FF6B00;border-radius:0 8px 8px 0;padding:11px 14px;margin-top:10px;font-size:12.5px;color:#c85200;line-height:1.6}
+.insight-box p{margin:0}
+.news-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:5px;margin-bottom:5px}
+.news-item{position:relative;overflow:hidden;border-radius:8px;cursor:pointer;background:#1a1a1a;display:block;text-decoration:none;height:200px}
+.news-item.featured{height:auto;min-height:320px}
+.news-item img{width:100%;height:100%;object-fit:cover;display:block}
+.news-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 100%);padding:16px 12px 10px}
+.news-tag{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#FF6B00;margin-bottom:4px;display:block}
+.news-title{font-family:'Georgia',serif;font-size:14px;font-weight:700;color:#fff;line-height:1.2}
+.news-item.featured .news-title{font-size:18px}
+.news-source{font-size:9.5px;color:rgba(255,255,255,0.35);margin-top:4px;display:block}
+.news-item:nth-child(1){grid-column:1;grid-row:1/3}
+.news-item:nth-child(2){grid-column:2;grid-row:1}
+.news-item:nth-child(3){grid-column:3;grid-row:1}
+.news-item:nth-child(4){grid-column:2/4;grid-row:2}
+.news-row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:12px}
+
+/* ── EDIT PANEL (right, slides in) ── */
+.edit-panel{width:0;background:#fff;border-left:0.5px solid #e0ddd5;display:flex;flex-direction:column;transition:width 0.25s ease;overflow:hidden;flex-shrink:0}
+.edit-panel.open{width:380px}
+.edit-panel-header{padding:16px 20px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.edit-panel-header h3{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
+.edit-close{background:none;border:none;font-size:18px;cursor:pointer;color:#999;padding:4px}
+.edit-body{flex:1;overflow-y:auto;padding:18px}
+.edit-body::-webkit-scrollbar{width:4px}
+.edit-body::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
+.edit-footer{padding:14px 20px;border-top:0.5px solid #f0ede6;display:flex;gap:8px;flex-shrink:0}
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:11.5px;font-weight:600;color:#666;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em}
+.form-input,.form-select{width:100%;border:0.5px solid #ddd;border-radius:7px;padding:9px 12px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;background:#fafafa}
+.form-input:focus,.form-select:focus{border-color:#FF6B00;background:#fff}
+.toggle-row{display:flex;align-items:center;gap:10px}
+.toggle{position:relative;display:inline-block;width:38px;height:21px;cursor:pointer;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:21px;transition:0.2s}
+.toggle-slider:before{content:'';position:absolute;width:15px;height:15px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.2s}
+.toggle input:checked+.toggle-slider{background:#FF6B00}
+.toggle input:checked+.toggle-slider:before{transform:translateX(17px)}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:'DM Sans',sans-serif}
 .btn-primary{background:#FF6B00;color:#fff}
 .btn-primary:hover{background:#e05a00}
-.btn-sm{padding:5px 12px;font-size:12px;border-radius:6px}
 .btn-ghost{background:rgba(0,0,0,0.05);color:#555;border:0.5px solid #ddd}
 .btn-ghost:hover{background:#eee}
-.btn-danger{background:rgba(255,68,68,0.08);color:#c0392b;border:0.5px solid rgba(255,68,68,0.2)}
-.btn-danger:hover{background:rgba(255,68,68,0.15)}
-.btn-success{background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25)}
-.btn-success:hover{background:rgba(39,174,96,0.2)}
-
-.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
-
-/* ── PANEL ── */
-.panel{background:#fff;border-radius:14px;border:0.5px solid #e0ddd5}
-.panel-body{padding:0}
-
-.list-item{display:flex;align-items:center;gap:16px;padding:14px 24px;border-bottom:0.5px solid #f5f3ef;transition:background 0.1s}
-.list-item:last-child{border-bottom:none}
-.list-item:hover{background:#fafaf8}
-.item-info{flex:1;min-width:0}
-.item-title{font-size:14px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.item-sub{font-size:12px;color:#999}
-.item-actions{display:flex;gap:8px;flex-shrink:0}
-
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
-.badge-kpi{background:rgba(59,130,246,0.1);color:#2563eb}
-.badge-card{background:rgba(16,185,129,0.1);color:#059669}
-.badge-insight{background:rgba(245,158,11,0.1);color:#d97706}
-.badge-noticia{background:rgba(139,92,246,0.1);color:#7c3aed}
-.badge-evento{background:rgba(236,72,153,0.1);color:#be185d}
-
-/* ── TOGGLE ── */
-.toggle{position:relative;display:inline-block;width:40px;height:22px;cursor:pointer;flex-shrink:0}
-.toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:22px;transition:0.2s}
-.toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.2s}
-.toggle input:checked+.toggle-slider{background:#FF6B00}
-.toggle input:checked+.toggle-slider:before{transform:translateX(18px)}
+.btn-seed{background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25);font-size:12px;padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600}
+.btn-seed:hover{background:rgba(39,174,96,0.2)}
 
 /* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
-.modal-header{padding:20px 24px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.modal-header h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700}
-.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:#999;line-height:1;padding:4px}
-.modal-body{padding:24px;overflow-y:auto}
-.modal-footer{padding:16px 24px;border-top:0.5px solid #f0ede6;display:flex;justify-content:flex-end;gap:10px;flex-shrink:0}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:540px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-header{padding:18px 22px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.modal-close{background:none;border:none;font-size:18px;cursor:pointer;color:#999;padding:4px}
+.modal-body{padding:20px 22px;overflow-y:auto;flex:1}
+.modal-footer{padding:14px 22px;border-top:0.5px solid #f0ede6;display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
 
-/* ── FORM ── */
-.form-group{margin-bottom:16px}
-.form-label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em}
-.form-input,.form-textarea,.form-select{width:100%;border:0.5px solid #ddd;border-radius:8px;padding:10px 14px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;background:#fafafa}
-.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:#FF6B00;background:#fff}
-.form-textarea{min-height:100px;resize:vertical}
-
-/* ── RASCUNHOS ── */
-.draft-card{background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:12px;overflow:hidden}
-.draft-header{padding:16px 20px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;justify-content:space-between}
-.draft-title{font-weight:600;font-size:14px}
-.draft-date{font-size:11px;color:#aaa}
-.draft-preview{padding:14px 20px;font-size:13px;color:#666;line-height:1.65;max-height:120px;overflow:hidden;position:relative}
-.draft-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,#fff)}
-.draft-actions{padding:12px 20px;border-top:0.5px solid #f5f3ef;display:flex;gap:8px;flex-wrap:wrap}
-.status-badge{padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
-.status-pendente{background:rgba(245,158,11,0.1);color:#d97706}
-.status-aprovado{background:rgba(39,174,96,0.1);color:#219a52}
-.status-rejeitado{background:rgba(239,68,68,0.1);color:#dc2626}
-
-/* ── TOASTS ── */
-#toast{position:fixed;bottom:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px}
-.toast-item{background:#1a1a1a;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;border-left:3px solid #FF6B00;box-shadow:0 4px 20px rgba(0,0,0,0.3);animation:slideIn 0.3s ease;max-width:320px}
-.toast-item.success{border-left-color:#27ae60}
-.toast-item.error{border-left-color:#e74c3c}
+/* ── TOAST ── */
+#toast-container{position:fixed;bottom:20px;right:20px;z-index:3000;display:flex;flex-direction:column;gap:8px}
+.toast{background:#1a1a1a;color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;border-left:3px solid #FF6B00;box-shadow:0 4px 16px rgba(0,0,0,0.25);animation:slideIn 0.3s ease;max-width:300px}
+.toast.success{border-left-color:#27ae60}
+.toast.error{border-left-color:#e74c3c}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 
-/* ── ESTADOS ── */
-.empty-state{text-align:center;padding:60px 20px;color:#bbb}
-.empty-state .ico{font-size:48px;margin-bottom:12px}
-.empty-state p{font-size:14px}
-.error-state{text-align:center;padding:40px 20px;color:#e74c3c}
-.error-state .ico{font-size:40px;margin-bottom:10px}
-.error-state p{font-size:13.5px;margin-bottom:14px}
+/* Quill override */
+.ql-container{font-size:13.5px;font-family:'DM Sans',sans-serif}
+.ql-editor{min-height:160px}
+.ql-toolbar{border-radius:7px 7px 0 0}
+.ql-container{border-radius:0 0 7px 7px}
 
-/* ── MOBILE ── */
-@media(max-width:768px){
-  .sidebar{transform:translateX(-100%);transition:transform 0.3s}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0;padding:20px 16px}
-  .mob-menu{display:flex;position:fixed;top:12px;left:12px;z-index:200;background:#1a1a1a;border:none;border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;color:#FF6B00;font-size:18px;cursor:pointer}
-}
-@media(min-width:769px){.mob-menu{display:none}}
+/* ── TABS ── */
+.tab-section{display:none}
+.tab-section.active{display:flex;flex:1;overflow:hidden}
 
-input[type=range]{-webkit-appearance:none;height:6px;background:#f0ede6;border-radius:6px;outline:none}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#FF6B00;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+.empty-state{text-align:center;padding:40px 20px;color:rgba(255,255,255,0.3)}
+.empty-state .ico{font-size:36px;margin-bottom:10px}
+.empty-state p{font-size:13px}
 </style>
 </head>
 <body>
@@ -163,78 +224,141 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 
 <!-- APP -->
 <div id="app">
-  <button class="mob-menu" onclick="toggleSidebar()">☰</button>
-  <div class="layout">
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <img src="diferencial_logo.png" alt="Diferencial">
-        <span>Painel Bicalho</span>
-      </div>
-      <div style="padding:16px 0;flex:1">
-        <div class="nav-item active" onclick="showSection('conteudo')" data-sec="conteudo">
-          <span class="ni">📄</span> Conteúdo Geral
-        </div>
-        <div class="nav-item" onclick="showSection('rascunhos')" data-sec="rascunhos">
-          <span class="ni">📝</span> Rascunhos
-          <span id="rascunhos-badge" style="margin-left:auto;background:#FF6B00;color:#fff;border-radius:20px;font-size:10px;padding:2px 7px;display:none"></span>
-        </div>
-      </div>
-      <div class="sidebar-footer">
-        <button class="logout-btn" onclick="logout()">↩ Sair</button>
-      </div>
-    </nav>
 
-    <main class="main">
-
-      <!-- CONTEÚDO GERAL -->
-      <div class="section active" id="sec-conteudo">
-        <div class="toolbar">
-          <div>
-            <div class="page-title">Conteúdo Geral</div>
-            <div class="page-sub">Blocos visíveis no portal do cliente</div>
-          </div>
-          <button class="btn btn-primary" onclick="openBlocoModal()">＋ Adicionar bloco</button>
-        </div>
-        <div class="panel">
-          <div id="blocos-list" class="panel-body">
-            <div class="empty-state"><div class="ico">⏳</div><p>Carregando blocos...</p></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RASCUNHOS -->
-      <div class="section" id="sec-rascunhos">
-        <div class="toolbar">
-          <div>
-            <div class="page-title">Rascunhos de Curadoria</div>
-            <div class="page-sub">Conteúdo gerado automaticamente aguardando aprovação</div>
-          </div>
-        </div>
-        <div id="rascunhos-list">
-          <div class="empty-state"><div class="ico">⏳</div><p>Carregando rascunhos...</p></div>
-        </div>
-      </div>
-
-    </main>
+  <!-- HEADER -->
+  <div class="app-header">
+    <img src="diferencial_logo.png" alt="Diferencial">
+    <span class="app-header-title">Painel Bicalho</span>
+    <div class="app-header-spacer"></div>
+    <button class="tab-btn active" onclick="switchTab('editor')" id="tab-editor">✏️ Editor</button>
+    <button class="tab-btn" onclick="switchTab('rascunhos')" id="tab-rascunhos">📝 Rascunhos <span id="badge-rascunhos" style="display:none;background:#FF6B00;color:#fff;border-radius:20px;font-size:10px;padding:1px 6px;margin-left:2px"></span></button>
+    <a href="cliente.html" target="_blank" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;transition:all 0.15s" onmouseover="this.style.color='#FF6B00'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">↗ Portal</a>
+    <button class="logout-btn" onclick="logout()">Sair</button>
   </div>
-</div>
 
-<!-- Modal: Bloco -->
-<div class="modal-overlay" id="modal-bloco">
+  <!-- BODY TABS -->
+  <div class="app-body" style="position:relative;overflow:hidden">
+
+    <!-- TAB: EDITOR -->
+    <div class="tab-section active" id="tab-section-editor">
+
+      <!-- LEFT PANEL -->
+      <div class="left-panel">
+        <div class="left-panel-header">
+          <h3>Blocos de conteúdo</h3>
+          <button class="add-btn" onclick="openModalNovo()">＋ Adicionar bloco</button>
+        </div>
+        <div class="left-panel-body" id="bloco-list-container">
+          <div id="bloco-list" style="min-height:40px">
+            <div class="empty-state"><div class="ico">⏳</div><p>Carregando...</p></div>
+          </div>
+          <div style="padding:8px 0">
+            <button class="btn-seed" id="seed-btn" onclick="confirmarSeed()" style="width:100%;display:none">
+              🌱 Popular com conteúdo do material interno
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PREVIEW AREA -->
+      <div class="preview-area" id="preview-area">
+        <div class="preview-toolbar">
+          <span class="preview-toolbar-label">Prévia do portal do cliente</span>
+          <div style="flex:1"></div>
+          <a href="cliente.html" target="_blank" class="preview-link">↗ curitibaem-movimento.vercel.app/cliente.html</a>
+        </div>
+        <div class="preview-scroll" id="preview-scroll">
+          <!-- COVER (simplified) -->
+          <div class="preview-cover">
+            <div style="display:flex;align-items:center;margin-bottom:24px">
+              <img src="diferencial_logo.png" style="height:28px;filter:brightness(0) invert(1)" alt="">
+            </div>
+            <div style="font-family:'Georgia',serif;font-size:28px;font-weight:bold;color:#fff;line-height:1.1;margin-bottom:8px">Curitiba em <span style="color:#FF6B00">movimento</span></div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.4)">Turismo, eventos e oportunidades de investimento · 2024/2025</div>
+          </div>
+          <!-- BLOCOS DINÂMICOS -->
+          <div id="preview-blocos"></div>
+        </div>
+      </div>
+
+      <!-- EDIT PANEL (right, slides in) -->
+      <div class="edit-panel" id="edit-panel">
+        <div class="edit-panel-header">
+          <h3>Editar bloco</h3>
+          <button class="edit-close" onclick="fecharEditPanel()">✕</button>
+        </div>
+        <div class="edit-body">
+          <input type="hidden" id="edit-id">
+          <div class="form-group">
+            <label class="form-label">Título</label>
+            <input type="text" class="form-input" id="edit-titulo" placeholder="Título do bloco">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo</label>
+            <select class="form-select" id="edit-tipo">
+              <option value="card">Card</option>
+              <option value="kpi">KPI</option>
+              <option value="insight">Insight</option>
+              <option value="noticia">Notícia</option>
+              <option value="evento">Evento</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Conteúdo</label>
+            <div id="quill-editor"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Conteúdo HTML bruto</label>
+            <textarea id="edit-conteudo-html" style="width:100%;min-height:80px;border:0.5px solid #ddd;border-radius:7px;padding:9px 12px;font-size:12px;font-family:monospace;resize:vertical;outline:none;background:#fafafa" placeholder="HTML direto (opcional — sobrepõe o editor acima)"></textarea>
+            <p style="font-size:11px;color:#aaa;margin-top:4px">Se preenchido, o HTML bruto prevalece sobre o editor visual.</p>
+          </div>
+          <div class="form-group">
+            <div class="toggle-row">
+              <label class="toggle">
+                <input type="checkbox" id="edit-visivel" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <span style="font-size:13.5px">Visível no portal do cliente</span>
+            </div>
+          </div>
+        </div>
+        <div class="edit-footer">
+          <button class="btn btn-ghost" onclick="fecharEditPanel()">Cancelar</button>
+          <button class="btn btn-primary" onclick="salvarBloco()">💾 Salvar</button>
+        </div>
+      </div>
+
+    </div><!-- /tab-editor -->
+
+    <!-- TAB: RASCUNHOS -->
+    <div class="tab-section" id="tab-section-rascunhos" style="background:#f5f5f0;overflow-y:auto;padding:24px;flex-direction:column">
+      <div style="max-width:700px;margin:0 auto;width:100%">
+        <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px">Rascunhos de Curadoria</h2>
+        <p style="font-size:13px;color:#888;margin-bottom:24px">Conteúdo gerado automaticamente aguardando aprovação</p>
+        <div id="rascunhos-container">
+          <div style="text-align:center;padding:40px;color:#bbb"><p>Carregando...</p></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /app-body -->
+</div><!-- /app -->
+
+<!-- MODAL: Novo bloco -->
+<div class="modal-overlay" id="modal-novo">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="modal-bloco-titulo">Novo Bloco</h3>
-      <button class="modal-close" onclick="closeModal('modal-bloco')">✕</button>
+      <h3>Novo Bloco</h3>
+      <button class="modal-close" onclick="closeModal('modal-novo')">✕</button>
     </div>
     <div class="modal-body">
-      <input type="hidden" id="bloco-id">
       <div class="form-group">
         <label class="form-label">Título</label>
-        <input type="text" class="form-input" id="bloco-titulo" placeholder="Título do bloco">
+        <input type="text" class="form-input" id="novo-titulo" placeholder="Nome do bloco">
       </div>
       <div class="form-group">
         <label class="form-label">Tipo</label>
-        <select class="form-select" id="bloco-tipo">
+        <select class="form-select" id="novo-tipo">
           <option value="card">Card</option>
           <option value="kpi">KPI</option>
           <option value="insight">Insight</option>
@@ -243,70 +367,43 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Conteúdo (HTML permitido)</label>
-        <textarea class="form-textarea" id="bloco-conteudo" placeholder="Conteúdo do bloco"></textarea>
+        <label class="form-label">Conteúdo HTML</label>
+        <textarea class="form-input" id="novo-conteudo" style="min-height:100px;resize:vertical" placeholder="HTML do conteúdo do bloco"></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">Ordem (menor = primeiro)</label>
-        <input type="number" class="form-input" id="bloco-ordem" value="0">
-      </div>
-      <div class="form-group" style="display:flex;align-items:center;gap:12px">
-        <label class="toggle">
-          <input type="checkbox" id="bloco-visivel" checked>
-          <span class="toggle-slider"></span>
-        </label>
-        <span style="font-size:13.5px">Visível no portal do cliente</span>
+        <div class="toggle-row">
+          <label class="toggle"><input type="checkbox" id="novo-visivel" checked><span class="toggle-slider"></span></label>
+          <span style="font-size:13.5px">Visível para o cliente</span>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-bloco')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveBloco()">Salvar</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-novo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="criarBloco()">Criar bloco</button>
     </div>
   </div>
 </div>
 
-<!-- Modal: Rascunho -->
-<div class="modal-overlay" id="modal-rascunho">
-  <div class="modal" style="max-width:640px">
-    <div class="modal-header">
-      <h3>Editar rascunho</h3>
-      <button class="modal-close" onclick="closeModal('modal-rascunho')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="rascunho-id">
-      <div class="form-group">
-        <label class="form-label">Título</label>
-        <input type="text" class="form-input" id="rascunho-titulo">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Conteúdo</label>
-        <textarea class="form-textarea" id="rascunho-conteudo" style="min-height:200px"></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-rascunho')">Cancelar</button>
-      <button class="btn btn-success" onclick="aprovarRascunho()">✓ Aprovar e publicar</button>
-    </div>
-  </div>
-</div>
-
-<div id="toast"></div>
+<div id="toast-container"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 <script>
-// ══════════════════════════════════════════════════════════
-// CONFIG — anon key pública por design do Supabase
-// Variáveis de ambiente no painel Vercel → Settings → Env Vars:
-//   SUPABASE_URL, SUPABASE_ANON_KEY
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════
 const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+let allBlocos = [];
+let quillEditor = null;
+let editingBlocoId = null;
+
 // ── AUTH ──
 function checkAuth() {
-  const pass = document.getElementById('auth-pass').value;
-  if (pass === 'Bicalho@2025') {
+  if (document.getElementById('auth-pass').value === 'Bicalho@2025') {
     sessionStorage.setItem('admin-auth', '1');
     showApp();
   } else {
@@ -314,265 +411,514 @@ function checkAuth() {
     document.getElementById('auth-pass').value = '';
   }
 }
+document.getElementById('auth-pass').addEventListener('keydown', e => { if (e.key === 'Enter') checkAuth(); });
+function logout() { sessionStorage.removeItem('admin-auth'); location.reload(); }
 
 function showApp() {
   document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
   init();
 }
 
-function logout() {
-  sessionStorage.removeItem('admin-auth');
-  location.reload();
-}
-
-document.getElementById('auth-pass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkAuth();
-});
-
-// Verifica sessão ao carregar — chama init() diretamente, sem esperar DOMContentLoaded
-if (sessionStorage.getItem('admin-auth') === '1') {
-  showApp();
-}
+if (sessionStorage.getItem('admin-auth') === '1') showApp();
 
 // ── INIT ──
 async function init() {
+  quillEditor = new Quill('#quill-editor', { theme: 'snow', placeholder: 'Conteúdo do bloco...' });
   await Promise.all([loadBlocos(), loadRascunhos()]);
+
+  // Realtime
+  sb.channel('admin-channel')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'blocos_conteudo' }, loadBlocos)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'rascunhos_curadoria' }, loadRascunhos)
+    .subscribe();
 }
 
-// ── NAVEGAÇÃO ──
-function showSection(sec) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('sec-' + sec).classList.add('active');
-  document.querySelector('[data-sec="' + sec + '"]').classList.add('active');
-  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+// ── TABS ──
+function switchTab(tab) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-section-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
 }
 
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
+// ── BLOCOS ──
+async function loadBlocos() {
+  const { data, error } = await sb.from('blocos_conteudo').select('*').order('ordem');
+  if (error) { toast('Erro ao carregar blocos: ' + error.message, 'error'); return; }
+  allBlocos = data || [];
+  renderListaBlocos(allBlocos);
+  renderPreviewBlocos(allBlocos);
+
+  const seedBtn = document.getElementById('seed-btn');
+  seedBtn.style.display = allBlocos.length === 0 ? 'block' : 'none';
 }
 
-// ── TOAST ──
-function toast(msg, type) {
-  const t = document.createElement('div');
-  t.className = 'toast-item ' + (type || 'info');
-  t.textContent = msg;
-  document.getElementById('toast').appendChild(t);
-  setTimeout(() => t.remove(), 3500);
+function renderListaBlocos(blocos) {
+  const el = document.getElementById('bloco-list');
+  if (!blocos.length) {
+    el.innerHTML = '<div class="empty-state"><div class="ico">📄</div><p>Nenhum bloco ainda.<br>Clique em Popular abaixo.</p></div>';
+    return;
+  }
+  el.innerHTML = blocos.map(b => `
+    <div class="bloco-item" data-id="${b.id}">
+      <span class="bloco-drag">⠿</span>
+      <div class="bloco-info">
+        <div class="bloco-name" title="${esc(b.titulo || '')}">${esc(b.titulo || '(sem título)')}</div>
+        <div class="bloco-tipo">${b.tipo || 'card'} · ${b.ordem}</div>
+      </div>
+      <span class="bloco-toggle ${b.visivel_cliente ? '' : 'hidden'}" onclick="toggleVisivel('${b.id}',${!b.visivel_cliente})" title="${b.visivel_cliente ? 'Ocultar do cliente' : 'Mostrar ao cliente'}">${b.visivel_cliente ? '👁️' : '🙈'}</span>
+      <button class="bloco-edit-btn" onclick="abrirEditPanel('${b.id}')" title="Editar">✏️</button>
+      <button class="bloco-del-btn" onclick="deletarBloco('${b.id}')" title="Excluir">🗑️</button>
+    </div>
+  `).join('');
+
+  // SortableJS
+  Sortable.create(el, {
+    animation: 150,
+    handle: '.bloco-drag',
+    ghostClass: 'sortable-ghost',
+    onEnd: async function(evt) {
+      const items = el.querySelectorAll('.bloco-item');
+      const updates = [];
+      items.forEach((item, idx) => {
+        updates.push(sb.from('blocos_conteudo').update({ ordem: idx + 1 }).eq('id', item.dataset.id));
+      });
+      await Promise.all(updates);
+      toast('Ordem atualizada!', 'success');
+    }
+  });
 }
 
-// ── MODAIS ──
+function renderPreviewBlocos(blocos) {
+  const el = document.getElementById('preview-blocos');
+  const visiveis = blocos.filter(b => b.visivel_cliente);
+  if (!visiveis.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#bbb;font-size:13px">Nenhum bloco visível. Ative a visibilidade no painel lateral.</div>';
+    return;
+  }
+  el.innerHTML = visiveis.map(b => `
+    <div class="bloco-wrapper" data-id="${b.id}">
+      <div class="bloco-overlay" onclick="abrirEditPanel('${b.id}')">
+        <div class="bloco-acoes">
+          <button class="bloco-btn" onclick="event.stopPropagation();abrirEditPanel('${b.id}')" title="Editar">✏️</button>
+          <button class="bloco-btn" onclick="event.stopPropagation();toggleVisivel('${b.id}',false)" title="Ocultar">🙈</button>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:18px 20px;margin-bottom:8px">
+        ${b.conteudo || `<p style="color:#bbb;font-size:13px;text-align:center;padding:20px">${esc(b.titulo || 'Bloco sem conteúdo')}</p>`}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function toggleVisivel(id, valor) {
+  const { error } = await sb.from('blocos_conteudo')
+    .update({ visivel_cliente: valor, updated_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) toast('Erro: ' + error.message, 'error');
+  else toast(valor ? '✅ Bloco agora visível' : '🙈 Bloco ocultado', 'success');
+}
+
+async function deletarBloco(id) {
+  if (!confirm('Excluir este bloco permanentemente?')) return;
+  const { error } = await sb.from('blocos_conteudo').delete().eq('id', id);
+  if (error) toast('Erro: ' + error.message, 'error');
+  else toast('Bloco excluído', 'success');
+}
+
+// ── EDIT PANEL ──
+function abrirEditPanel(id) {
+  const bloco = allBlocos.find(b => b.id === id);
+  if (!bloco) return;
+  editingBlocoId = id;
+  document.getElementById('edit-id').value = id;
+  document.getElementById('edit-titulo').value = bloco.titulo || '';
+  document.getElementById('edit-tipo').value = bloco.tipo || 'card';
+  document.getElementById('edit-visivel').checked = !!bloco.visivel_cliente;
+  document.getElementById('edit-conteudo-html').value = bloco.conteudo || '';
+  if (quillEditor) quillEditor.root.innerHTML = bloco.conteudo || '';
+  document.getElementById('edit-panel').classList.add('open');
+}
+
+function fecharEditPanel() {
+  document.getElementById('edit-panel').classList.remove('open');
+  editingBlocoId = null;
+}
+
+async function salvarBloco() {
+  const id = document.getElementById('edit-id').value;
+  const htmlBruto = document.getElementById('edit-conteudo-html').value.trim();
+  const conteudo = htmlBruto || (quillEditor ? quillEditor.root.innerHTML : '');
+  const payload = {
+    titulo: document.getElementById('edit-titulo').value,
+    tipo: document.getElementById('edit-tipo').value,
+    visivel_cliente: document.getElementById('edit-visivel').checked,
+    conteudo: conteudo,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await sb.from('blocos_conteudo').update(payload).eq('id', id);
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('Bloco salvo!', 'success');
+  fecharEditPanel();
+}
+
+// ── CRIAR BLOCO ──
+function openModalNovo() {
+  document.getElementById('novo-titulo').value = '';
+  document.getElementById('novo-conteudo').value = '';
+  document.getElementById('novo-tipo').value = 'card';
+  document.getElementById('novo-visivel').checked = true;
+  openModal('modal-novo');
+}
+
+async function criarBloco() {
+  const titulo = document.getElementById('novo-titulo').value;
+  const conteudo = document.getElementById('novo-conteudo').value;
+  const tipo = document.getElementById('novo-tipo').value;
+  const visivel = document.getElementById('novo-visivel').checked;
+  const maxOrdem = allBlocos.length > 0 ? Math.max(...allBlocos.map(b => b.ordem || 0)) : 0;
+  const slug = slugify(titulo || 'bloco');
+
+  const { error } = await sb.from('blocos_conteudo').insert({
+    titulo, conteudo, tipo, visivel_cliente: visivel, ordem: maxOrdem + 1, slug
+  });
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('Bloco criado!', 'success');
+  closeModal('modal-novo');
+}
+
+// ── RASCUNHOS ──
+async function loadRascunhos() {
+  const { data, error } = await sb.from('rascunhos_curadoria')
+    .select('*').order('created_at', { ascending: false });
+  if (error) return;
+  const pendentes = (data || []).filter(r => r.status === 'pendente').length;
+  const badge = document.getElementById('badge-rascunhos');
+  badge.textContent = pendentes;
+  badge.style.display = pendentes > 0 ? 'inline' : 'none';
+  renderRascunhos(data || []);
+}
+
+function renderRascunhos(rascunhos) {
+  const el = document.getElementById('rascunhos-container');
+  if (!rascunhos.length) {
+    el.innerHTML = '<div style="text-align:center;padding:60px;color:#bbb"><p style="font-size:14px">Nenhum rascunho encontrado.</p></div>';
+    return;
+  }
+  el.innerHTML = rascunhos.map(r => `
+    <div style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:14px;overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-weight:600;font-size:14px">${esc(r.titulo || 'Sem título')}</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:${r.status==='pendente'?'rgba(245,158,11,0.1)':r.status==='aprovado'?'rgba(39,174,96,0.1)':'rgba(239,68,68,0.1)'};color:${r.status==='pendente'?'#d97706':r.status==='aprovado'?'#219a52':'#dc2626'}">${r.status}</span>
+          <span style="font-size:11px;color:#aaa">${new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
+        </div>
+      </div>
+      <div style="padding:12px 18px;font-size:13px;color:#666;line-height:1.6;max-height:100px;overflow:hidden;position:relative">
+        ${r.conteudo || ''}
+        <div style="position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,#fff)"></div>
+      </div>
+      ${r.status === 'pendente' ? `
+      <div style="padding:10px 18px;border-top:0.5px solid #f5f3ef;display:flex;gap:8px">
+        <button class="btn-aprovar rascunho-btns" onclick="aprovarRascunho('${r.id}')" style="background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25);border-radius:7px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">✓ Aprovar e publicar</button>
+        <button onclick="rejeitarRascunho('${r.id}')" style="background:rgba(239,68,68,0.07);color:#c0392b;border:0.5px solid rgba(239,68,68,0.2);border-radius:7px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">✕ Rejeitar</button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+async function aprovarRascunho(id) {
+  const r = (await sb.from('rascunhos_curadoria').select('titulo,conteudo').eq('id',id).single()).data;
+  if (!r) { toast('Rascunho não encontrado', 'error'); return; }
+  const maxOrdem = allBlocos.length > 0 ? Math.max(...allBlocos.map(b => b.ordem || 0)) : 0;
+  const [r1, r2] = await Promise.all([
+    sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id),
+    sb.from('blocos_conteudo').insert({ titulo: r.titulo, conteudo: r.conteudo, tipo: 'noticia', visivel_cliente: true, ordem: maxOrdem + 1, slug: slugify(r.titulo || 'curadoria') })
+  ]);
+  if (r1.error || r2.error) { toast('Erro ao publicar', 'error'); return; }
+  toast('Rascunho aprovado e publicado!', 'success');
+}
+
+async function rejeitarRascunho(id) {
+  if (!confirm('Rejeitar este rascunho?')) return;
+  const { error } = await sb.from('rascunhos_curadoria').update({ status: 'rejeitado' }).eq('id', id);
+  if (error) toast('Erro: ' + error.message, 'error');
+  else toast('Rascunho rejeitado', 'success');
+}
+
+// ── SEED: Popular com conteúdo do index.html ──
+async function confirmarSeed() {
+  if (!confirm('Isso vai inserir 14 blocos com todo o conteúdo do material interno no banco de dados. Continuar?')) return;
+  await seedConteudo();
+}
+
+async function seedConteudo() {
+  const btn = document.getElementById('seed-btn');
+  btn.textContent = '⏳ Inserindo conteúdo...';
+  btn.disabled = true;
+
+  const SECOES = [
+    {
+      slug: 'reconhecimento', titulo: 'Reconhecimento Internacional', tipo: 'card', ordem: 1,
+      conteudo: `<div class="sec-label" data-pt="Reconhecimento internacional" data-en="International recognition">Reconhecimento internacional</div>
+<div class="award">
+  <div class="award-ico">🏆</div>
+  <div>
+    <strong data-pt="Lonely Planet: Top 10 cidades do mundo para visitar em 2025" data-en="Lonely Planet: Top 10 cities to visit in the world in 2025">Lonely Planet: Top 10 cidades do mundo para visitar em 2025</strong>
+    <span data-pt="Única cidade brasileira na lista do guia de viagens mais respeitado do mundo" data-en="The only Brazilian city on the world's most respected travel guide list">Única cidade brasileira na lista do guia de viagens mais respeitado do mundo</span>
+  </div>
+</div>`
+    },
+    {
+      slug: 'fluxo', titulo: 'Fluxo Turístico', tipo: 'kpi', ordem: 2,
+      conteudo: `<div class="sec-label"><span data-pt="Visão geral do fluxo turístico" data-en="Tourist flow overview">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" style="color:#FF6B00;font-size:12px;text-decoration:none;flex-shrink:0;">↗</a></div>
+<div class="kpi-grid">
+  <div class="kpi dk"><div class="kpi-num"><span>10M</span></div><div class="kpi-lbl" data-pt="visitantes totais em 2024" data-en="total visitors in 2024">visitantes totais em 2024</div><div class="kpi-src">Prefeitura de Curitiba / IMT</div></div>
+  <div class="kpi"><div class="kpi-num">8,2<span>M</span></div><div class="kpi-lbl" data-pt="turistas com pernoite em 2024" data-en="overnight tourists in 2024">turistas com pernoite em 2024</div><div class="kpi-src">IMT · Instituto Municipal de Turismo</div></div>
+  <div class="kpi"><div class="kpi-num">+3<span>M</span></div><div class="kpi-lbl" data-pt="turistas esperados em 2025" data-en="tourists projected for 2025">turistas esperados em 2025</div><div class="kpi-src">Projeção IMT, calendário 3-4x maior</div></div>
+</div>
+<div class="card">
+  <div class="card-h" data-pt="Como ler esses números" data-en="How to read these numbers">Como ler esses números</div>
+  <div class="card-b" data-pt="O IMT trabalha com dois recortes. O total de &lt;strong&gt;visitantes&lt;/strong&gt; inclui turistas (quem pernoita) e excursionistas. Para o mercado imobiliário, o número mais relevante é o de &lt;strong&gt;turistas com pernoite&lt;/strong&gt;, são eles que demandam hospedagem, seja hotel, seja Airbnb.">O IMT trabalha com dois recortes. O total de <strong>visitantes</strong> inclui turistas (quem pernoita) e excursionistas. Para o mercado imobiliário, o número mais relevante é o de <strong>turistas com pernoite</strong>.</div>
+  <div class="ins" data-pt="Em dezembro de 2024 sozinho, Curitiba recebeu quase &lt;strong&gt;400 mil visitantes&lt;/strong&gt;, volume que supera o ano inteiro de vários destinos brasileiros.">Em dezembro de 2024 sozinho, Curitiba recebeu quase <strong>400 mil visitantes</strong>, volume que supera o ano inteiro de vários destinos brasileiros.</div>
+</div>`
+    },
+    {
+      slug: 'perfil', titulo: 'Perfil dos Visitantes', tipo: 'card', ordem: 3,
+      conteudo: `<div class="sec-label"><span data-pt="Perfil dos visitantes: mudança histórica" data-en="Visitor profile: a historic shift">Perfil dos visitantes: mudança histórica</span></div>
+<div class="card">
+  <div class="card-h" data-pt="Pela primeira vez, lazer superou negócios" data-en="For the first time, leisure outpaced business travel">Pela primeira vez, lazer superou negócios</div>
+  <div class="card-b" style="margin-bottom:16px" data-pt="Em 2024 ocorreu uma virada inédita: as viagens por &lt;span class='hl'&gt;lazer passaram a ser a principal motivação&lt;/span&gt;, superando o turismo corporativo que historicamente dominava a cidade.">Em 2024 ocorreu uma virada inédita: as viagens por <span class="hl">lazer passaram a ser a principal motivação</span>, superando o turismo corporativo que historicamente dominava a cidade.</div>
+  <div class="bar-row"><div class="bar-lbl" data-pt="Lazer" data-en="Leisure">Lazer</div><div class="bar-track"><div class="bar-fill" style="width:66%"></div></div><div class="bar-val">33,3%</div></div>
+  <div class="bar-row"><div class="bar-lbl" data-pt="Negócios" data-en="Business">Negócios</div><div class="bar-track"><div class="bar-fill" style="width:47%;background:#ccc"></div></div><div class="bar-val">24%</div></div>
+  <div class="card-b" style="margin-top:10px;font-size:11.5px;color:#bbb">Fonte: IMT</div>
+</div>`
+    },
+    {
+      slug: 'linha', titulo: 'Linha Turismo', tipo: 'kpi', ordem: 4,
+      conteudo: `<div class="sec-label"><span data-pt="Linha turismo: termômetro do turismo de lazer" data-en="Tourism Line: the leisure tourism barometer">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" style="color:#FF6B00;font-size:12px;text-decoration:none;flex-shrink:0;">↗</a></div>
+<div class="kpi2">
+  <div class="kpi"><div class="kpi-num">908<span>mil</span></div><div class="kpi-lbl" data-pt="embarques na Linha Turismo em 2025" data-en="boardings on the Tourism Line in 2025">embarques na Linha Turismo em 2025</div><div class="kpi-src">SEHA / Prefeitura de Curitiba</div></div>
+  <div class="kpi"><div class="kpi-num">+<span>13,6%</span></div><div class="kpi-lbl" data-pt="crescimento vs. 2024 (799,7 mil embarques)" data-en="growth vs. 2024 (799,700 boardings)">crescimento vs. 2024 (799,7 mil embarques)</div><div class="kpi-src">Confirmado por múltiplas fontes</div></div>
+</div>
+<div class="card"><div class="card-b" data-pt="Quase &lt;strong&gt;1 milhão de pessoas circulando pelos 26 pontos turísticos&lt;/strong&gt; da cidade ao longo do ano. A Linha Turismo é o indicador mais direto do turista que veio para conhecer Curitiba, não para trabalhar.">Quase <strong>1 milhão de pessoas circulando pelos 26 pontos turísticos</strong> da cidade ao longo do ano. A Linha Turismo é o indicador mais direto do turista que veio para conhecer Curitiba, não para trabalhar.</div></div>`
+    },
+    {
+      slug: 'eventos', titulo: 'Eventos e Shows', tipo: 'evento', ordem: 5,
+      conteudo: `<div class="sec-label"><span data-pt="Eventos, shows e congressos" data-en="Events, shows and congresses">Eventos, shows e congressos</span></div>
+<div class="kpi3">
+  <div class="kpi"><div class="kpi-num"><span>140</span></div><div class="kpi-lbl" data-pt="eventos em 2024 (técnico-científicos, feiras e congressos)" data-en="events in 2024 (technical-scientific, trade fairs & congresses)">eventos em 2024</div><div class="kpi-src">Curitiba CVB</div></div>
+  <div class="kpi"><div class="kpi-num"><span>85</span></div><div class="kpi-lbl" data-pt="eventos realizados apenas entre janeiro e agosto de 2025" data-en="events held between January and August 2025 alone">eventos jan–ago 2025</div><div class="kpi-src">CCVB, dado parcial</div></div>
+  <div class="kpi dk"><div class="kpi-num"><span>+40</span></div><div class="kpi-lbl" data-pt="shows internacionais já confirmados para 2026" data-en="international shows already confirmed for 2026">shows internacionais confirmados 2026</div><div class="kpi-src">Me Gusta Curitiba / Jan 2026</div></div>
+</div>
+<div class="card">
+  <div class="card-h" data-pt="ISS reduzido: Curitiba mais competitiva" data-en="Reduced ISS: Curitiba more competitive">ISS reduzido: Curitiba mais competitiva</div>
+  <div class="card-b">A Prefeitura de Curitiba reduziu a alíquota do <strong>ISS de 5% para 2%</strong> para shows e eventos, tornando a cidade diretamente mais atrativa para grandes turnês.</div>
+  <div class="ins">Em uma única semana de março de 2025, Festival de Teatro, Smart City Expo, show da Olivia Rodrigo e Expo Turismo Paraná simultâneos — os hotéis de Curitiba atingiram <strong>100% de ocupação</strong>.</div>
+</div>`
+    },
+    {
+      slug: 'natal', titulo: 'Natal de Curitiba 2025', tipo: 'kpi', ordem: 6,
+      conteudo: `<div class="sec-label"><span data-pt="Natal de Curitiba 2025" data-en="Christmas in Curitiba 2025">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" style="color:#FF6B00;font-size:12px;text-decoration:none;flex-shrink:0;">↗</a></div>
+<div class="award"><div class="award-ico">🎄</div><div><strong data-pt="Maior Natal do Brasil, edição 2025" data-en="Brazil's Biggest Christmas, 2025 edition">Maior Natal do Brasil, edição 2025</strong><span>25 de novembro a 23 de dezembro · Decoração até 6 de janeiro de 2026</span></div></div>
+<div class="kpi3">
+  <div class="kpi"><div class="kpi-num">3,09<span>M</span></div><div class="kpi-lbl" data-pt="espectadores totais" data-en="total spectators">espectadores totais</div><div class="kpi-src">+35% em relação a 2024</div></div>
+  <div class="kpi dk"><div class="kpi-num"><span>R$</span>722<span>M</span></div><div class="kpi-lbl" data-pt="impacto econômico estimado" data-en="estimated economic impact">impacto econômico estimado</div><div class="kpi-src">+80% em relação a 2024</div></div>
+  <div class="kpi"><div class="kpi-num">469<span>mil</span></div><div class="kpi-lbl" data-pt="turistas no período natalino" data-en="tourists during the Christmas season">turistas no período natalino</div><div class="kpi-src">+60% em relação a 2024 · IMT</div></div>
+</div>
+<div class="card"><div class="card-b"><strong>44 dias de programação</strong> com mais de <strong>150 atrações gratuitas</strong>, incluindo a parceria inédita com a Disney no Parque Barigui. Taxa média de ocupação: <strong>90%</strong>, chegando a <strong>100%</strong> nas áreas centrais. Tempo médio de permanência: <strong>4,1 pernoites</strong>. Satisfação do público: <strong>95%</strong>.</div></div>`
+    },
+    {
+      slug: 'hotelaria', titulo: 'Hotelaria e Infraestrutura', tipo: 'kpi', ordem: 7,
+      conteudo: `<div class="sec-label"><span data-pt="Hotelaria e infraestrutura" data-en="Hotels and infrastructure">Hotelaria e infraestrutura</span> <a href="https://www.parana.pr.gov.br/aen/Noticia/Hoteis-de-Curitiba-registram-90-de-ocupacao-em-outubro" target="_blank" style="color:#FF6B00;font-size:12px;text-decoration:none;flex-shrink:0;">↗</a></div>
+<div class="kpi3">
+  <div class="kpi"><div class="kpi-num">20<span>mil</span></div><div class="kpi-lbl">leitos monitorados pelo SEHA (150 meios de hospedagem)</div><div class="kpi-src">SEHA / Viaje Paraná</div></div>
+  <div class="kpi"><div class="kpi-num">~4<span>mil</span></div><div class="kpi-lbl">leitos em hotéis de 4 e 5 estrelas</div><div class="kpi-src">Referência de mercado</div></div>
+  <div class="kpi dk"><div class="kpi-num"><span>90%</span></div><div class="kpi-lbl">ocupação média em outubro de 2025, melhor pós-pandemia</div><div class="kpi-src">SEHA / Governo do Paraná</div></div>
+</div>
+<div class="card">
+  <div class="card-h">Evolução da ocupação hoteleira anual</div>
+  <div class="card-b" style="margin-bottom:14px">Taxa média anual, base: hotéis filiados ao SEHA:</div>
+  <div class="bar-row"><div class="bar-lbl">2022</div><div class="bar-track"><div class="bar-fill" style="width:48%;background:#ccc"></div></div><div class="bar-val">48%</div></div>
+  <div class="bar-row"><div class="bar-lbl">2023</div><div class="bar-track"><div class="bar-fill" style="width:53%;background:#bbb"></div></div><div class="bar-val">53%</div></div>
+  <div class="bar-row"><div class="bar-lbl">2024</div><div class="bar-track"><div class="bar-fill" style="width:63%;background:#888"></div></div><div class="bar-val">63%</div></div>
+  <div class="bar-row"><div class="bar-lbl">Out/2025</div><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div><div class="bar-val">90%</div></div>
+  <div class="ins">Nos feriados de 2025, a média de ocupação ficou consistentemente em <strong>90%</strong>, incluindo Carnaval, Páscoa, Tiradentes, Dia do Trabalhador e Consciência Negra.</div>
+</div>`
+    },
+    {
+      slug: 'aeroporto', titulo: 'Aeroporto e Conectividade', tipo: 'kpi', ordem: 8,
+      conteudo: `<div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" style="color:#FF6B00;font-size:12px;text-decoration:none;flex-shrink:0;">↗</a></div>
+<div class="kpi2">
+  <div class="kpi"><div class="kpi-num">6,08<span>M</span></div><div class="kpi-lbl" data-pt="passageiros no Aeroporto Afonso Pena em 2025" data-en="passengers at Afonso Pena Airport in 2025">passageiros no Aeroporto Afonso Pena em 2025</div><div class="kpi-src">+56% desde 2022 · Gerência do Afonso Pena</div></div>
+  <div class="kpi"><div class="kpi-num">160</div><div class="kpi-lbl">pousos e decolagens diários, 22 destinos, 4 países da América Latina</div><div class="kpi-src">~15 mil passageiros/dia</div></div>
+</div>
+<div class="card"><div class="card-b">Em 2025 foram inauguradas rotas para Lima (Peru) e Assunção (Paraguai). Para 2026, está prevista a operação da <strong>TAP com voo direto Curitiba–Lisboa</strong>, conectando a capital paranaense ao mercado europeu pela primeira vez com rota regular.</div></div>`
+    },
+    {
+      slug: 'estrangeiros', titulo: 'Turistas Estrangeiros', tipo: 'kpi', ordem: 9,
+      conteudo: `<div class="sec-label" data-pt="Turistas estrangeiros no Paraná" data-en="Foreign tourists in Paraná">Turistas estrangeiros no Paraná</div>
+<div class="kpi3">
+  <div class="kpi dk"><div class="kpi-num">1,06<span>M</span></div><div class="kpi-lbl">turistas internacionais no Paraná em 2025, recorde histórico</div><div class="kpi-src">Embratur / Ministério do Turismo</div></div>
+  <div class="kpi"><div class="kpi-num">+<span>16,6%</span></div><div class="kpi-lbl">crescimento em relação a 2024 — Paraná: 4º portão de entrada do Brasil</div><div class="kpi-src">Embratur</div></div>
+  <div class="kpi"><div class="kpi-num">142<span>mil</span></div><div class="kpi-lbl">turistas estrangeiros no Paraná só em fevereiro de 2026</div><div class="kpi-src">Embratur, 1º trimestre 2026: +18,3%</div></div>
+</div>
+<div class="card">
+  <div class="card-h">Indicadores de 2026 confirmam tendência</div>
+  <div class="card-b">A <strong>Torre Panorâmica</strong> registrou <span class="hl">+12,6% de visitantes</span> no início de 2026. O Aeroporto Afonso Pena registrou <strong>1,46 milhão de passageiros no 1º trimestre de 2026</strong>, +5% sobre o mesmo período do ano anterior.</div>
+</div>`
+    },
+    {
+      slug: 'investir', titulo: 'Por que isso move o mercado imobiliário', tipo: 'insight', ordem: 10,
+      conteudo: `<div class="sec-label" data-pt="Por que isso move o mercado imobiliário" data-en="Why this drives the real estate market">Por que isso move o mercado imobiliário</div>
+<div class="card">
+  <div class="card-b">Curitiba deixou de ser destino apenas corporativo. O crescimento do <strong>turismo de lazer</strong>, combinado com um <strong>calendário de eventos 3 a 4 vezes maior</strong> que em anos anteriores, cria demanda consistente por hospedagem <strong>todos os dias da semana e ao longo de todos os meses do ano</strong>.<br><br>Esse cenário impulsiona diretamente a <strong>locação de curta duração (short stay)</strong>. Imóveis compactos e bem localizados, especialmente próximos ao Centro, Batel, Água Verde e grandes espaços de eventos, passam a ter uso mais intenso e rentabilidade mais estável.</div>
+  <div class="ins">O turista que vem para um show na Arena da Baixada, para o Festival de Teatro ou para o Natal de Curitiba <strong>não vai para hotel necessariamente</strong> — ele vai onde encontra melhor custo-benefício. E é aí que o Airbnb e o short stay entram com vantagem competitiva real.</div>
+</div>
+<div class="tags">
+  <div class="tag o">Short stay</div>
+  <div class="tag o">Locação por temporada</div>
+  <div class="tag">Imóvel compacto</div>
+  <div class="tag">Valorização por evento</div>
+  <div class="tag">Renda passiva</div>
+</div>`
+    },
+    {
+      slug: 'corporativo', titulo: 'Hospedagem Corporativa', tipo: 'card', ordem: 11,
+      conteudo: `<div class="sec-label" data-pt="Hospedagem corporativa por contrato em Curitiba" data-en="Corporate contract housing in Curitiba">Hospedagem corporativa por contrato em Curitiba</div>
+<div class="card">
+  <div class="card-h">Hotéis e redes corporativas</div>
+  <div class="card-b">Redes como <strong>Bourbon, Radisson, Mercure, Ibis e Slaviero</strong> fazem contratos diretos com empresas. Empresas como <strong>O Boticário, Madero, LG</strong> têm sede em Curitiba e geram fluxo contínuo de visitantes externos para reuniões, treinamentos e auditorias.</div>
+  <div class="insight-box"><p>A localização estratégica e a infraestrutura de Curitiba geraram impacto econômico de <strong>R$ 13,8 bilhões</strong> em 2024 com os 140 eventos captados pelo CCVB.</p></div>
+</div>
+<div class="card">
+  <div class="card-h">Short stay corporativo: o caso T-Systems</div>
+  <div class="card-b">Empresas de gestão de Airbnb em Curitiba como a <strong>HostnJoy</strong> relatam que <span class="hl">60% dos hóspedes são executivos e viajantes de negócios</span>. A taxa média de ocupação alcançada é de <strong>81% ao ano</strong>.</div>
+</div>`
+    },
+    {
+      slug: 'airbnb', titulo: 'Airbnb em Curitiba', tipo: 'kpi', ordem: 12,
+      conteudo: `<div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" style="color:#FF6B00;font-size:12px;text-decoration:none;flex-shrink:0;">↗</a></div>
+<div class="kpi3">
+  <div class="kpi dk"><div class="kpi-num"><span>5.190</span></div><div class="kpi-lbl">anúncios ativos no Airbnb em Curitiba (jan/2026)</div><div class="kpi-src">Airbtics, +36,8% em 1 ano / +120,5% em 3 anos</div></div>
+  <div class="kpi"><div class="kpi-num"><span>64%</span></div><div class="kpi-lbl">taxa média de ocupação 2024/2025, acima da média nacional</div><div class="kpi-src">Airbtics / HostnJoy</div></div>
+  <div class="kpi"><div class="kpi-num">234<span>noites</span></div><div class="kpi-lbl">média de noites reservadas por anúncio ativo ao ano</div><div class="kpi-src">Airbtics 2024/2025</div></div>
+</div>
+<div class="kpi2" style="margin-bottom:14px">
+  <div class="kpi"><div class="kpi-num">R$<span>199</span></div><div class="kpi-lbl">diária média em Curitiba, alta de 34,5% em 1 ano</div><div class="kpi-src">Airbtics, jan/2026</div></div>
+  <div class="kpi"><div class="kpi-num">R$<span>49K</span></div><div class="kpi-lbl">receita anual média por anúncio ativo, alta de 31,7% em 1 ano</div><div class="kpi-src">Airbtics, fev/2025 a jan/2026</div></div>
+</div>
+<div class="card">
+  <div class="card-h">Locação curta vs. locação tradicional</div>
+  <div class="card-b">Com 234 noites reservadas por ano e diária média de R$ 199, um studio bem posicionado pode gerar em torno de <strong>R$ 3.900 a R$ 4.600 mensais brutos</strong> em short stay, contra <strong>R$ 1.800 a R$ 2.400 mensais</strong> em locação tradicional. A diferença pode chegar a <strong>mais de 80%</strong>.</div>
+  <div class="ins">O mercado de short stay em Curitiba cresceu <strong>+120% em anúncios ativos nos últimos 3 anos</strong>. Mesmo com mais oferta, a ocupação se manteve estável em 64% e a diária subiu 34,5%.</div>
+</div>`
+    },
+    {
+      slug: 'regioes', titulo: 'Regiões Estratégicas em Destaque', tipo: 'card', ordem: 13,
+      conteudo: `<div class="sec-label" data-pt="Regiões estratégicas: regiões em destaque" data-en="Strategic regions: featured areas">Regiões estratégicas: regiões em destaque</div>
+<div class="card" style="border-left:3px solid #FF6B00;border-radius:0 14px 14px 0;">
+  <div class="card-h">Água Verde</div>
+  <div class="card-b">Um dos bairros com <strong>maior valorização de tíquete médio em 2025: +33%</strong>, chegando a R$ 1,3 milhão (Loft, dez/2025). Para o Airbnb, Água Verde é destino recorrente de turistas que buscam <strong>localização central sem pagar o preço do Batel</strong>.</div>
+</div>
+<div class="card" style="border-left:3px solid #FF6B00;border-radius:0 14px 14px 0;">
+  <div class="card-h">Bigorrilho</div>
+  <div class="card-b">O Bigorrilho registrou <strong>valorização de 23% no tíquete médio e +31% no preço por metro quadrado em 2025</strong>, chegando a R$ 15.061/m². É o bairro mais gastronômico de Curitiba, com o eixo Batel Soho consolidado.</div>
+</div>
+<div class="card" style="border-left:3px solid #FF6B00;border-radius:0 14px 14px 0;">
+  <div class="card-h">Sete de Setembro: eixo central nobre</div>
+  <div class="card-b">O Centro liderou a alta de preço por metro quadrado em 2025, com <strong>+48%, chegando a R$ 10.250/m²</strong>. Para short stay, o eixo Centro/Batel é onde estão os Airbnbs com as <strong>maiores diárias e maior taxa de ocupação</strong> da cidade.</div>
+</div>
+<div class="card">
+  <div class="card-h">Vantagem competitiva no Airbnb</div>
+  <div class="card-b">Os empreendimentos estão concentrados em um raio estratégico que cobre exatamente as regiões mais buscadas por turistas e executivos no Airbnb de Curitiba, capturando <strong>demanda de shows, congressos, feriados e turismo de lazer</strong>.</div>
+  <div class="ins">Um studio nessas regiões tem dois motores de retorno simultâneos: <strong>valorização patrimonial acima da média da cidade</strong> e <strong>renda de short stay consistente ao longo de todos os meses do ano</strong>.</div>
+</div>`
+    },
+    {
+      slug: 'noticias', titulo: 'Notícias', tipo: 'noticia', ordem: 14,
+      conteudo: `<div class="sec-label" data-pt="Notícias" data-en="News">Notícias</div>
+<div style="font-size:12px;color:#aaa;margin-bottom:16px;">Curitiba em destaque, cobertura da imprensa</div>
+<div class="news-grid">
+  <a href="https://www.bemparana.com.br/noticias/parana/com-perfil-cada-vez-mais-familia-curitiba-recebe-mais-de-10-milhoes-de-visitantes-por-ano/" target="_blank" class="news-item featured">
+    <img src="Foto 1.png" alt="10 milhões de visitantes" onerror="this.style.display='none'">
+    <div class="news-overlay">
+      <span class="news-tag">Turismo · Bem Paraná</span>
+      <div class="news-title">Curitiba recebe mais de 10 milhões de visitantes por ano</div>
+      <div class="news-desc">Com perfil cada vez mais família, a capital paranaense bate recordes seguidos de visitação.</div>
+      <span class="news-source">Bem Paraná · Abr/2026</span>
+    </div>
+  </a>
+  <a href="https://www.parquetangua.com/viagens-de-lazer-ultrapassam-as-de-negocios-e-impulsionam-turismo-em-curitiba/" target="_blank" class="news-item">
+    <img src="Foto 2.png" alt="Lazer supera negócios" onerror="this.style.display='none'">
+    <div class="news-overlay"><span class="news-tag">Turismo · Parque Tanguá</span><div class="news-title">Viagens de lazer ultrapassam as de negócios em Curitiba</div></div>
+  </a>
+  <a href="https://www.curitiba.pr.gov.br/noticias/curitiba-lidera-indicacoes-em-premio-internacional-de-turismo-inteligente-e-disputa-titulo-de-dti-do-ano/82697" target="_blank" class="news-item">
+    <img src="Foto 5.png" alt="Prêmio turismo inteligente" onerror="this.style.display='none'">
+    <div class="news-overlay"><span class="news-tag">Reconhecimento · Prefeitura</span><div class="news-title">Curitiba lidera indicações em prêmio internacional de turismo inteligente</div></div>
+  </a>
+  <a href="https://turismo.curitiba.pr.gov.br/noticias/curitiba-amplia-vitrine-internacional-e-aposta-em-novas-rotas-e-experiencias-na-wtm-latin-america/82622" target="_blank" class="news-item">
+    <img src="Foto 3.png" alt="WTM Latin America" onerror="this.style.display='none'">
+    <div class="news-overlay"><span class="news-tag">Internacional · IMT</span><div class="news-title">Curitiba amplia vitrine internacional na WTM Latin America com foco em novas rotas e experiências</div><span class="news-source">Instituto Municipal de Turismo · Abr/2026</span></div>
+  </a>
+</div>
+<div class="news-row2">
+  <a href="https://www.curitiba.pr.gov.br/noticias/prefeitura-lanca-movimento-para-fortalecer-gastronomia-e-turismo-em-curitiba/83285" target="_blank" class="news-item">
+    <img src="Foto 4.png" alt="Gastronomia Curitiba" onerror="this.style.display='none'">
+    <div class="news-overlay"><span class="news-tag">Gastronomia · Prefeitura</span><div class="news-title">Prefeitura lança movimento para fortalecer gastronomia e turismo</div></div>
+  </a>
+  <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" class="news-item">
+    <img src="Foto 6.png" alt="Aeroporto Afonso Pena" onerror="this.style.display='none'">
+    <div class="news-overlay"><span class="news-tag">Aeroporto · Diário do Turismo</span><div class="news-title">Aeroporto Afonso Pena supera 6 milhões de passageiros e cresce 56% em três anos</div><span class="news-source">Diário do Turismo · Jan/2026</span></div>
+  </a>
+  <a href="https://cbncuritiba.com.br/materias/aeroporto-afonso-pena-fecha-primeiro-trimestre-com-mais-de-14-milhao-de-passageiros/" target="_blank" class="news-item">
+    <img src="Foto 7.png" alt="Aeroporto 1º trimestre 2026" onerror="this.style.display='none'">
+    <div class="news-overlay"><span class="news-tag">Aeroporto · CBN Curitiba</span><div class="news-title">Afonso Pena fecha 1º trimestre de 2026 com mais de 1,4 milhão de passageiros</div><span class="news-source">CBN Curitiba · 2026</span></div>
+  </a>
+</div>`
+    }
+  ];
+
+  let ok = 0, fail = 0;
+  for (const s of SECOES) {
+    const { error } = await sb.from('blocos_conteudo').insert({
+      titulo: s.titulo, conteudo: s.conteudo, tipo: s.tipo,
+      visivel_cliente: true, ordem: s.ordem, slug: s.slug
+    });
+    if (error) { console.error(s.slug, error.message); fail++; }
+    else ok++;
+  }
+
+  if (fail > 0) toast(`${ok} blocos inseridos, ${fail} com erro. Verifique o console.`, 'error');
+  else toast(`✅ ${ok} blocos inseridos com sucesso!`, 'success');
+  btn.textContent = '🌱 Popular com conteúdo do material interno';
+  btn.disabled = false;
+}
+
+// ── UTILS ──
+function slugify(text) {
+  return String(text).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── MODAL ──
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
 
-// ══════════════════════════════
-// BLOCOS DE CONTEÚDO
-// ══════════════════════════════
-async function loadBlocos() {
-  const el = document.getElementById('blocos-list');
-  try {
-    const { data, error } = await sb.from('blocos_conteudo').select('*').order('ordem');
-    if (error) throw error;
-    renderBlocos(data || []);
-  } catch (err) {
-    el.innerHTML = `
-      <div class="error-state">
-        <div class="ico">⚠️</div>
-        <p>Erro ao carregar blocos.<br><small style="color:#aaa">${err.message}</small></p>
-        <button class="btn btn-ghost btn-sm" onclick="loadBlocos()">Tentar novamente</button>
-      </div>`;
-  }
-}
-
-function renderBlocos(blocos) {
-  const el = document.getElementById('blocos-list');
-  if (!blocos.length) {
-    el.innerHTML = '<div class="empty-state"><div class="ico">📦</div><p>Nenhum bloco cadastrado. Adicione o primeiro!</p></div>';
-    return;
-  }
-  el.innerHTML = blocos.map(b => `
-    <div class="list-item">
-      <div class="item-info">
-        <div class="item-title">${esc(b.titulo || '(sem título)')}</div>
-        <div class="item-sub" style="margin-top:4px">
-          <span class="badge badge-${b.tipo || 'card'}">${b.tipo || 'card'}</span>
-          &nbsp;Ordem: ${b.ordem}
-        </div>
-      </div>
-      <label class="toggle" title="Visível para cliente" style="margin-right:8px">
-        <input type="checkbox" ${b.visivel_cliente ? 'checked' : ''} onchange="toggleBloco('${b.id}',this.checked)">
-        <span class="toggle-slider"></span>
-      </label>
-      <div class="item-actions">
-        <button class="btn btn-ghost btn-sm" onclick='editBloco(${JSON.stringify(b)})'>✏️ Editar</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteBloco('${b.id}')">🗑️</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-async function toggleBloco(id, visible) {
-  const { error } = await sb.from('blocos_conteudo')
-    .update({ visivel_cliente: visible, updated_at: new Date().toISOString() })
-    .eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast(visible ? 'Bloco agora visível para clientes' : 'Bloco ocultado dos clientes', 'success');
-}
-
-function openBlocoModal() {
-  document.getElementById('bloco-id').value = '';
-  document.getElementById('bloco-titulo').value = '';
-  document.getElementById('bloco-conteudo').value = '';
-  document.getElementById('bloco-tipo').value = 'card';
-  document.getElementById('bloco-ordem').value = '0';
-  document.getElementById('bloco-visivel').checked = true;
-  document.getElementById('modal-bloco-titulo').textContent = 'Novo Bloco';
-  openModal('modal-bloco');
-}
-
-function editBloco(b) {
-  document.getElementById('bloco-id').value = b.id;
-  document.getElementById('bloco-titulo').value = b.titulo || '';
-  document.getElementById('bloco-conteudo').value = b.conteudo || '';
-  document.getElementById('bloco-tipo').value = b.tipo || 'card';
-  document.getElementById('bloco-ordem').value = b.ordem || 0;
-  document.getElementById('bloco-visivel').checked = !!b.visivel_cliente;
-  document.getElementById('modal-bloco-titulo').textContent = 'Editar Bloco';
-  openModal('modal-bloco');
-}
-
-async function saveBloco() {
-  const id = document.getElementById('bloco-id').value;
-  const payload = {
-    titulo: document.getElementById('bloco-titulo').value,
-    conteudo: document.getElementById('bloco-conteudo').value,
-    tipo: document.getElementById('bloco-tipo').value,
-    ordem: parseInt(document.getElementById('bloco-ordem').value) || 0,
-    visivel_cliente: document.getElementById('bloco-visivel').checked,
-    updated_at: new Date().toISOString()
-  };
-  let error;
-  if (id) {
-    ({ error } = await sb.from('blocos_conteudo').update(payload).eq('id', id));
-  } else {
-    ({ error } = await sb.from('blocos_conteudo').insert(payload));
-  }
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Bloco salvo!', 'success');
-  closeModal('modal-bloco');
-  loadBlocos();
-}
-
-async function deleteBloco(id) {
-  if (!confirm('Excluir este bloco permanentemente?')) return;
-  const { error } = await sb.from('blocos_conteudo').delete().eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Bloco excluído', 'success');
-  loadBlocos();
-}
-
-// ══════════════════════════════
-// RASCUNHOS
-// ══════════════════════════════
-async function loadRascunhos() {
-  const el = document.getElementById('rascunhos-list');
-  try {
-    const { data, error } = await sb.from('rascunhos_curadoria')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    const pendentes = (data || []).filter(r => r.status === 'pendente').length;
-    const badge = document.getElementById('rascunhos-badge');
-    if (pendentes > 0) { badge.textContent = pendentes; badge.style.display = 'inline-block'; }
-    else badge.style.display = 'none';
-    renderRascunhos(data || []);
-  } catch (err) {
-    el.innerHTML = `
-      <div class="error-state">
-        <div class="ico">⚠️</div>
-        <p>Erro ao carregar rascunhos.<br><small style="color:#aaa">${err.message}</small></p>
-        <button class="btn btn-ghost btn-sm" onclick="loadRascunhos()">Tentar novamente</button>
-      </div>`;
-  }
-}
-
-function renderRascunhos(rascunhos) {
-  const el = document.getElementById('rascunhos-list');
-  if (!rascunhos.length) {
-    el.innerHTML = '<div class="empty-state"><div class="ico">📝</div><p>Nenhum rascunho encontrado.</p></div>';
-    return;
-  }
-  el.innerHTML = rascunhos.map(r => `
-    <div class="draft-card">
-      <div class="draft-header">
-        <span class="draft-title">${esc(r.titulo || 'Sem título')}</span>
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="status-badge status-${r.status}">${r.status}</span>
-          <span class="draft-date">${new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
-        </div>
-      </div>
-      <div class="draft-preview">${r.conteudo || ''}</div>
-      ${r.status === 'pendente' ? `
-      <div class="draft-actions">
-        <button class="btn btn-success btn-sm" onclick="aprovarDireto('${r.id}')">✓ Aprovar e publicar</button>
-        <button class="btn btn-ghost btn-sm" onclick='abrirEdicaoRascunho(${JSON.stringify(r)})'>✏️ Editar antes</button>
-        <button class="btn btn-danger btn-sm" onclick="rejeitarRascunho('${r.id}')">✕ Rejeitar</button>
-      </div>` : ''}
-    </div>
-  `).join('');
-}
-
-function abrirEdicaoRascunho(r) {
-  document.getElementById('rascunho-id').value = r.id;
-  document.getElementById('rascunho-titulo').value = r.titulo || '';
-  document.getElementById('rascunho-conteudo').value = r.conteudo || '';
-  openModal('modal-rascunho');
-}
-
-async function aprovarRascunho() {
-  const id = document.getElementById('rascunho-id').value;
-  const titulo = document.getElementById('rascunho-titulo').value;
-  const conteudo = document.getElementById('rascunho-conteudo').value;
-  await publicarRascunho(id, titulo, conteudo);
-  closeModal('modal-rascunho');
-}
-
-async function aprovarDireto(id) {
-  // Busca os dados do rascunho para publicar
-  const { data, error } = await sb.from('rascunhos_curadoria').select('titulo,conteudo').eq('id', id).single();
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  await publicarRascunho(id, data.titulo, data.conteudo);
-}
-
-async function publicarRascunho(id, titulo, conteudo) {
-  const [r1, r2] = await Promise.all([
-    sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id),
-    sb.from('blocos_conteudo').insert({ titulo, conteudo, tipo: 'noticia', visivel_cliente: true, ordem: 99 })
-  ]);
-  if (r1.error || r2.error) {
-    toast('Erro ao publicar: ' + (r1.error?.message || r2.error?.message), 'error');
-    return;
-  }
-  toast('Rascunho aprovado e publicado!', 'success');
-  loadRascunhos();
-  loadBlocos();
-}
-
-async function rejeitarRascunho(id) {
-  if (!confirm('Rejeitar este rascunho?')) return;
-  const { error } = await sb.from('rascunhos_curadoria').update({ status: 'rejeitado' }).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Rascunho rejeitado', 'success');
-  loadRascunhos();
-}
-
-// ── UTILS ──
-function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// ── TOAST ──
+function toast(msg, type) {
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type || 'info');
+  t.textContent = msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.remove(), 3500);
 }
 </script>
 </body>
