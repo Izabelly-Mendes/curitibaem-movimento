@@ -407,9 +407,18 @@ img { max-width: 100%; height: auto; }
   <div style="display:flex;align-items:center;margin-bottom:48px;">
     <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis" style="margin-bottom:0;flex-shrink:0;">
     <div id="lang-selector" style="display:flex;align-items:center;gap:8px;margin-left:auto;position:relative;z-index:9999;pointer-events:auto;">
-      <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(255,255,255,0.1);border:1.5px solid #FF6B00;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">&#127463;&#127479;</button>
-      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px;line-height:1;opacity:0.45;pointer-events:auto;-webkit-tap-highlight-color:transparent;">&#127482;&#127480;</button>
-      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:20px;line-height:1;opacity:0.45;pointer-events:auto;-webkit-tap-highlight-color:transparent;">&#127464;&#127475;</button>
+      <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')"
+        style="background:rgba(255,255,255,0.12);border:1.5px solid #FF6B00;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:20px;line-height:1;opacity:1;pointer-events:auto;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;">
+        &#127463;&#127479;
+      </button>
+      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')"
+        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:20px;line-height:1;opacity:0.6;pointer-events:auto;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;">
+        &#127482;&#127480;
+      </button>
+      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')"
+        style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:20px;line-height:1;opacity:0.6;pointer-events:auto;display:flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;">
+        &#127464;&#127475;
+      </button>
     </div>
   </div>
   <div class="cover-tag" data-pt="Material de treinamento interno" data-en="Internal Training Material" data-zh="内部培训资料">Material de treinamento interno</div>
@@ -430,13 +439,16 @@ img { max-width: 100%; height: auto; }
   <!-- 1. RECONHECIMENTO INTERNACIONAL         -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-reconhecimento">
-    <div class="sec-label" data-pt="Reconhecimento internacional" data-en="International recognition" data-zh="国际认可">Reconhecimento internacional</div>
+    <div class="sec-label"><span data-pt="Reconhecimento internacional" data-en="International recognition" data-zh="国际认可">Reconhecimento internacional</span> <a href="https://www.lonelyplanet.es/lp/best-in-travel-2025-las-10-mejores-ciudades" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="award">
       <div class="award-ico">🏆</div>
       <div>
         <strong data-pt="Lonely Planet: Top 10 cidades do mundo para visitar em 2025" data-en="Lonely Planet: Top 10 cities to visit in the world in 2025" data-zh="Lonely Planet：2025年全球十大必游城市">Lonely Planet: Top 10 cidades do mundo para visitar em 2025</strong>
         <span data-pt="Única cidade brasileira na lista do guia de viagens mais respeitado do mundo" data-en="The only Brazilian city on the world's most respected travel guide list" data-zh="全球最权威旅行指南榜单上唯一的巴西城市">Única cidade brasileira na lista do guia de viagens mais respeitado do mundo</span>
       </div>
+    </div>
+    <div class="card" style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:16px 20px;margin-bottom:0;">
+      <p style="font-size:11.5px;color:#aaa;margin:0;font-style:italic;" data-pt="A Lonely Planet é a maior editora de guias de viagem e conteúdos de turismo do mundo, presente em mais de 120 países." data-en="Lonely Planet is the world's largest travel guide publisher and tourism content provider, present in more than 120 countries." data-zh="Lonely Planet是全球最大的旅行指南出版商及旅游内容提供商，业务覆盖120多个国家。">A Lonely Planet é a maior editora de guias de viagem e conteúdos de turismo do mundo, presente em mais de 120 países.</p>
     </div>
     <div class="divider"></div>
   </div>
@@ -445,7 +457,7 @@ img { max-width: 100%; height: auto; }
   <!-- 2. FLUXO TURÍSTICO                      -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-fluxo">
-    <div class="sec-label"><span data-pt="Visão geral do fluxo turístico" data-en="Tourist flow overview" data-zh="旅游客流概览">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Visão geral do fluxo turístico" data-en="Tourist flow overview" data-zh="旅游客流概览">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="kpi-grid">
       <div class="kpi dk">
         <div class="kpi-num"><span>10M</span></div>
@@ -475,7 +487,7 @@ img { max-width: 100%; height: auto; }
   <!-- 3. PERFIL DOS VISITANTES                -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-perfil">
-    <div class="sec-label"><span data-pt="Perfil dos visitantes: mudança histórica" data-en="Visitor profile: a historic shift" data-zh="访客画像：历史性转变">Perfil dos visitantes: mudança histórica</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Perfil dos visitantes: mudança histórica" data-en="Visitor profile: a historic shift" data-zh="访客画像：历史性转变">Perfil dos visitantes: mudança histórica</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="card">
       <div class="card-h" data-pt="Pela primeira vez, lazer superou negócios" data-en="For the first time, leisure outpaced business travel" data-zh="首次：休闲旅游超越商务旅游">Pela primeira vez, lazer superou negócios</div>
       <div class="card-b" style="margin-bottom:16px" data-pt="Em 2024 ocorreu uma virada inédita: as viagens por &lt;span class=&quot;hl&quot;&gt;lazer passaram a ser a principal motivação&lt;/span&gt;, superando o turismo corporativo que historicamente dominava a cidade." data-en="In 2024, an unprecedented shift occurred: &lt;span class=&quot;hl&quot;&gt;leisure travel became the top motivation&lt;/span&gt;, surpassing corporate tourism that had historically dominated the city." data-zh="2024年出现历史性转变：&lt;span class=&quot;hl&quot;&gt;休闲旅游跃升为首要出行动机&lt;/span&gt;，超越了长期主导该市的商务旅游。">Em 2024 ocorreu uma virada inédita: as viagens por <span class="hl">lazer passaram a ser a principal motivação</span>, superando o turismo corporativo que historicamente dominava a cidade.</div>
@@ -498,7 +510,7 @@ img { max-width: 100%; height: auto; }
   <!-- 4. LINHA TURISMO                        -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-linha">
-    <div class="sec-label"><span data-pt="Linha turismo: termômetro do turismo de lazer" data-en="Tourism Line: the leisure tourism barometer" data-zh="旅游线路：休闲旅游晴雨表">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Linha turismo: termômetro do turismo de lazer" data-en="Tourism Line: the leisure tourism barometer" data-zh="旅游线路：休闲旅游晴雨表">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="kpi2">
       <div class="kpi">
         <div class="kpi-num">908<span>mil</span></div>
@@ -521,7 +533,7 @@ img { max-width: 100%; height: auto; }
   <!-- 5. EVENTOS, SHOWS E CONGRESSOS          -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-eventos">
-    <div class="sec-label"><span data-pt="Eventos, shows e congressos" data-en="Events, shows and congresses" data-zh="活动、演出与大会">Eventos, shows e congressos</span> <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Eventos, shows e congressos" data-en="Events, shows and congresses" data-zh="活动、演出与大会">Eventos, shows e congressos</span> <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="kpi3">
       <div class="kpi">
         <div class="kpi-num"><span>140</span></div>
@@ -618,7 +630,7 @@ img { max-width: 100%; height: auto; }
   <!-- 6. NATAL DE CURITIBA 2025               -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-natal">
-    <div class="sec-label"><span data-pt="Natal de Curitiba 2025" data-en="Christmas in Curitiba 2025" data-zh="库里提巴圣诞节 2025">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Natal de Curitiba 2025" data-en="Christmas in Curitiba 2025" data-zh="库里提巴圣诞节 2025">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="award">
       <div class="award-ico">🎄</div>
       <div>
@@ -644,7 +656,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-b" data-pt="&lt;strong&gt;44 dias de programação&lt;/strong&gt; com mais de &lt;strong&gt;150 atrações gratuitas&lt;/strong&gt;, incluindo a parceria inédita com a Disney no Parque Barigui. Taxa média de ocupação dos hotéis: &lt;strong&gt;90%&lt;/strong&gt;, chegando a &lt;strong&gt;100%&lt;/strong&gt; nas áreas centrais nos dias de grandes apresentações. Tempo médio de permanência: &lt;strong&gt;4,1 pernoites&lt;/strong&gt;. Satisfação do público: &lt;strong&gt;95%&lt;/strong&gt;." data-en="&lt;strong&gt;44 days of programming&lt;/strong&gt; with over &lt;strong&gt;150 free attractions&lt;/strong&gt;, including an unprecedented partnership with Disney at Parque Barigui. Average hotel occupancy rate: &lt;strong&gt;90%&lt;/strong&gt;, reaching &lt;strong&gt;100%&lt;/strong&gt; in central areas on major performance days. Average length of stay: &lt;strong&gt;4.1 nights&lt;/strong&gt;. Audience satisfaction: &lt;strong&gt;95%&lt;/strong&gt;." data-zh="&lt;strong&gt;44天精彩活动&lt;/strong&gt;，逾&lt;strong&gt;150项免费表演&lt;/strong&gt;，包括在Parque Barigui举办的迪士尼史无前例合作项目。酒店平均入住率：&lt;strong&gt;90%&lt;/strong&gt;，大型演出日市中心区域达&lt;strong&gt;100%&lt;/strong&gt;。平均停留时间：&lt;strong&gt;4.1晚&lt;/strong&gt;。观众满意度：&lt;strong&gt;95%&lt;/strong&gt;。"><strong>44 dias de programação</strong> com mais de <strong>150 atrações gratuitas</strong>, incluindo a parceria inédita com a Disney no Parque Barigui. Taxa média de ocupação dos hotéis: <strong>90%</strong>, chegando a <strong>100%</strong> nas áreas centrais nos dias de grandes apresentações. Tempo médio de permanência: <strong>4,1 pernoites</strong>. Satisfação do público: <strong>95%</strong>.</div>
+      <div class="card-b" data-pt="&lt;strong&gt;44 dias de programação&lt;/strong&gt; com mais de &lt;strong&gt;150 atrações gratuitas&lt;/strong&gt;, incluindo a parceria inédita com a Disney no Parque Barigui.&lt;br&gt;&lt;br&gt;Taxa média de ocupação dos hotéis: &lt;strong&gt;90%&lt;/strong&gt;, chegando a &lt;strong&gt;100%&lt;/strong&gt; nas áreas centrais nos dias de grandes apresentações.&lt;br&gt;&lt;br&gt;Tempo médio de permanência: &lt;strong&gt;4,1 pernoites&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Satisfação do público: &lt;strong&gt;95%&lt;/strong&gt;." data-en="&lt;strong&gt;44 days of programming&lt;/strong&gt; with over &lt;strong&gt;150 free attractions&lt;/strong&gt;, including an unprecedented partnership with Disney at Parque Barigui.&lt;br&gt;&lt;br&gt;Average hotel occupancy rate: &lt;strong&gt;90%&lt;/strong&gt;, reaching &lt;strong&gt;100%&lt;/strong&gt; in central areas on major performance days.&lt;br&gt;&lt;br&gt;Average length of stay: &lt;strong&gt;4.1 nights&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Audience satisfaction: &lt;strong&gt;95%&lt;/strong&gt;." data-zh="&lt;strong&gt;44天精彩活动&lt;/strong&gt;，逾&lt;strong&gt;150项免费表演&lt;/strong&gt;，包括在Parque Barigui举办的迪士尼史无前例合作项目。&lt;br&gt;&lt;br&gt;酒店平均入住率：&lt;strong&gt;90%&lt;/strong&gt;，大型演出日市中心区域达&lt;strong&gt;100%&lt;/strong&gt;。&lt;br&gt;&lt;br&gt;平均停留时间：&lt;strong&gt;4.1晚&lt;/strong&gt;。&lt;br&gt;&lt;br&gt;观众满意度：&lt;strong&gt;95%&lt;/strong&gt;。"><strong>44 dias de programação</strong> com mais de <strong>150 atrações gratuitas</strong>, incluindo a parceria inédita com a Disney no Parque Barigui.<br><br>Taxa média de ocupação dos hotéis: <strong>90%</strong>, chegando a <strong>100%</strong> nas áreas centrais nos dias de grandes apresentações.<br><br>Tempo médio de permanência: <strong>4,1 pernoites</strong>.<br><br>Satisfação do público: <strong>95%</strong>.</div>
     </div>
     <div class="divider"></div>
   </div>
@@ -653,7 +665,7 @@ img { max-width: 100%; height: auto; }
   <!-- 7. HOTELARIA E INFRAESTRUTURA           -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-hotelaria">
-    <div class="sec-label"><span data-pt="Hotelaria e infraestrutura" data-en="Hotels and infrastructure" data-zh="酒店业与基础设施">Hotelaria e infraestrutura</span> <a href="https://www.parana.pr.gov.br/aen/Noticia/Hoteis-de-Curitiba-registram-90-de-ocupacao-em-outubro" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Hotelaria e infraestrutura" data-en="Hotels and infrastructure" data-zh="酒店业与基础设施">Hotelaria e infraestrutura</span> <a href="https://www.parana.pr.gov.br/aen/Noticia/Hoteis-de-Curitiba-registram-90-de-ocupacao-em-outubro" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="kpi3">
       <div class="kpi">
         <div class="kpi-num">20<span>mil</span></div>
@@ -703,7 +715,7 @@ img { max-width: 100%; height: auto; }
   <!-- 8. AEROPORTO E CONECTIVIDADE            -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-aeroporto">
-    <div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity" data-zh="机场与连通性">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity" data-zh="机场与连通性">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="kpi2">
       <div class="kpi">
         <div class="kpi-num">6,08<span>M</span></div>
@@ -717,7 +729,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="card">
-      <div class="card-b" data-pt="Em 2025 foram inauguradas rotas para Lima (Peru) e Assunção (Paraguai). Para 2026, está prevista a operação da &lt;strong&gt;TAP com voo direto Curitiba–Lisboa&lt;/strong&gt;, conectando a capital paranaense ao mercado europeu pela primeira vez com rota regular." data-en="In 2025, new routes to Lima (Peru) and Asunción (Paraguay) were launched. For 2026, &lt;strong&gt;TAP is scheduled to begin a direct Curitiba–Lisbon flight&lt;/strong&gt;, connecting the Paraná capital to the European market for the first time with a scheduled route." data-zh="2025年新开通了飞往利马（秘鲁）和亚松森（巴拉圭）的航线。2026年，&lt;strong&gt;TAP葡萄牙航空计划开通Curitiba至里斯本直飞航班&lt;/strong&gt;，首次以定期航班形式将巴拉那州首府与欧洲市场直接相连。">Em 2025 foram inauguradas rotas para Lima (Peru) e Assunção (Paraguai). Para 2026, está prevista a operação da <strong>TAP com voo direto Curitiba–Lisboa</strong>, conectando a capital paranaense ao mercado europeu pela primeira vez com rota regular.</div>
+      <div class="card-b" data-pt="Em 2025 foram inauguradas rotas para Lima (Peru) e Assunção (Paraguai).&lt;br&gt;&lt;br&gt;Para 2026, está prevista a operação da &lt;strong&gt;TAP com voo direto Curitiba–Lisboa&lt;/strong&gt;, conectando a capital paranaense ao mercado europeu pela primeira vez com rota regular." data-en="In 2025, new routes to Lima (Peru) and Asunción (Paraguay) were launched.&lt;br&gt;&lt;br&gt;For 2026, &lt;strong&gt;TAP is scheduled to begin a direct Curitiba–Lisbon flight&lt;/strong&gt;, connecting the Paraná capital to the European market for the first time with a scheduled route." data-zh="2025年新开通了飞往利马（秘鲁）和亚松森（巴拉圭）的航线。&lt;br&gt;&lt;br&gt;2026年，&lt;strong&gt;TAP葡萄牙航空计划开通Curitiba至里斯本直飞航班&lt;/strong&gt;，首次以定期航班形式将巴拉那州首府与欧洲市场直接相连。">Em 2025 foram inauguradas rotas para Lima (Peru) e Assunção (Paraguai).<br><br>Para 2026, está prevista a operação da <strong>TAP com voo direto Curitiba–Lisboa</strong>, conectando a capital paranaense ao mercado europeu pela primeira vez com rota regular.</div>
     </div>
     <div class="divider"></div>
   </div>
@@ -746,7 +758,7 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="card">
       <div class="card-h" data-pt="Indicadores de 2026 confirmam tendência" data-en="2026 indicators confirm the trend" data-zh="2026年数据印证趋势">Indicadores de 2026 confirmam tendência</div>
-      <div class="card-b" data-pt="A &lt;strong&gt;Torre Panorâmica&lt;/strong&gt; registrou &lt;span class=&quot;hl&quot;&gt;+12,6% de visitantes&lt;/span&gt; no início de 2026 vs. mesmo período de 2025. O Aeroporto Afonso Pena registrou &lt;strong&gt;1,46 milhão de passageiros no 1º trimestre de 2026&lt;/strong&gt;, +5% sobre o mesmo período do ano anterior." data-en="The &lt;strong&gt;Panoramic Tower&lt;/strong&gt; recorded &lt;span class=&quot;hl&quot;&gt;+12.6% in visitors&lt;/span&gt; in early 2026 compared to the same period in 2025. Afonso Pena Airport reported &lt;strong&gt;1.46 million passengers in Q1 2026&lt;/strong&gt;, up 5% from the same period the previous year." data-zh="&lt;strong&gt;全景塔&lt;/strong&gt;在2026年初录得&lt;span class=&quot;hl&quot;&gt;游客量增长12.6%&lt;/span&gt;，与2025年同期相比。阿丰索·佩纳机场2026年一季度共接待&lt;strong&gt;146万名旅客&lt;/strong&gt;，同比增长5%。">A <strong>Torre Panorâmica</strong> registrou <span class="hl">+12,6% de visitantes</span> no início de 2026 vs. mesmo período de 2025. O Aeroporto Afonso Pena registrou <strong>1,46 milhão de passageiros no 1º trimestre de 2026</strong>, +5% sobre o mesmo período do ano anterior.</div>
+      <div class="card-b" data-pt="A &lt;strong&gt;Torre Panorâmica&lt;/strong&gt; registrou &lt;span class=&quot;hl&quot;&gt;+12,6% de visitantes&lt;/span&gt; no início de 2026 vs. mesmo período de 2025.&lt;br&gt;&lt;br&gt;O Aeroporto Afonso Pena registrou &lt;strong&gt;1,46 milhão de passageiros no 1º trimestre de 2026&lt;/strong&gt;, +5% sobre o mesmo período do ano anterior." data-en="The &lt;strong&gt;Panoramic Tower&lt;/strong&gt; recorded &lt;span class=&quot;hl&quot;&gt;+12.6% in visitors&lt;/span&gt; in early 2026 compared to the same period in 2025.&lt;br&gt;&lt;br&gt;Afonso Pena Airport reported &lt;strong&gt;1.46 million passengers in Q1 2026&lt;/strong&gt;, up 5% from the same period the previous year." data-zh="&lt;strong&gt;全景塔&lt;/strong&gt;在2026年初录得&lt;span class=&quot;hl&quot;&gt;游客量增长12.6%&lt;/span&gt;，与2025年同期相比。&lt;br&gt;&lt;br&gt;阿丰索·佩纳机场2026年一季度共接待&lt;strong&gt;146万名旅客&lt;/strong&gt;，同比增长5%。">A <strong>Torre Panorâmica</strong> registrou <span class="hl">+12,6% de visitantes</span> no início de 2026 vs. mesmo período de 2025.<br><br>O Aeroporto Afonso Pena registrou <strong>1,46 milhão de passageiros no 1º trimestre de 2026</strong>, +5% sobre o mesmo período do ano anterior.</div>
     </div>
     <div class="divider"></div>
   </div>
@@ -810,7 +822,7 @@ img { max-width: 100%; height: auto; }
   <!-- 12. AIRBNB EM CURITIBA                  -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-airbnb">
-    <div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market" data-zh="库里提巴Airbnb：短租市场">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:12px;text-decoration:none;font-weight:400;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;">↗</a></div>
+    <div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market" data-zh="库里提巴Airbnb：短租市场">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
     <div class="kpi3">
       <div class="kpi dk">
         <div class="kpi-num"><span>5.190</span></div>
