@@ -648,51 +648,109 @@ async function loadRascunhos() {
   renderRascunhos(data || []);
 }
 
+const TEMA_CORES = {
+  eventos:'#e74c3c', esportivo:'#2ecc71', congresso:'#3498db',
+  hotelaria:'#9b59b6', aeroporto:'#1abc9c', turismo:'#f39c12',
+  imobiliario:'#e67e22', comparativo:'#2c3e50'
+};
+const TEMA_LABELS = {
+  eventos:'Eventos e Shows', esportivo:'Eventos Esportivos',
+  congresso:'Congressos & Corp.', hotelaria:'Hotelaria',
+  aeroporto:'Aeroporto', turismo:'Turismo',
+  imobiliario:'Mercado Imobiliário', comparativo:'Comparativos'
+};
+
 function renderRascunhos(rascunhos) {
   const el = document.getElementById('rascunhos-container');
   if (!rascunhos.length) {
     el.innerHTML = '<div style="text-align:center;padding:60px;color:#bbb"><p style="font-size:14px">Nenhum rascunho encontrado.</p></div>';
     return;
   }
-  el.innerHTML = rascunhos.map(r => `
-    <div style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:14px;overflow:hidden">
-      <div style="padding:14px 18px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-weight:600;font-size:14px">${esc(r.titulo || 'Sem título')}</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;background:${r.status==='pendente'?'rgba(245,158,11,0.1)':r.status==='aprovado'?'rgba(39,174,96,0.1)':'rgba(239,68,68,0.1)'};color:${r.status==='pendente'?'#d97706':r.status==='aprovado'?'#219a52':'#dc2626'}">${r.status}</span>
-          <span style="font-size:11px;color:#aaa">${new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
+
+  // Agrupa por tema (pendentes primeiro, depois por tema)
+  const pendentes = rascunhos.filter(r => r.status === 'pendente');
+  const outros    = rascunhos.filter(r => r.status !== 'pendente');
+
+  const renderItem = (r, isPendente) => {
+    const cor   = TEMA_CORES[r.tema] || '#FF6B00';
+    const label = TEMA_LABELS[r.tema] || (r.tema || '');
+    const statusBg = r.status==='pendente' ? 'rgba(245,158,11,0.1)' : r.status==='aprovado' ? 'rgba(39,174,96,0.1)' : 'rgba(239,68,68,0.1)';
+    const statusCor = r.status==='pendente' ? '#d97706' : r.status==='aprovado' ? '#219a52' : '#dc2626';
+    return `
+      <div id="rascunho-card-${r.id}" style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:12px;overflow:hidden">
+        <div style="padding:12px 18px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            ${label ? `<span style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${cor};background:${cor}18;padding:3px 8px;border-radius:20px">${label}</span>` : ''}
+            <span style="font-weight:600;font-size:13.5px;color:#1a1a1a">${esc(r.titulo || 'Sem título')}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+            <span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:${statusBg};color:${statusCor}">${r.status}</span>
+            <span style="font-size:10.5px;color:#aaa">${new Date(r.created_at).toLocaleDateString('pt-BR')}</span>
+          </div>
         </div>
+        <div id="rascunho-body-${r.id}" style="padding:10px 18px;font-size:13px;color:#666;line-height:1.6;max-height:90px;overflow:hidden;position:relative">
+          ${r.conteudo || ''}
+          <div style="position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,#fff)"></div>
+        </div>
+        ${isPendente ? `
+        <div style="padding:10px 18px;border-top:0.5px solid #f5f3ef;display:flex;gap:7px;flex-wrap:wrap">
+          <button onclick="aprovarRascunho('${r.id}')" style="background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25);border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-weight:600">✓ Aprovar</button>
+          <button onclick="editarRascunho('${r.id}')" style="background:rgba(255,107,0,0.08);color:#FF6B00;border:0.5px solid rgba(255,107,0,0.2);border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-weight:600">✏️ Editar</button>
+          <button onclick="rejeitarRascunho('${r.id}')" style="background:rgba(239,68,68,0.07);color:#c0392b;border:0.5px solid rgba(239,68,68,0.2);border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-weight:600">✕ Rejeitar</button>
+        </div>` : ''}
+      </div>`;
+  };
+
+  let html = '';
+  if (pendentes.length) {
+    html += `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#d97706;margin-bottom:10px;padding:8px 0 4px;border-bottom:0.5px solid #f0ede6">Aguardando aprovação (${pendentes.length})</div>`;
+    html += pendentes.map(r => renderItem(r, true)).join('');
+  }
+  if (outros.length) {
+    html += `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#aaa;margin:16px 0 10px;padding:8px 0 4px;border-bottom:0.5px solid #f0ede6">Histórico</div>`;
+    html += outros.map(r => renderItem(r, false)).join('');
+  }
+  el.innerHTML = html;
+}
+
+function editarRascunho(id) {
+  const body = document.getElementById('rascunho-body-' + id);
+  if (!body) return;
+  const r = { conteudo: body.innerHTML };
+  const tituloEl = document.querySelector(`#rascunho-card-${id} [style*="font-weight:600;font-size:13"]`);
+  const tituloAtual = tituloEl ? tituloEl.textContent.trim() : '';
+  body.innerHTML = `
+    <div style="padding:4px 0">
+      <input id="edit-r-titulo-${id}" type="text" value="${esc(tituloAtual)}" style="width:100%;border:0.5px solid #ddd;border-radius:6px;padding:8px 10px;font-size:13px;margin-bottom:8px;outline:none;font-family:'DM Sans',sans-serif">
+      <textarea id="edit-r-conteudo-${id}" style="width:100%;min-height:80px;border:0.5px solid #ddd;border-radius:6px;padding:8px 10px;font-size:12px;resize:vertical;outline:none;font-family:monospace">${r.conteudo}</textarea>
+      <div style="display:flex;gap:7px;margin-top:8px">
+        <button onclick="salvarEdicaoRascunho('${id}')" style="background:#FF6B00;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">Salvar e aprovar</button>
+        <button onclick="loadRascunhos()" style="background:#f5f5f0;color:#555;border:0.5px solid #ddd;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer">Cancelar</button>
       </div>
-      <div style="padding:12px 18px;font-size:13px;color:#666;line-height:1.6;max-height:100px;overflow:hidden;position:relative">
-        ${r.conteudo || ''}
-        <div style="position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,#fff)"></div>
-      </div>
-      ${r.status === 'pendente' ? `
-      <div style="padding:10px 18px;border-top:0.5px solid #f5f3ef;display:flex;gap:8px">
-        <button class="btn-aprovar rascunho-btns" onclick="aprovarRascunho('${r.id}')" style="background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25);border-radius:7px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">✓ Aprovar e publicar</button>
-        <button onclick="rejeitarRascunho('${r.id}')" style="background:rgba(239,68,68,0.07);color:#c0392b;border:0.5px solid rgba(239,68,68,0.2);border-radius:7px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">✕ Rejeitar</button>
-      </div>` : ''}
-    </div>
-  `).join('');
+    </div>`;
+}
+
+async function salvarEdicaoRascunho(id) {
+  const titulo  = document.getElementById('edit-r-titulo-' + id)?.value || '';
+  const conteudo = document.getElementById('edit-r-conteudo-' + id)?.value || '';
+  const { error } = await sb.from('rascunhos_curadoria').update({ titulo, conteudo, status: 'aprovado' }).eq('id', id);
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('✅ Editado e aprovado! Aparecerá nas Novidades da semana.', 'success');
+  loadRascunhos();
 }
 
 async function aprovarRascunho(id) {
-  const r = (await sb.from('rascunhos_curadoria').select('titulo,conteudo').eq('id',id).single()).data;
-  if (!r) { toast('Rascunho não encontrado', 'error'); return; }
-  const maxOrdem = allBlocos.length > 0 ? Math.max(...allBlocos.map(b => b.ordem || 0)) : 0;
-  const [r1, r2] = await Promise.all([
-    sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id),
-    sb.from('blocos_conteudo').insert({ titulo: r.titulo, conteudo: r.conteudo, tipo: 'noticia', visivel_cliente: true, ordem: maxOrdem + 1, slug: slugify(r.titulo || 'curadoria') })
-  ]);
-  if (r1.error || r2.error) { toast('Erro ao publicar', 'error'); return; }
-  toast('✅ Publicado! Aparecerá no portal como "Novidades da semana".', 'success');
+  const { error } = await sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id);
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('✅ Aprovado! Aparecerá no portal como "Novidades da semana".', 'success');
+  loadRascunhos();
 }
 
 async function rejeitarRascunho(id) {
-  if (!confirm('Rejeitar este rascunho?')) return;
+  if (!confirm('Rejeitar este item?')) return;
   const { error } = await sb.from('rascunhos_curadoria').update({ status: 'rejeitado' }).eq('id', id);
   if (error) toast('Erro: ' + error.message, 'error');
-  else toast('Rascunho rejeitado', 'success');
+  else { toast('Item rejeitado', 'success'); loadRascunhos(); }
 }
 
 // ── SEED: Popular com conteúdo do index.html ──

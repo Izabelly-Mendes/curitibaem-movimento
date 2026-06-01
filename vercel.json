@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/curadoria",
-      "schedule": "0 9 * * 3"
+      "schedule": "0 12 * * 2"
     }
   ]
 }
