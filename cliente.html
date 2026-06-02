@@ -1179,22 +1179,39 @@ document.addEventListener('DOMContentLoaded', function() {
         imobiliario:'Mercado Imobiliário', comparativo:'Comparativos de Dados'
       };
 
+      function linkValido(url) {
+        if (!url) return false;
+        try {
+          const u = new URL(url);
+          // Deve ter um path além do domínio
+          return u.pathname && u.pathname.length > 1 && u.pathname !== '/';
+        } catch(e) { return false; }
+      }
+
       const itensHtml = data.map(function(n) {
         const temaLabel = TEMA_LABELS[n.tema] || (n.tema || 'Novidade');
+        const data_fmt = new Date(n.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+        const linkBtn = linkValido(n.link_fonte)
+          ? `<a href="${n.link_fonte}" target="_blank" rel="noopener" style="font-size:11px;color:#FF6B00;text-decoration:none;display:inline-flex;align-items:center;gap:4px;border:0.5px solid rgba(255,107,0,0.3);border-radius:20px;padding:4px 10px;margin-top:10px">↗ Ler notícia completa</a>`
+          : '';
         return `
-          <div style="border-top:0.5px solid rgba(255,255,255,0.08);padding:16px 0 4px">
-            <span style="font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#FF6B00">${temaLabel}</span>
-            <div style="font-family:'Cambria','Georgia',serif;font-size:15px;font-weight:700;color:#fff;margin:6px 0 6px">${n.titulo || ''}</div>
-            <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.65">${n.conteudo || ''}</div>
+          <div style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;border-left:4px solid #FF6B00;padding:22px 24px;margin-bottom:14px;">
+            <span style="font-size:9px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B00;display:block;margin-bottom:6px;">✦ Novidades da semana · ${temaLabel}</span>
+            <div style="font-family:'Cambria','Georgia',serif;font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">${n.titulo || ''}</div>
+            <div style="font-size:13.5px;color:#555;line-height:1.65;margin-bottom:4px;">${n.conteudo || ''}</div>
+            ${linkBtn}
+            <div style="font-size:10px;color:#bbb;margin-top:10px;">${data_fmt}</div>
           </div>`;
       }).join('');
 
       container.style.display = 'block';
       container.innerHTML = `
-        <div style="background:#1a1a1a;border-left:4px solid #FF6B00;border-radius:12px;padding:20px 24px 20px;margin-bottom:0">
-          <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FF6B00;display:block;margin-bottom:4px">✦ Novidades da semana</span>
-          ${itensHtml}
-          <div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:16px">${new Date(data[0].created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})}</div>
+        <div style="margin-bottom:0">
+          <div style="background:#1a1a1a;border-radius:12px 12px 0 0;padding:16px 24px;display:flex;align-items:center;gap:10px">
+            <span style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FF6B00">✦ Novidades da semana</span>
+            <span style="font-size:10px;color:rgba(255,255,255,0.3)">${data.length} item${data.length !== 1 ? 's' : ''}</span>
+          </div>
+          <div style="padding:16px 0 0">${itensHtml}</div>
         </div>`;
     } catch(e) { /* silencioso */ }
   }
