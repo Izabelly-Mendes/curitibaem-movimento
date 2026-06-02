@@ -655,11 +655,14 @@ async function loadRascunhos() {
 
   allRascunhos = data || [];
   const todos = allRascunhos;
-  const pendentes  = todos.filter(r => r.status === 'pendente');
-  const aprovados  = todos.filter(r => r.status === 'aprovado');
-  const rejeitados = todos.filter(r => r.status === 'rejeitado');
+  const pendentes     = todos.filter(r => r.status === 'pendente');
+  const aprovados     = todos.filter(r => r.status === 'aprovado');
+  // Despublicados = rejeitados que já foram publicados (foi_publicado=true)
+  const despublicados = todos.filter(r => r.status === 'rejeitado' && r.foi_publicado === true);
+  // Rejeitados normais = nunca chegaram a ser publicados
+  const rejeitadosNormais = todos.filter(r => r.status === 'rejeitado' && !r.foi_publicado);
 
-  // Badge no tab header
+  // Badge no tab header (só pendentes)
   const badge = document.getElementById('badge-rascunhos');
   badge.textContent = pendentes.length;
   badge.style.display = pendentes.length > 0 ? 'inline' : 'none';
@@ -669,8 +672,8 @@ async function loadRascunhos() {
   badgePub.textContent = aprovados.length + ' publicado' + (aprovados.length !== 1 ? 's' : '');
   badgePub.style.display = aprovados.length > 0 ? 'inline' : 'none';
 
-  renderPublicadas(aprovados);
-  renderRascunhos(pendentes.concat(rejeitados));
+  renderPublicadas(aprovados, despublicados);
+  renderRascunhos(pendentes.concat(rejeitadosNormais));
 }
 
 const TEMA_CORES = {
@@ -685,13 +688,14 @@ const TEMA_LABELS = {
   imobiliario:'Mercado Imobiliário', comparativo:'Comparativos'
 };
 
-function renderPublicadas(aprovados) {
+function renderPublicadas(aprovados, despublicados) {
   const el = document.getElementById('publicadas-container');
-  if (!aprovados.length) {
+  if (!aprovados.length && !despublicados.length) {
     el.innerHTML = '<p style="font-size:13px;color:#aaa;padding:8px 0 16px">Nenhum item publicado ainda.</p>';
     return;
   }
-  el.innerHTML = aprovados.map(r => {
+
+  const renderItemPublicado = (r) => {
     const cor   = TEMA_CORES[r.tema] || '#FF6B00';
     const label = TEMA_LABELS[r.tema] || (r.tema || '');
     const linkOk = r.link_fonte && r.link_fonte.length > 10;
@@ -700,6 +704,7 @@ function renderPublicadas(aprovados) {
         <div id="pub-body-${r.id}" style="padding:12px 16px;display:flex;align-items:flex-start;gap:10px">
           <div style="flex:1;min-width:0">
             ${label ? `<span style="font-size:9px;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:${cor};background:${cor}18;padding:2px 7px;border-radius:20px">${label}</span>` : ''}
+            <span style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:rgba(39,174,96,0.1);color:#219a52;border-radius:20px;padding:2px 7px;margin-left:4px">publicado</span>
             <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin:5px 0 2px;line-height:1.4">${esc(r.titulo || '')}</div>
             ${linkOk ? `<a href="${r.link_fonte}" target="_blank" style="font-size:10.5px;color:#FF6B00;text-decoration:none">↗ ${(() => { try { return new URL(r.link_fonte).hostname; } catch(e) { return r.link_fonte; } })()}</a>` : ''}
             <div style="font-size:10.5px;color:#aaa;margin-top:4px">${new Date(r.created_at).toLocaleDateString('pt-BR')}</div>
@@ -711,7 +716,34 @@ function renderPublicadas(aprovados) {
           </div>
         </div>
       </div>`;
-  }).join('');
+  };
+
+  const renderItemDespublicado = (r) => {
+    const label = TEMA_LABELS[r.tema] || (r.tema || '');
+    return `
+      <div style="background:#f9f9f7;border-radius:10px;border:0.5px solid #ddd;margin-bottom:8px;overflow:hidden;opacity:0.85">
+        <div style="padding:10px 14px;display:flex;align-items:center;gap:10px">
+          <div style="flex:1;min-width:0">
+            ${label ? `<span style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#888;background:#eee;border-radius:20px;padding:2px 7px">${label}</span>` : ''}
+            <span style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:#f0f0f0;color:#888;border-radius:20px;padding:2px 7px;margin-left:4px">despublicado</span>
+            <div style="font-size:12.5px;font-weight:600;color:#888;margin:4px 0 0;line-height:1.3">${esc(r.titulo || '')}</div>
+          </div>
+          <div style="display:flex;gap:5px;flex-shrink:0">
+            <button onclick="republicar('${r.id}')" title="Republicar no portal" style="background:rgba(255,107,0,0.12);color:#FF6B00;border:0.5px solid rgba(255,107,0,0.3);border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;font-weight:700">↩ Republicar</button>
+            <button onclick="excluirRascunho('${r.id}')" title="Excluir permanentemente" style="background:rgba(239,68,68,0.07);color:#c0392b;border:0.5px solid rgba(239,68,68,0.2);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">🗑️</button>
+          </div>
+        </div>
+      </div>`;
+  };
+
+  let html = aprovados.map(renderItemPublicado).join('');
+
+  if (despublicados.length) {
+    html += `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin:14px 0 8px;padding:6px 0 4px;border-bottom:0.5px solid #e8e8e8">Despublicados (${despublicados.length})</div>`;
+    html += despublicados.map(renderItemDespublicado).join('');
+  }
+
+  el.innerHTML = html;
 }
 
 function editarPublicada(id) {
@@ -746,10 +778,20 @@ async function salvarPublicada(id) {
 }
 
 async function despublicarRascunho(id) {
-  if (!confirm('Despublicar este item? Ele sairá do portal mas não será excluído.')) return;
-  const { error } = await sb.from('rascunhos_curadoria').update({ status: 'rejeitado' }).eq('id', id);
+  if (!confirm('Despublicar este item? Ele sairá do portal mas poderá ser republicado.')) return;
+  // Marca foi_publicado=true para poder republicar depois
+  const { error } = await sb.from('rascunhos_curadoria')
+    .update({ status: 'rejeitado', foi_publicado: true }).eq('id', id);
   if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Item despublicado (não aparece mais no portal)', 'success');
+  toast('Item despublicado. Use "↩ Republicar" para restaurar.', 'success');
+  loadRascunhos();
+}
+
+async function republicar(id) {
+  const { error } = await sb.from('rascunhos_curadoria')
+    .update({ status: 'aprovado', foi_publicado: true }).eq('id', id);
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast('✅ Item republicado! Já aparece no portal.', 'success');
   loadRascunhos();
 }
 
@@ -925,7 +967,7 @@ async function salvarEdicaoRascunho(id, aprovar = false) {
 
   const payload = { titulo, conteudo, link_fonte: link, tema,
     kpi_valor: kpiValor || null, kpi_label: kpiLabel || null };
-  if (aprovar) payload.status = 'aprovado';
+  if (aprovar) { payload.status = 'aprovado'; payload.foi_publicado = true; }
 
   const { error } = await sb.from('rascunhos_curadoria').update(payload).eq('id', id);
   if (error) { toast('Erro: ' + error.message, 'error'); return; }
@@ -938,9 +980,10 @@ async function salvarEdicaoRascunho(id, aprovar = false) {
 }
 
 async function aprovarRascunho(id) {
-  const { error } = await sb.from('rascunhos_curadoria').update({ status: 'aprovado' }).eq('id', id);
+  const { error } = await sb.from('rascunhos_curadoria')
+    .update({ status: 'aprovado', foi_publicado: true }).eq('id', id);
   if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('✅ Aprovado! Aparecerá no portal como "Novidades da semana".', 'success');
+  toast('✅ Aprovado! Aparecerá nos Dados de Curitiba.', 'success');
   loadRascunhos();
 }
 
