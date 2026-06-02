@@ -86,6 +86,53 @@ function linkParece_artigo(url) {
   } catch(e) { return false; }
 }
 
+// ── Limpeza do título ──
+function limparTitulo(titulo) {
+  if (!titulo) return '';
+  titulo = titulo.replace(/^(curitiba\s+)?conteúdo de marca\s+/i, '');
+  titulo = titulo.replace(/^curitiba\s+/i, '');
+  titulo = titulo.replace(/\s*[|–-—]\s*.*$/, '');   // remove sufixo de site
+  titulo = titulo.replace(/\.\.\.$/, '');
+  titulo = titulo.charAt(0).toUpperCase() + titulo.slice(1);
+  return titulo.trim();
+}
+
+// ── Limpeza do resumo/conteúdo ──
+function limparConteudo(conteudo) {
+  if (!conteudo) return '';
+  conteudo = conteudo.replace(/Clara\s+Silva\s*[-–]?\s*/gi, '');
+  conteudo = conteudo.replace(/\b\d{1,2}\s+de\s+\w+\s+de\s+\d{4}\b/g, '');
+  conteudo = conteudo.replace(/\b(janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\s+\d{1,2},\s+\d{4}/gi, '');
+  conteudo = conteudo.replace(/^[A-ZÁÉÍÓÚ][^.]*?-[A-Z]+\s+/, '');
+  conteudo = conteudo.replace(/Conteúdo\s+de\s+marca\s*/gi, '');
+  conteudo = conteudo.replace(/Publicidade\s*/gi, '');
+  conteudo = conteudo.replace(/\s{2,}/g, ' ').trim();
+  if (conteudo && !conteudo.endsWith('.')) conteudo += '.';
+  return conteudo;
+}
+
+// ── Extrai KPI principal do texto ──
+function extrairKPI(texto) {
+  const padroes = [
+    { regex: /R\$\s*[\d,.]+\s*(bilh[õo]es?|milh[õo]es?)/i,                           label: 'impacto econômico' },
+    { regex: /\+[\d,.]+%/,                                                             label: 'crescimento' },
+    { regex: /([\d,.]+%)\s*(de\s+)?(crescimento|aumento|ocupação|satisfação)/i,        label: '' },
+    { regex: /([\d,.]+\s*(mil|milh[õo]es?))\s*(pessoas|visitantes|participantes|turistas|passageiros)/i, label: '' },
+    { regex: /(\d+)[ªº°]\s*(edição|congresso|feira|evento)/i,                          label: 'edição' },
+    { regex: /(\d+)\s*(dias|anos)\s*(de\s+)?(programação|evento|festival)/i,           label: '' },
+    { regex: /[\d,.]+\s*(mil|milh[õo]es?)\s*(reais|R\$)/i,                            label: 'valor' },
+  ];
+  for (const { regex, label } of padroes) {
+    const match = texto.match(regex);
+    if (match) {
+      const val = match[0].trim();
+      const lbl = label || val.replace(/[\d,.+%R$]/g, '').trim().replace(/\s+/g,' ').trim().slice(0, 40);
+      return { kpi_valor: val, kpi_label: lbl || 'destaque' };
+    }
+  }
+  return { kpi_valor: null, kpi_label: null };
+}
+
 // ── Extrai conteúdo de um artigo individual ──
 function extrairConteudo(html) {
   // Remove scripts, styles, nav, footer, header, sidebar
@@ -161,7 +208,9 @@ async function salvarItem(item) {
     titulo: item.titulo,
     conteudo: item.conteudo,
     tema: item.tema,
-    link_fonte: item.link_fonte,
+    link_fonte: item.link_fonte || null,
+    kpi_valor: item.kpi_valor || null,
+    kpi_label: item.kpi_label || null,
     status: 'pendente'
   });
   const res = await fetch(`${supabaseUrl}/rest/v1/rascunhos_curadoria`, {
@@ -193,13 +242,17 @@ function gerarEmail(salvos, dataStr) {
     const aprovUrl = `${BASE_URL}/api/aprovar?id=${item.id}&token=${TOKEN}`;
     const rejUrl   = `${BASE_URL}/api/rejeitar?id=${item.id}&token=${TOKEN}`;
     const linkBtn  = linkFonteValido(item.link_fonte)
-      ? `<p style="margin:10px 0 0"><a href="${item.link_fonte}" target="_blank" style="font-size:11px;color:#FF6B00;text-decoration:none">↗ Ler notícia completa</a></p>`
+      ? `<p style="margin:10px 0 0"><a href="${item.link_fonte}" target="_blank" style="font-size:11px;color:#FF6B00;text-decoration:none;display:inline-block;border:0.5px solid rgba(255,107,0,0.3);border-radius:20px;padding:4px 10px">↗ Ler notícia completa</a></p>`
+      : '';
+    const kpiBlock = item.kpi_valor
+      ? `<div style="background:#1a1a1a;border-radius:8px;padding:10px 14px;margin:10px 0;display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:rgba(255,255,255,0.5)">${item.kpi_label || ''}</span><span style="font-size:20px;font-weight:700;color:#FF6B00">${item.kpi_valor}</span></div>`
       : '';
 
     return `
       <div style="background:#fff;border-radius:12px;border:0.5px solid #e8e8e8;border-left:4px solid ${cor};padding:20px 24px;margin-bottom:14px">
         <span style="font-size:9px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:${cor};background:${cor}18;padding:3px 8px;border-radius:20px">${label}</span>
         <div style="font-size:15px;font-weight:700;color:#1a1a1a;margin:10px 0 8px;line-height:1.3">${item.titulo}</div>
+        ${kpiBlock}
         <div style="font-size:13px;color:#555;line-height:1.65">${item.conteudo}</div>
         ${linkBtn}
         <div style="margin-top:14px;display:flex;gap:8px">
@@ -284,30 +337,35 @@ export default async function handler(req, res) {
 
         const { titulo, texto } = extrairConteudo(htmlArtigo);
 
-        // Filtros de qualidade
-        if (!titulo || titulo.length < 15) continue;                    // sem título
-        if (titulo.trim().endsWith('?')) continue;                      // não é pergunta
-        if (titulosVistos.has(titulo.toLowerCase())) continue;          // sem duplicata
-        if (texto.length < 150) continue;                               // conteúdo muito curto
-        if (!temDadoConcreto(titulo + ' ' + texto)) continue;          // sem dado concreto
-        if (!linkFonteValido(linkArtigo)) continue;                    // link genérico
+        // Limpeza e normalização
+        const tituloLimpo = limparTitulo(titulo);
 
-        // Relevância para Curitiba
-        const textoLower = (titulo + ' ' + texto).toLowerCase();
+        // Filtros de qualidade
+        if (!tituloLimpo || tituloLimpo.length < 15) continue;
+        if (tituloLimpo.trim().endsWith('?')) continue;
+        if (titulosVistos.has(tituloLimpo.toLowerCase())) continue;
+        if (texto.length < 150) continue;
+        if (!temDadoConcreto(tituloLimpo + ' ' + texto)) continue;
+        if (!linkFonteValido(linkArtigo)) continue;
+
+        const textoLower = (tituloLimpo + ' ' + texto).toLowerCase();
         if (!textoLower.includes('curitiba') && !textoLower.includes('paraná') && !textoLower.includes('afonso pena')) continue;
 
-        // Classifica por tópico
         const tema = classificarTexto(textoLower) || fonte.tema || 'turismo';
 
-        // Gera resumo
-        const resumo = gerarResumo(texto);
-        if (!resumo || resumo.length < 60) continue;
+        // Gera resumo limpo
+        const resumoBruto = gerarResumo(texto);
+        if (!resumoBruto || resumoBruto.length < 60) continue;
+        const resumo = limparConteudo(resumoBruto);
 
         const dominioArtigo = (() => { try { return new URL(linkArtigo).hostname; } catch(e) { return 'fonte'; } })();
         const conteudo = `<p style="font-size:13.5px;line-height:1.7;margin:0 0 8px">${resumo}</p><p style="font-size:11px;color:#aaa;margin:0">Fonte: <a href="${linkArtigo}" target="_blank" style="color:#FF6B00">${dominioArtigo}</a></p>`;
 
-        titulosVistos.add(titulo.toLowerCase());
-        itensParaSalvar.push({ titulo, conteudo, tema, link_fonte: linkArtigo });
+        // Extrai KPI
+        const kpi = extrairKPI(tituloLimpo + ' ' + resumo);
+
+        titulosVistos.add(tituloLimpo.toLowerCase());
+        itensParaSalvar.push({ titulo: tituloLimpo, conteudo, tema, link_fonte: linkArtigo, ...kpi });
         console.log(`[curadoria] ✓ ${tema}: ${titulo.substring(0,60)}`);
       }
     }

@@ -783,6 +783,7 @@ function renderRascunhos(rascunhos) {
       <div id="rascunho-card-${r.id}" style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:12px;overflow:hidden">
         <div style="padding:12px 18px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            ${isPendente ? `<input type="checkbox" class="rascunho-check" data-id="${r.id}" onchange="atualizarSelecao()" style="width:14px;height:14px;accent-color:#FF6B00;cursor:pointer;flex-shrink:0">` : ''}
             ${label ? `<span style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${cor};background:${cor}18;padding:3px 8px;border-radius:20px">${label}</span>` : ''}
             <span style="font-weight:600;font-size:13.5px;color:#1a1a1a">${esc(r.titulo || 'Sem título')}</span>
           </div>
@@ -806,7 +807,15 @@ function renderRascunhos(rascunhos) {
 
   let html = '';
   if (pendentes.length) {
-    html += `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#d97706;margin-bottom:10px;padding:8px 0 4px;border-bottom:0.5px solid #f0ede6">Aguardando aprovação (${pendentes.length})</div>`;
+    html += `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 12px;background:#fff;border-radius:8px;border:0.5px solid #e0ddd5">
+        <input type="checkbox" id="selecionar-todos" onchange="selecionarTodos(this)" style="width:15px;height:15px;accent-color:#FF6B00;cursor:pointer">
+        <label for="selecionar-todos" style="font-size:12px;color:#888;cursor:pointer">Selecionar todos</label>
+        <button id="btn-excluir-selecionados" onclick="excluirSelecionados()" style="display:none;background:#e24b4a;color:#fff;border:none;border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;margin-left:auto;font-weight:600">
+          Excluir (<span id="count-selecionados">0</span>)
+        </button>
+      </div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#d97706;margin-bottom:10px;padding:4px 0;border-bottom:0.5px solid #f0ede6">Aguardando aprovação (${pendentes.length})</div>`;
     html += pendentes.map(r => renderItem(r, true)).join('');
   }
   if (outros.length) {
@@ -817,31 +826,114 @@ function renderRascunhos(rascunhos) {
 }
 
 function editarRascunho(id) {
+  const card = document.getElementById('rascunho-card-' + id);
+  if (!card) return;
+  const r = (allRascunhos || []).find(x => x.id === id) || {};
+
+  // Esconde o body normal, transforma o card inteiro
+  card.style.border = '2px solid #FF6B00';
+  card.style.borderRadius = '14px';
+
   const body = document.getElementById('rascunho-body-' + id);
   if (!body) return;
-  const r = allRascunhos ? allRascunhos.find(x => x.id === id) : {};
+  body.style.maxHeight = 'none';
+  body.style.overflow  = 'visible';
+  body.style.padding   = '16px 18px';
+
+  const temasOpts = [
+    ['turismo','Turismo'],['eventos','Eventos e Shows'],['esportivo','Eventos Esportivos'],
+    ['congresso','Congressos & Corp.'],['hotelaria','Hotelaria'],
+    ['aeroporto','Aeroporto'],['imobiliario','Mercado Imobiliário'],['comparativo','Comparativos de Dados']
+  ].map(([v,l]) => `<option value="${v}" ${r.tema===v?'selected':''}>${l}</option>`).join('');
+
   body.innerHTML = `
-    <div style="padding:4px 0">
-      <label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Título</label>
-      <input id="edit-r-titulo-${id}" type="text" value="${esc((r && r.titulo) || '')}" style="width:100%;border:0.5px solid #ddd;border-radius:6px;padding:8px 10px;font-size:13px;margin-bottom:8px;outline:none;font-family:'DM Sans',sans-serif">
-      <label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Conteúdo</label>
-      <textarea id="edit-r-conteudo-${id}" style="width:100%;min-height:80px;border:0.5px solid #ddd;border-radius:6px;padding:8px 10px;font-size:12px;resize:vertical;outline:none;font-family:monospace;margin-bottom:8px">${(r && r.conteudo) || ''}</textarea>
-      <label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Link da notícia</label>
-      <input id="edit-r-link-${id}" type="url" value="${esc((r && r.link_fonte) || '')}" placeholder="https://..." style="width:100%;border:0.5px solid #ddd;border-radius:6px;padding:8px 10px;font-size:12px;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif">
-      <div style="display:flex;gap:7px">
-        <button onclick="salvarEdicaoRascunho('${id}')" style="background:#FF6B00;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">Salvar e aprovar</button>
-        <button onclick="loadRascunhos()" style="background:#f5f5f0;color:#555;border:0.5px solid #ddd;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer">Cancelar</button>
+    <div style="background:#fff;border-radius:0">
+      <label class="edit-label-small">Tema</label>
+      <select id="edit-r-tema-${id}" style="width:100%;height:34px;border:0.5px solid #ddd;border-radius:7px;padding:0 10px;margin-bottom:12px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none">${temasOpts}</select>
+
+      <label class="edit-label-small">Título</label>
+      <div class="format-toolbar">
+        <select class="font-size-select" onchange="aplicarEstiloSel('edit-r-titulo-${id}','fontSize',this.value)">
+          <option value="14px">Pequeno</option><option value="16px" selected>Normal</option><option value="20px">Grande</option>
+        </select>
+        <select class="font-family-select" onchange="aplicarFonteSel('edit-r-titulo-${id}',this.value)">
+          <option value="'Syne',sans-serif" selected>Syne</option><option value="'DM Sans',sans-serif">DM Sans</option><option value="Georgia,serif">Georgia</option>
+        </select>
+        <input type="color" class="color-picker" value="#1a1a1a" oninput="aplicarCorSel('edit-r-titulo-${id}',this.value)">
+        <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('edit-r-titulo-${id}','bold')"><b>B</b></button>
+        <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('edit-r-titulo-${id}','italic')"><i>I</i></button>
+      </div>
+      <div id="edit-r-titulo-${id}" contenteditable="true" class="edit-field" style="font-weight:700;font-size:16px">${r.titulo || ''}</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div>
+          <label class="edit-label-small">Valor KPI (ex: R$ 180 milhões)</label>
+          <input type="text" id="edit-r-kpi-valor-${id}" value="${esc(r.kpi_valor || '')}" placeholder="ex: +34,5%" style="width:100%;height:34px;border:0.5px solid #ddd;border-radius:7px;padding:0 10px;font-size:13px;outline:none;font-family:'DM Sans',sans-serif">
+        </div>
+        <div>
+          <label class="edit-label-small">Label do KPI</label>
+          <input type="text" id="edit-r-kpi-label-${id}" value="${esc(r.kpi_label || '')}" placeholder="ex: crescimento" style="width:100%;height:34px;border:0.5px solid #ddd;border-radius:7px;padding:0 10px;font-size:13px;outline:none;font-family:'DM Sans',sans-serif">
+        </div>
+      </div>
+
+      <label class="edit-label-small">Conteúdo</label>
+      <div class="format-toolbar">
+        <select class="font-size-select" onchange="aplicarEstiloSel('edit-r-conteudo-${id}','fontSize',this.value)">
+          <option value="12px">Pequeno</option><option value="14px" selected>Normal</option><option value="16px">Médio</option>
+        </select>
+        <select class="font-family-select" onchange="aplicarFonteSel('edit-r-conteudo-${id}',this.value)">
+          <option value="'DM Sans',sans-serif" selected>DM Sans</option><option value="Georgia,serif">Georgia</option>
+        </select>
+        <input type="color" class="color-picker" value="#555555" oninput="aplicarCorSel('edit-r-conteudo-${id}',this.value)">
+        <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('edit-r-conteudo-${id}','bold')"><b>B</b></button>
+        <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('edit-r-conteudo-${id}','italic')"><i>I</i></button>
+        <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('edit-r-conteudo-${id}','underline')"><u>U</u></button>
+      </div>
+      <div id="edit-r-conteudo-${id}" contenteditable="true" class="edit-field" style="min-height:80px;font-size:14px">${r.conteudo || ''}</div>
+
+      <label class="edit-label-small">Link completo da notícia</label>
+      <input type="url" id="edit-r-link-${id}" value="${esc(r.link_fonte || '')}" placeholder="https://..." style="width:100%;height:34px;border:0.5px solid #ddd;border-radius:7px;padding:0 10px;font-size:13px;margin-bottom:14px;outline:none;font-family:'DM Sans',sans-serif">
+
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button onclick="cancelarEdicaoRascunho('${id}')" class="btn-cancelar">Cancelar</button>
+        <button onclick="salvarEdicaoRascunho('${id}', false)" style="padding:8px 16px;border-radius:8px;border:0.5px solid #ddd;background:#888;color:#fff;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif">Salvar rascunho</button>
+        <button onclick="salvarEdicaoRascunho('${id}', true)" class="btn-salvar">✓ Aprovar e publicar</button>
       </div>
     </div>`;
+
+  // Remove botões de ação do footer enquanto editando
+  const footer = card.querySelector('[id^="rascunho-card"] > div:last-child');
+  const actionDiv = card.children[card.children.length - 1];
+  if (actionDiv && actionDiv !== body) actionDiv.style.display = 'none';
 }
 
-async function salvarEdicaoRascunho(id) {
-  const titulo   = document.getElementById('edit-r-titulo-' + id)?.value || '';
-  const conteudo = document.getElementById('edit-r-conteudo-' + id)?.value || '';
-  const link     = document.getElementById('edit-r-link-' + id)?.value || '';
-  const { error } = await sb.from('rascunhos_curadoria').update({ titulo, conteudo, link_fonte: link, status: 'aprovado' }).eq('id', id);
+function cancelarEdicaoRascunho(id) {
+  const card = document.getElementById('rascunho-card-' + id);
+  if (card) { card.style.border = ''; card.style.borderRadius = ''; }
+  loadRascunhos();
+}
+
+async function salvarEdicaoRascunho(id, aprovar = false) {
+  const tituloEl   = document.getElementById('edit-r-titulo-' + id);
+  const conteudoEl = document.getElementById('edit-r-conteudo-' + id);
+  const titulo     = tituloEl ? tituloEl.innerText.trim() : '';
+  const conteudo   = conteudoEl ? conteudoEl.innerHTML : '';
+  const link       = document.getElementById('edit-r-link-' + id)?.value || '';
+  const tema       = document.getElementById('edit-r-tema-' + id)?.value || '';
+  const kpiValor   = document.getElementById('edit-r-kpi-valor-' + id)?.value || null;
+  const kpiLabel   = document.getElementById('edit-r-kpi-label-' + id)?.value || null;
+
+  const payload = { titulo, conteudo, link_fonte: link, tema,
+    kpi_valor: kpiValor || null, kpi_label: kpiLabel || null };
+  if (aprovar) payload.status = 'aprovado';
+
+  const { error } = await sb.from('rascunhos_curadoria').update(payload).eq('id', id);
   if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('✅ Editado e aprovado! Aparecerá nas Novidades da semana.', 'success');
+
+  const card = document.getElementById('rascunho-card-' + id);
+  if (card) { card.style.border = ''; card.style.borderRadius = ''; }
+
+  toast(aprovar ? '✅ Aprovado! Aparecerá nas Novidades da semana.' : '💾 Rascunho salvo.', 'success');
   loadRascunhos();
 }
 
@@ -1114,6 +1206,35 @@ async function seedConteudo() {
   else toast(`✅ ${ok} blocos inseridos com sucesso!`, 'success');
   btn.textContent = '🌱 Popular com conteúdo do material interno';
   btn.disabled = false;
+}
+
+// ── SELEÇÃO MÚLTIPLA ──
+function selecionarTodos(checkbox) {
+  document.querySelectorAll('.rascunho-check').forEach(cb => { cb.checked = checkbox.checked; });
+  atualizarSelecao();
+}
+
+function atualizarSelecao() {
+  const sel = document.querySelectorAll('.rascunho-check:checked');
+  const btn  = document.getElementById('btn-excluir-selecionados');
+  const cnt  = document.getElementById('count-selecionados');
+  if (cnt) cnt.textContent = sel.length;
+  if (btn) btn.style.display = sel.length > 0 ? 'block' : 'none';
+  // Atualiza checkbox "selecionar todos"
+  const todos = document.querySelectorAll('.rascunho-check');
+  const selTodos = document.getElementById('selecionar-todos');
+  if (selTodos && todos.length) selTodos.checked = sel.length === todos.length;
+}
+
+async function excluirSelecionados() {
+  const selecionados = [...document.querySelectorAll('.rascunho-check:checked')];
+  const ids = selecionados.map(cb => cb.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`Excluir ${ids.length} rascunho${ids.length>1?'s':''} selecionado${ids.length>1?'s':''}?`)) return;
+  const { error } = await sb.from('rascunhos_curadoria').delete().in('id', ids);
+  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  toast(`${ids.length} rascunho${ids.length>1?'s':''} excluído${ids.length>1?'s':''}`, 'success');
+  loadRascunhos();
 }
 
 // ── UTILS ──
