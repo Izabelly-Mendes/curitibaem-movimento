@@ -59,38 +59,28 @@ body{font-family:'DM Sans',sans-serif;background:#1a1a1a;min-height:100vh;displa
     <button class="eye-btn" type="button" onclick="toggleVer('senha-confirm',this)">👁</button>
   </div>
 
-  <button class="btn-salvar" id="btn-salvar" onclick="trocarSenha()">Salvar nova senha</button>
+  <div id="erro-perfil" style="color:#e24b4a;font-size:13px;text-align:center;margin-bottom:10px;min-height:18px;"></div>
+  <div id="sucesso-perfil" style="color:#3b6d11;font-size:13px;text-align:center;margin-bottom:10px;min-height:18px;"></div>
+  <button class="btn-salvar" onclick="trocarSenha()">Salvar nova senha</button>
 
   <div class="back-link">
     <a href="./index.html">← Voltar ao material</a>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const supabaseClient = createClient(
+  'https://uocnikcoynoflxgcknii.supabase.co',
+  'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2'
+);
 
 async function hashSenha(senha) {
   const encoder = new TextEncoder();
   const data = encoder.encode(senha);
   const hash = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-function mostrarErro(msg) {
-  document.getElementById('ok-msg').style.display = 'none';
-  const el = document.getElementById('erro-msg');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
-
-function mostrarSucesso(msg) {
-  document.getElementById('erro-msg').style.display = 'none';
-  const el = document.getElementById('ok-msg');
-  el.textContent = msg;
-  el.style.display = 'block';
 }
 
 function toggleVer(id, btn) {
@@ -105,64 +95,72 @@ function toggleVer(id, btn) {
 }
 
 async function trocarSenha() {
-  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
-  if (!sessao.corretor_id) {
-    window.location.href = './login.html';
-    return;
-  }
-
   const senhaAtual = document.getElementById('senha-atual').value;
   const senhaNova = document.getElementById('senha-nova').value;
   const senhaConfirm = document.getElementById('senha-confirm').value;
+  const erroEl = document.getElementById('erro-perfil');
+  const sucessoEl = document.getElementById('sucesso-perfil');
+
+  if (erroEl) erroEl.textContent = '';
+  if (sucessoEl) sucessoEl.textContent = '';
 
   if (!senhaAtual || !senhaNova || !senhaConfirm) {
-    mostrarErro('Preencha todos os campos.');
+    if (erroEl) erroEl.textContent = 'Preencha todos os campos.';
     return;
   }
 
   if (senhaNova !== senhaConfirm) {
-    mostrarErro('As senhas novas não coincidem.');
+    if (erroEl) erroEl.textContent = 'As senhas novas não coincidem.';
     return;
   }
 
   if (senhaNova.length < 6) {
-    mostrarErro('A nova senha deve ter pelo menos 6 caracteres.');
+    if (erroEl) erroEl.textContent = 'A nova senha deve ter pelo menos 6 caracteres.';
     return;
   }
 
-  const btn = document.getElementById('btn-salvar');
-  btn.disabled = true;
-  btn.textContent = 'Salvando...';
+  const btn = document.querySelector('button[onclick="trocarSenha()"]');
+  if (btn) { btn.textContent = 'Salvando...'; btn.disabled = true; }
 
-  const hashAtual = await hashSenha(senhaAtual);
+  try {
+    const sessaoStr = sessionStorage.getItem('sessao_corretor');
+    if (!sessaoStr) { window.location.href = './login.html'; return; }
+    const sessao = JSON.parse(sessaoStr);
 
-  const { data } = await supabase
-    .from('corretores')
-    .select('id')
-    .eq('id', sessao.corretor_id)
-    .eq('senha_hash', hashAtual)
-    .single();
+    const hashAtual = await hashSenha(senhaAtual);
 
-  if (!data) {
-    mostrarErro('Senha atual incorreta.');
-    btn.disabled = false;
-    btn.textContent = 'Salvar nova senha';
-    return;
+    const { data, error } = await supabaseClient
+      .from('corretores')
+      .select('id')
+      .eq('id', sessao.corretor_id)
+      .eq('senha_hash', hashAtual)
+      .maybeSingle();
+
+    if (error || !data) {
+      if (erroEl) erroEl.textContent = 'Senha atual incorreta.';
+      if (btn) { btn.textContent = 'Salvar nova senha'; btn.disabled = false; }
+      return;
+    }
+
+    const hashNova = await hashSenha(senhaNova);
+
+    await supabaseClient
+      .from('corretores')
+      .update({ senha_hash: hashNova, atualizado_em: new Date().toISOString() })
+      .eq('id', sessao.corretor_id);
+
+    if (sucessoEl) sucessoEl.textContent = 'Senha alterada com sucesso!';
+    if (btn) { btn.textContent = 'Salvar nova senha'; btn.disabled = false; }
+
+    document.getElementById('senha-atual').value = '';
+    document.getElementById('senha-nova').value = '';
+    document.getElementById('senha-confirm').value = '';
+
+  } catch(e) {
+    console.error('Erro:', e);
+    if (erroEl) erroEl.textContent = 'Erro inesperado. Tente novamente.';
+    if (btn) { btn.textContent = 'Salvar nova senha'; btn.disabled = false; }
   }
-
-  const hashNova = await hashSenha(senhaNova);
-
-  await supabase.from('corretores').update({
-    senha_hash: hashNova,
-    atualizado_em: new Date().toISOString()
-  }).eq('id', sessao.corretor_id);
-
-  mostrarSucesso('Senha alterada com sucesso!');
-  document.getElementById('senha-atual').value = '';
-  document.getElementById('senha-nova').value = '';
-  document.getElementById('senha-confirm').value = '';
-  btn.disabled = false;
-  btn.textContent = 'Salvar nova senha';
 }
 
 window.addEventListener('DOMContentLoaded', function() {
