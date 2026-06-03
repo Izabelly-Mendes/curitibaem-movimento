@@ -233,6 +233,7 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
     <div class="app-header-spacer"></div>
     <button class="tab-btn active" onclick="switchTab('editor')" id="tab-editor">✏️ Editor</button>
     <button class="tab-btn" onclick="switchTab('rascunhos')" id="tab-rascunhos">📊 Dados de Curitiba <span id="badge-rascunhos" style="display:none;background:#FF6B00;color:#fff;border-radius:20px;font-size:10px;padding:1px 6px;margin-left:2px"></span></button>
+    <button class="tab-btn" onclick="switchTab('corretores')" id="tab-corretores">👥 Corretores</button>
     <a href="cliente.html" target="_blank" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;transition:all 0.15s" onmouseover="this.style.color='#FF6B00'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">↗ Portal</a>
     <button class="logout-btn" onclick="logout()">Sair</button>
   </div>
@@ -306,6 +307,86 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
       </div>
     </div>
 
+    <!-- TAB: CORRETORES -->
+    <div class="tab-section" id="tab-section-corretores" style="background:#f5f5f0;overflow-y:auto;padding:24px;flex-direction:column">
+      <div style="max-width:860px;margin:0 auto;width:100%">
+
+        <!-- Sub-nav -->
+        <div style="display:flex;gap:8px;margin-bottom:24px;border-bottom:0.5px solid #ddd;padding-bottom:16px">
+          <button class="cor-sub-btn active" onclick="switchCorSub('lista')" id="corsub-lista" style="background:rgba(255,107,0,0.12);border:0.5px solid rgba(255,107,0,0.3);border-radius:8px;padding:7px 16px;font-size:13px;color:#FF6B00;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600">Lista de corretores</button>
+          <button class="cor-sub-btn" onclick="switchCorSub('historico')" id="corsub-historico" style="background:rgba(0,0,0,0.04);border:0.5px solid #ddd;border-radius:8px;padding:7px 16px;font-size:13px;color:#888;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600">Histórico de acessos</button>
+          <button class="cor-sub-btn" onclick="switchCorSub('online')" id="corsub-online" style="background:rgba(0,0,0,0.04);border:0.5px solid #ddd;border-radius:8px;padding:7px 16px;font-size:13px;color:#888;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600">🟢 Online agora</button>
+        </div>
+
+        <!-- SUB A: LISTA -->
+        <div id="corsub-section-lista">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800">Corretores</h2>
+            <button onclick="abrirModalNovoCorretor()" style="background:#FF6B00;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer">＋ Adicionar corretor</button>
+          </div>
+          <div style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;overflow:hidden">
+            <table style="width:100%;border-collapse:collapse" id="corretores-table">
+              <thead>
+                <tr style="background:#f8f7f4;border-bottom:0.5px solid #e0ddd5">
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Nome</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Email</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Status</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Último acesso</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="corretores-tbody">
+                <tr><td colspan="5" style="text-align:center;padding:32px;color:#bbb;font-size:13px">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUB B: HISTÓRICO -->
+        <div id="corsub-section-historico" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+            <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-right:auto">Histórico de acessos</h2>
+            <select id="hist-filtro-corretor" onchange="carregarHistorico()" style="border:0.5px solid #ddd;border-radius:8px;padding:7px 12px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff;color:#555;outline:none">
+              <option value="">Todos os corretores</option>
+            </select>
+            <select id="hist-filtro-dias" onchange="carregarHistorico()" style="border:0.5px solid #ddd;border-radius:8px;padding:7px 12px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff;color:#555;outline:none">
+              <option value="7" selected>Últimos 7 dias</option>
+              <option value="30">Últimos 30 dias</option>
+              <option value="90">Últimos 90 dias</option>
+            </select>
+          </div>
+          <div id="hist-totais" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px"></div>
+          <div style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;overflow:hidden">
+            <table style="width:100%;border-collapse:collapse">
+              <thead>
+                <tr style="background:#f8f7f4;border-bottom:0.5px solid #e0ddd5">
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Corretor</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Entrou em</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Saiu em</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Duração</th>
+                </tr>
+              </thead>
+              <tbody id="historico-tbody">
+                <tr><td colspan="4" style="text-align:center;padding:32px;color:#bbb;font-size:13px">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUB C: ONLINE AGORA -->
+        <div id="corsub-section-online" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800">Online agora</h2>
+            <span style="font-size:12px;color:#bbb" id="online-updated"></span>
+          </div>
+          <div id="online-lista">
+            <div style="text-align:center;padding:40px;color:#bbb;font-size:13px">Carregando...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div><!-- /app-body -->
 </div><!-- /app -->
 
@@ -349,6 +430,55 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
   </div>
 </div>
 
+<!-- MODAL: Novo Corretor -->
+<div class="modal-overlay" id="modal-novo-corretor">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Adicionar Corretor</h3>
+      <button class="modal-close" onclick="closeModal('modal-novo-corretor')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Nome</label>
+        <input type="text" id="nc-nome" placeholder="Nome completo" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Email</label>
+        <input type="email" id="nc-email" placeholder="email@corretor.com" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+      </div>
+      <div style="margin-bottom:6px">
+        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Senha inicial</label>
+        <input type="text" id="nc-senha" placeholder="mínimo 6 caracteres" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+      </div>
+      <p style="font-size:11.5px;color:#bbb;margin-top:6px">O corretor poderá alterar a senha em Meu perfil.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-novo-corretor')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarNovoCorretor()">Criar corretor</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Redefinir Senha -->
+<div class="modal-overlay" id="modal-redef-senha">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Redefinir Senha</h3>
+      <button class="modal-close" onclick="closeModal('modal-redef-senha')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:#888;margin-bottom:16px">Redefina a senha para: <strong id="redef-nome"></strong></p>
+      <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Nova senha</label>
+      <input type="text" id="redef-senha" placeholder="Nova senha" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+      <input type="hidden" id="redef-corretor-id">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-redef-senha')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarRedefinicaoSenha()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast-container"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -381,6 +511,7 @@ function showApp() {
   document.getElementById('auth-screen').style.display = 'none';
   const app = document.getElementById('app');
   app.style.display = 'flex';
+  sessionStorage.setItem('admin_logado', '1');
   init();
 }
 
@@ -403,6 +534,10 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-section-' + tab).classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'corretores') {
+    carregarCorretores();
+    switchCorSub('lista');
+  }
 }
 
 // ── BLOCOS ──
@@ -1302,6 +1437,227 @@ function toast(msg, type) {
   t.textContent = msg;
   document.getElementById('toast-container').appendChild(t);
   setTimeout(() => t.remove(), 3500);
+}
+
+// ══════════════════════════════════════════════════════
+// CORRETORES
+// ══════════════════════════════════════════════════════
+async function hashSenha(senha) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(senha);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function formatDt(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+let _onlineInterval = null;
+
+function switchCorSub(sub) {
+  ['lista','historico','online'].forEach(s => {
+    document.getElementById('corsub-section-' + s).style.display = s === sub ? 'block' : 'none';
+    const btn = document.getElementById('corsub-' + s);
+    if (s === sub) {
+      btn.style.background = 'rgba(255,107,0,0.12)';
+      btn.style.borderColor = 'rgba(255,107,0,0.3)';
+      btn.style.color = '#FF6B00';
+    } else {
+      btn.style.background = 'rgba(0,0,0,0.04)';
+      btn.style.borderColor = '#ddd';
+      btn.style.color = '#888';
+    }
+  });
+  if (_onlineInterval) { clearInterval(_onlineInterval); _onlineInterval = null; }
+  if (sub === 'lista') carregarCorretores();
+  if (sub === 'historico') { carregarCorretores(); carregarHistorico(); }
+  if (sub === 'online') { carregarOnline(); _onlineInterval = setInterval(carregarOnline, 60000); }
+}
+
+let _todosCorretores = [];
+
+async function carregarCorretores() {
+  const { data, error } = await sb.from('corretores').select('*').order('nome');
+  if (error) { toast('Erro ao carregar corretores', 'error'); return; }
+  _todosCorretores = data || [];
+  renderTabelaCorretores(_todosCorretores);
+  popularFiltroCorretores(_todosCorretores);
+}
+
+async function renderTabelaCorretores(lista) {
+  const tb = document.getElementById('corretores-tbody');
+  if (!lista.length) {
+    tb.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:#bbb;font-size:13px">Nenhum corretor cadastrado.</td></tr>';
+    return;
+  }
+  // buscar último acesso de cada corretor
+  const ids = lista.map(c => c.id);
+  const { data: acessos } = await sb.from('acessos_corretores')
+    .select('corretor_id, entrou_em')
+    .in('corretor_id', ids)
+    .order('entrou_em', { ascending: false });
+  const ultimoAcesso = {};
+  (acessos || []).forEach(a => { if (!ultimoAcesso[a.corretor_id]) ultimoAcesso[a.corretor_id] = a.entrou_em; });
+
+  tb.innerHTML = lista.map(c => `
+    <tr style="border-bottom:0.5px solid #f0ede6" id="tr-${c.id}">
+      <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#1a1a1a">${c.nome}</td>
+      <td style="padding:12px 16px;font-size:13px;color:#555">${c.email}</td>
+      <td style="padding:12px 16px">
+        <span onclick="toggleAtivoCorretor('${c.id}',${c.ativo})" title="${c.ativo ? 'Clique para desativar' : 'Clique para ativar'}" style="cursor:pointer;background:${c.ativo ? 'rgba(39,174,96,0.1)' : 'rgba(200,0,0,0.08)'};color:${c.ativo ? '#219a52' : '#c0392b'};border-radius:20px;font-size:11px;font-weight:700;padding:3px 10px">${c.ativo ? 'Ativo' : 'Inativo'}</span>
+      </td>
+      <td style="padding:12px 16px;font-size:12px;color:#888">${formatDt(ultimoAcesso[c.id])}</td>
+      <td style="padding:12px 16px">
+        <div style="display:flex;gap:6px">
+          <button onclick="abrirRedefSenha('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(255,107,0,0.1);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#FF6B00;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Redefinir senha</button>
+          <button onclick="excluirCorretor('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(231,76,60,0.08);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#c0392b;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Excluir</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function popularFiltroCorretores(lista) {
+  const sel = document.getElementById('hist-filtro-corretor');
+  if (!sel) return;
+  const val = sel.value;
+  sel.innerHTML = '<option value="">Todos os corretores</option>' + lista.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+  sel.value = val;
+}
+
+async function toggleAtivoCorretor(id, atual) {
+  await sb.from('corretores').update({ ativo: !atual }).eq('id', id);
+  carregarCorretores();
+}
+
+async function excluirCorretor(id, nome) {
+  if (!confirm(`Excluir o corretor "${nome}"? Esta ação não pode ser desfeita.`)) return;
+  const { error } = await sb.from('corretores').delete().eq('id', id);
+  if (error) { toast('Erro ao excluir: ' + error.message, 'error'); return; }
+  toast('Corretor excluído.', 'success');
+  carregarCorretores();
+}
+
+function abrirModalNovoCorretor() {
+  document.getElementById('nc-nome').value = '';
+  document.getElementById('nc-email').value = '';
+  document.getElementById('nc-senha').value = '';
+  document.getElementById('modal-novo-corretor').classList.add('open');
+}
+
+async function salvarNovoCorretor() {
+  const nome = document.getElementById('nc-nome').value.trim();
+  const email = document.getElementById('nc-email').value.trim().toLowerCase();
+  const senha = document.getElementById('nc-senha').value;
+  if (!nome || !email || !senha) { toast('Preencha todos os campos.', 'error'); return; }
+  if (senha.length < 6) { toast('Senha deve ter mínimo 6 caracteres.', 'error'); return; }
+  const hash = await hashSenha(senha);
+  const { error } = await sb.from('corretores').insert({ nome, email, senha_hash: hash });
+  if (error) { toast('Erro: ' + (error.message.includes('unique') ? 'Email já cadastrado.' : error.message), 'error'); return; }
+  toast('Corretor criado com sucesso!', 'success');
+  closeModal('modal-novo-corretor');
+  carregarCorretores();
+}
+
+function abrirRedefSenha(id, nome) {
+  document.getElementById('redef-nome').textContent = nome;
+  document.getElementById('redef-corretor-id').value = id;
+  document.getElementById('redef-senha').value = '';
+  document.getElementById('modal-redef-senha').classList.add('open');
+}
+
+async function salvarRedefinicaoSenha() {
+  const id = document.getElementById('redef-corretor-id').value;
+  const senha = document.getElementById('redef-senha').value;
+  if (!senha || senha.length < 6) { toast('Senha deve ter mínimo 6 caracteres.', 'error'); return; }
+  const hash = await hashSenha(senha);
+  const { error } = await sb.from('corretores').update({ senha_hash: hash, atualizado_em: new Date().toISOString() }).eq('id', id);
+  if (error) { toast('Erro ao redefinir senha.', 'error'); return; }
+  toast('Senha redefinida!', 'success');
+  closeModal('modal-redef-senha');
+}
+
+async function carregarHistorico() {
+  const dias = parseInt(document.getElementById('hist-filtro-dias').value) || 7;
+  const filtroCorretor = document.getElementById('hist-filtro-corretor').value;
+  const desde = new Date(Date.now() - dias * 24 * 60 * 60 * 1000).toISOString();
+
+  let query = sb.from('acessos_corretores')
+    .select('*, corretores(nome, email)')
+    .gte('entrou_em', desde)
+    .order('entrou_em', { ascending: false });
+  if (filtroCorretor) query = query.eq('corretor_id', filtroCorretor);
+
+  const { data, error } = await query;
+  if (error) { toast('Erro ao carregar histórico', 'error'); return; }
+  const rows = data || [];
+
+  // Totalizadores
+  const totalAcessos = rows.length;
+  const comDuracao = rows.filter(r => r.duracao_minutos);
+  const mediaDuracao = comDuracao.length ? Math.round(comDuracao.reduce((s, r) => s + r.duracao_minutos, 0) / comDuracao.length) : 0;
+  const contagemPorCorretor = {};
+  rows.forEach(r => { const n = r.corretores?.nome || '?'; contagemPorCorretor[n] = (contagemPorCorretor[n] || 0) + 1; });
+  const maisAtivo = Object.entries(contagemPorCorretor).sort((a, b) => b[1] - a[1])[0];
+
+  document.getElementById('hist-totais').innerHTML = `
+    <div style="background:#fff;border-radius:10px;border:0.5px solid #e0ddd5;padding:14px 16px">
+      <div style="font-size:22px;font-weight:700;color:#1a1a1a">${totalAcessos}</div>
+      <div style="font-size:11px;color:#888;margin-top:4px">Total de acessos</div>
+    </div>
+    <div style="background:#fff;border-radius:10px;border:0.5px solid #e0ddd5;padding:14px 16px">
+      <div style="font-size:22px;font-weight:700;color:#1a1a1a">${mediaDuracao}<span style="font-size:13px;color:#888"> min</span></div>
+      <div style="font-size:11px;color:#888;margin-top:4px">Tempo médio / sessão</div>
+    </div>
+    <div style="background:#fff;border-radius:10px;border:0.5px solid #e0ddd5;padding:14px 16px">
+      <div style="font-size:15px;font-weight:700;color:#FF6B00">${maisAtivo ? maisAtivo[0] : '—'}</div>
+      <div style="font-size:11px;color:#888;margin-top:4px">Corretor mais ativo${maisAtivo ? ' (' + maisAtivo[1] + 'x)' : ''}</div>
+    </div>`;
+
+  const tb = document.getElementById('historico-tbody');
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:32px;color:#bbb;font-size:13px">Nenhum acesso no período.</td></tr>';
+    return;
+  }
+  tb.innerHTML = rows.map(r => `
+    <tr style="border-bottom:0.5px solid #f0ede6">
+      <td style="padding:10px 16px">
+        <div style="font-size:13px;font-weight:600;color:#1a1a1a">${r.corretores?.nome || '—'}</div>
+        <div style="font-size:11px;color:#aaa">${r.corretores?.email || ''}</div>
+      </td>
+      <td style="padding:10px 16px;font-size:12px;color:#555">${formatDt(r.entrou_em)}</td>
+      <td style="padding:10px 16px;font-size:12px;color:#555">${formatDt(r.saiu_em)}</td>
+      <td style="padding:10px 16px;font-size:12px;color:#555">${r.duracao_minutos != null ? r.duracao_minutos + ' min' : '—'}</td>
+    </tr>`).join('');
+}
+
+async function carregarOnline() {
+  const { data, error } = await sb.from('acessos_corretores')
+    .select('*, corretores(nome, email)')
+    .is('saiu_em', null)
+    .gte('entrou_em', new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+
+  const now = new Date();
+  document.getElementById('online-updated').textContent = 'Atualizado às ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+  const el = document.getElementById('online-lista');
+  if (error || !data || !data.length) {
+    el.innerHTML = '<div style="text-align:center;padding:48px;color:#bbb;font-size:13px">Nenhum corretor online no momento.</div>';
+    return;
+  }
+  el.innerHTML = data.map(r => {
+    const mins = Math.round((now - new Date(r.entrou_em)) / 60000);
+    return `<div style="background:#fff;border-radius:10px;border:0.5px solid #e0ddd5;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:14px">
+      <div style="width:10px;height:10px;border-radius:50%;background:#27ae60;flex-shrink:0"></div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;color:#1a1a1a">${r.corretores?.nome || '—'}</div>
+        <div style="font-size:12px;color:#aaa">${r.corretores?.email || ''}</div>
+      </div>
+      <div style="font-size:12px;color:#888">Online há ${mins} min</div>
+    </div>`;
+  }).join('');
 }
 </script>
 </body>

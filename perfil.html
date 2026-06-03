@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="diferencial_logo.png">
+<title>Meu Perfil — Curitiba em Movimento</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;margin:0 auto}
+.logo-wrap{text-align:center;margin-bottom:24px}
+.logo-wrap img{height:40px}
+.nome-corretor{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#1a1a1a;text-align:center;margin-bottom:4px}
+.sub{font-size:13px;color:#aaa;text-align:center;margin-bottom:28px}
+.field-label{font-size:12px;font-weight:600;color:#555;margin-bottom:6px;display:block}
+.field-wrap{position:relative;margin-bottom:16px}
+.field-input{width:100%;border:1px solid #e0ddd5;border-radius:10px;padding:12px 14px;padding-right:42px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none;transition:border-color 0.2s;background:#fafafa}
+.field-input:focus{border-color:#FF6B00;background:#fff}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#bbb;font-size:16px;padding:4px;line-height:1}
+.eye-btn:hover{color:#888}
+.btn-salvar{width:100%;background:#FF6B00;color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-top:4px}
+.btn-salvar:hover{background:#e05a00}
+.btn-salvar:disabled{background:#ccc;cursor:not-allowed}
+.erro-msg{background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:8px;padding:10px 14px;font-size:13px;color:#c0392b;margin-bottom:16px;display:none}
+.ok-msg{background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.25);border-radius:8px;padding:10px 14px;font-size:13px;color:#219a52;margin-bottom:16px;display:none}
+.back-link{text-align:center;margin-top:18px}
+.back-link a{font-size:12px;color:#bbb;text-decoration:none}
+.back-link a:hover{color:#FF6B00}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo-wrap">
+    <img src="diferencial_logo.png" alt="Diferencial Imóveis">
+  </div>
+  <div class="nome-corretor" id="nome-corretor">—</div>
+  <div class="sub">Alterar senha de acesso</div>
+
+  <div class="erro-msg" id="erro-msg"></div>
+  <div class="ok-msg" id="ok-msg"></div>
+
+  <label class="field-label" for="senha-atual">Senha atual</label>
+  <div class="field-wrap">
+    <input type="password" id="senha-atual" class="field-input" placeholder="••••••••" autocomplete="current-password">
+    <button class="eye-btn" type="button" onclick="toggleVer('senha-atual',this)">👁</button>
+  </div>
+
+  <label class="field-label" for="senha-nova">Nova senha</label>
+  <div class="field-wrap">
+    <input type="password" id="senha-nova" class="field-input" placeholder="mínimo 6 caracteres" autocomplete="new-password">
+    <button class="eye-btn" type="button" onclick="toggleVer('senha-nova',this)">👁</button>
+  </div>
+
+  <label class="field-label" for="senha-confirm">Confirmar nova senha</label>
+  <div class="field-wrap">
+    <input type="password" id="senha-confirm" class="field-input" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')trocarSenha()">
+    <button class="eye-btn" type="button" onclick="toggleVer('senha-confirm',this)">👁</button>
+  </div>
+
+  <button class="btn-salvar" id="btn-salvar" onclick="trocarSenha()">Salvar nova senha</button>
+
+  <div class="back-link">
+    <a href="./index.html">← Voltar ao material</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function hashSenha(senha) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(senha);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function mostrarErro(msg) {
+  document.getElementById('ok-msg').style.display = 'none';
+  const el = document.getElementById('erro-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function mostrarSucesso(msg) {
+  document.getElementById('erro-msg').style.display = 'none';
+  const el = document.getElementById('ok-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function toggleVer(id, btn) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+async function trocarSenha() {
+  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
+  if (!sessao.corretor_id) {
+    window.location.href = './login.html';
+    return;
+  }
+
+  const senhaAtual = document.getElementById('senha-atual').value;
+  const senhaNova = document.getElementById('senha-nova').value;
+  const senhaConfirm = document.getElementById('senha-confirm').value;
+
+  if (!senhaAtual || !senhaNova || !senhaConfirm) {
+    mostrarErro('Preencha todos os campos.');
+    return;
+  }
+
+  if (senhaNova !== senhaConfirm) {
+    mostrarErro('As senhas novas não coincidem.');
+    return;
+  }
+
+  if (senhaNova.length < 6) {
+    mostrarErro('A nova senha deve ter pelo menos 6 caracteres.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-salvar');
+  btn.disabled = true;
+  btn.textContent = 'Salvando...';
+
+  const hashAtual = await hashSenha(senhaAtual);
+
+  const { data } = await supabase
+    .from('corretores')
+    .select('id')
+    .eq('id', sessao.corretor_id)
+    .eq('senha_hash', hashAtual)
+    .single();
+
+  if (!data) {
+    mostrarErro('Senha atual incorreta.');
+    btn.disabled = false;
+    btn.textContent = 'Salvar nova senha';
+    return;
+  }
+
+  const hashNova = await hashSenha(senhaNova);
+
+  await supabase.from('corretores').update({
+    senha_hash: hashNova,
+    atualizado_em: new Date().toISOString()
+  }).eq('id', sessao.corretor_id);
+
+  mostrarSucesso('Senha alterada com sucesso!');
+  document.getElementById('senha-atual').value = '';
+  document.getElementById('senha-nova').value = '';
+  document.getElementById('senha-confirm').value = '';
+  btn.disabled = false;
+  btn.textContent = 'Salvar nova senha';
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  const isAdmin = sessionStorage.getItem('admin_logado');
+  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
+  if (!isAdmin && !sessao.corretor_id) {
+    window.location.href = './login.html';
+    return;
+  }
+  if (sessao.nome) {
+    document.getElementById('nome-corretor').textContent = sessao.nome;
+  } else if (isAdmin) {
+    document.getElementById('nome-corretor').textContent = 'Administrador';
+  }
+});
+</script>
+</body>
+</html>

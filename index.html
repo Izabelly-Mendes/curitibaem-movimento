@@ -372,6 +372,70 @@ img { max-width: 100%; height: auto; }
 </head>
 <body>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const _SB_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
+const _SB_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
+const supabase = window.supabase.createClient(_SB_URL, _SB_KEY);
+
+async function registrarSaida(sessao, acessoId) {
+  if (!acessoId) return;
+  const entrou = new Date(sessao.entrou_em);
+  const saiu = new Date();
+  const duracao = Math.round((saiu - entrou) / 60000);
+  try {
+    await supabase.from('acessos_corretores').update({
+      saiu_em: saiu.toISOString(),
+      duracao_minutos: duracao
+    }).eq('id', acessoId);
+  } catch(e) {}
+}
+
+async function logout() {
+  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
+  const acessoId = sessionStorage.getItem('acesso_id');
+  await registrarSaida(sessao, acessoId);
+  sessionStorage.removeItem('sessao_corretor');
+  sessionStorage.removeItem('acesso_id');
+  localStorage.removeItem('sessao_corretor_salva');
+  localStorage.removeItem('corretor_email_salvo');
+  window.location.href = './login.html';
+}
+
+(function verificarAcesso() {
+  const isAdmin = sessionStorage.getItem('admin_logado');
+  if (isAdmin) return;
+  const sessaoStr = sessionStorage.getItem('sessao_corretor');
+  if (!sessaoStr) { window.location.href = './login.html'; return; }
+  try {
+    const sessao = JSON.parse(sessaoStr);
+    const agora = new Date();
+    const expira = new Date(sessao.expira_em);
+    if (agora > expira) {
+      registrarSaida(sessao, sessionStorage.getItem('acesso_id'));
+      sessionStorage.removeItem('sessao_corretor');
+      sessionStorage.removeItem('acesso_id');
+      window.location.href = './login.html?expirado=true';
+      return;
+    }
+    sessao.expira_em = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
+    const nomeEl = document.getElementById('corretor-nome');
+    if (nomeEl) nomeEl.textContent = sessao.nome;
+  } catch(e) {
+    window.location.href = './login.html';
+  }
+})();
+
+window.addEventListener('beforeunload', function() {
+  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
+  const acessoId = sessionStorage.getItem('acesso_id');
+  if (sessao.corretor_id && acessoId) {
+    registrarSaida(sessao, acessoId);
+  }
+});
+</script>
+
 <!-- SIDEBAR MOBILE BUTTON -->
 <button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" style="display:none;position:fixed;top:14px;left:14px;z-index:1100;background:#1a1a1a;border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#FF6B00;line-height:1;">☰</button>
 
@@ -409,7 +473,11 @@ img { max-width: 100%; height: auto; }
   <!-- Header row: logo + seletor de idiomas -->
   <div style="display:flex;align-items:center;margin-bottom:48px;">
     <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis" style="margin-bottom:0;flex-shrink:0;">
-    <div id="lang-selector" style="display:flex;align-items:center;gap:8px;margin-left:auto;position:relative;z-index:9999;pointer-events:auto;">
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+      <a href="./perfil.html" style="color:rgba(255,255,255,0.5);font-size:11px;text-decoration:none;margin-right:4px;font-family:'DM Sans',Arial,sans-serif;" id="corretor-nome-link">Meu perfil</a>
+      <button onclick="logout()" style="background:none;border:0.5px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 12px;color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',Arial,sans-serif;margin-right:12px;">Sair</button>
+    </div>
+    <div id="lang-selector" style="display:flex;align-items:center;gap:8px;position:relative;z-index:9999;pointer-events:auto;">
       <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(255,255,255,0.12);border:1.5px solid #FF6B00;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
       <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
       <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>

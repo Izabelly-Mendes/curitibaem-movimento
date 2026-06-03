@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="diferencial_logo.png">
+<title>Acesso — Curitiba em Movimento</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;margin:0 auto}
+.logo-wrap{text-align:center;margin-bottom:28px}
+.logo-wrap img{height:44px}
+.login-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#1a1a1a;text-align:center;margin-bottom:6px}
+.login-sub{font-size:13px;color:#aaa;text-align:center;margin-bottom:28px}
+.field-label{font-size:12px;font-weight:600;color:#555;margin-bottom:6px;display:block}
+.field-wrap{position:relative;margin-bottom:16px}
+.field-input{width:100%;border:1px solid #e0ddd5;border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none;transition:border-color 0.2s;background:#fafafa}
+.field-input:focus{border-color:#FF6B00;background:#fff}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#bbb;font-size:16px;padding:4px;line-height:1}
+.eye-btn:hover{color:#888}
+.btn-entrar{width:100%;background:#FF6B00;color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-top:4px}
+.btn-entrar:hover{background:#e05a00}
+.btn-entrar:disabled{background:#ccc;cursor:not-allowed}
+.erro-msg{background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:8px;padding:10px 14px;font-size:13px;color:#c0392b;margin-bottom:16px;display:none}
+.forgot-link{text-align:center;margin-top:18px}
+.forgot-link a{font-size:12px;color:#bbb;text-decoration:none;cursor:pointer}
+.forgot-link a:hover{color:#888}
+.forgot-info{font-size:12px;color:#aaa;text-align:center;margin-top:10px;display:none;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="login-card">
+  <div class="logo-wrap">
+    <img src="diferencial_logo.png" alt="Diferencial Imóveis">
+  </div>
+  <div class="login-title">Curitiba em Movimento</div>
+  <div class="login-sub">Acesso restrito — Equipe Bicalho</div>
+
+  <div class="erro-msg" id="erro-msg"></div>
+
+  <div>
+    <label class="field-label" for="email">E-mail</label>
+    <div class="field-wrap">
+      <input type="email" id="email" class="field-input" placeholder="seu@email.com" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('senha').focus()">
+    </div>
+
+    <label class="field-label" for="senha">Senha</label>
+    <div class="field-wrap">
+      <input type="password" id="senha" class="field-input" placeholder="••••••••" autocomplete="current-password" style="padding-right:42px" onkeydown="if(event.key==='Enter')fazerLogin()">
+      <button class="eye-btn" type="button" onclick="toggleSenha()" id="eye-btn" title="Mostrar/ocultar senha">👁</button>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+      <input type="checkbox" id="lembrar" style="width:16px;height:16px;accent-color:#FF6B00;cursor:pointer;">
+      <label for="lembrar" style="font-size:13px;color:#888;cursor:pointer;">Lembrar de mim neste computador</label>
+    </div>
+
+    <button class="btn-entrar" id="btn-entrar" onclick="fazerLogin()">Entrar</button>
+  </div>
+
+  <div class="forgot-link">
+    <a onclick="toggleEsqueci()">Esqueci minha senha</a>
+  </div>
+  <div class="forgot-info" id="forgot-info">
+    Entre em contato com a administração para redefinir sua senha.
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function hashSenha(senha) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(senha);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function mostrarErro(msg) {
+  const el = document.getElementById('erro-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function toggleSenha() {
+  const input = document.getElementById('senha');
+  const btn = document.getElementById('eye-btn');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+function toggleEsqueci() {
+  const el = document.getElementById('forgot-info');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+async function fazerLogin() {
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  const senha = document.getElementById('senha').value;
+  const lembrar = document.getElementById('lembrar').checked;
+  const btn = document.getElementById('btn-entrar');
+
+  document.getElementById('erro-msg').style.display = 'none';
+
+  if (!email || !senha) {
+    mostrarErro('Preencha email e senha.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Entrando...';
+
+  const hash = await hashSenha(senha);
+
+  const { data, error } = await supabase
+    .from('corretores')
+    .select('id, nome, email, ativo')
+    .eq('email', email)
+    .eq('senha_hash', hash)
+    .eq('ativo', true)
+    .single();
+
+  if (error || !data) {
+    mostrarErro('Email ou senha incorretos.');
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+    return;
+  }
+
+  const expiraEm = lembrar
+    ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+    : new Date(Date.now() + 60 * 60 * 1000).toISOString();
+
+  const sessao = {
+    corretor_id: data.id,
+    nome: data.nome,
+    email: data.email,
+    entrou_em: new Date().toISOString(),
+    expira_em: expiraEm,
+    lembrar: lembrar
+  };
+  sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
+
+  if (lembrar) {
+    localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
+    localStorage.setItem('corretor_email_salvo', email);
+  } else {
+    localStorage.removeItem('sessao_corretor_salva');
+    localStorage.removeItem('corretor_email_salvo');
+  }
+
+  await supabase.from('acessos_corretores').insert({
+    corretor_id: data.id,
+    entrou_em: sessao.entrou_em,
+    ip: 'client',
+    user_agent: navigator.userAgent.substring(0, 200)
+  });
+
+  const { data: acesso } = await supabase
+    .from('acessos_corretores')
+    .select('id')
+    .eq('corretor_id', data.id)
+    .order('entrou_em', { ascending: false })
+    .limit(1)
+    .single();
+
+  if (acesso) sessionStorage.setItem('acesso_id', acesso.id);
+
+  window.location.href = './index.html';
+}
+
+window.addEventListener('DOMContentLoaded', async function() {
+  const sessaoSalva = localStorage.getItem('sessao_corretor_salva');
+  if (sessaoSalva) {
+    try {
+      const sessao = JSON.parse(sessaoSalva);
+      if (new Date() < new Date(sessao.expira_em)) {
+        sessao.expira_em = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
+        sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
+        const { data } = await supabase.from('acessos_corretores')
+          .insert({ corretor_id: sessao.corretor_id, entrou_em: new Date().toISOString(), user_agent: navigator.userAgent.substring(0, 200) })
+          .select('id').single();
+        if (data) sessionStorage.setItem('acesso_id', data.id);
+        window.location.href = './index.html';
+        return;
+      } else {
+        localStorage.removeItem('sessao_corretor_salva');
+      }
+    } catch(e) {
+      localStorage.removeItem('sessao_corretor_salva');
+    }
+  }
+  const emailSalvo = localStorage.getItem('corretor_email_salvo');
+  if (emailSalvo) {
+    document.getElementById('email').value = emailSalvo;
+    document.getElementById('lembrar').checked = true;
+  }
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('expirado')) {
+    mostrarErro('Sua sessão expirou. Faça login novamente.');
+  }
+});
+</script>
+</body>
+</html>
