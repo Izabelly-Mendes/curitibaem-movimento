@@ -57,6 +57,7 @@ body{font-family:'DM Sans',sans-serif;background:#1a1a1a;min-height:100vh;displa
       <label for="lembrar" style="font-size:13px;color:#888;cursor:pointer;">Lembrar de mim neste computador</label>
     </div>
 
+    <div id="erro-login" style="color:#e24b4a;font-size:13px;text-align:center;margin-bottom:10px;min-height:18px;"></div>
     <button class="btn-entrar" id="btn-entrar" onclick="fazerLogin()">Entrar</button>
   </div>
 
@@ -68,11 +69,13 @@ body{font-family:'DM Sans',sans-serif;background:#1a1a1a;min-height:100vh;displa
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const supabaseClient = createClient(
+  'https://uocnikcoynoflxgcknii.supabase.co',
+  'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2'
+);
 
 async function hashSenha(senha) {
   const encoder = new TextEncoder();
@@ -82,9 +85,11 @@ async function hashSenha(senha) {
 }
 
 function mostrarErro(msg) {
-  const el = document.getElementById('erro-msg');
-  el.textContent = msg;
-  el.style.display = 'block';
+  const el = document.getElementById('erro-login');
+  if (el) el.textContent = msg;
+  // mantém compatibilidade com o elemento legado
+  const el2 = document.getElementById('erro-msg');
+  if (el2) { el2.textContent = msg; el2.style.display = 'block'; }
 }
 
 function toggleSenha() {
@@ -105,78 +110,93 @@ function toggleEsqueci() {
 }
 
 async function fazerLogin() {
-  const email = document.getElementById('email').value.trim().toLowerCase();
-  const senha = document.getElementById('senha').value;
-  const lembrar = document.getElementById('lembrar').checked;
-  const btn = document.getElementById('btn-entrar');
+  console.log('fazerLogin chamada');
 
-  document.getElementById('erro-msg').style.display = 'none';
+  const emailEl = document.getElementById('email');
+  const senhaEl = document.getElementById('senha');
+  const lembrarEl = document.getElementById('lembrar');
+  const erroEl = document.getElementById('erro-login');
+
+  if (!emailEl || !senhaEl) {
+    alert('Erro: campos não encontrados.');
+    return;
+  }
+
+  const email = emailEl.value.trim().toLowerCase();
+  const senha = senhaEl.value;
+  const lembrar = lembrarEl ? lembrarEl.checked : false;
+
+  if (erroEl) erroEl.textContent = '';
 
   if (!email || !senha) {
-    mostrarErro('Preencha email e senha.');
+    if (erroEl) erroEl.textContent = 'Preencha email e senha.';
     return;
   }
 
-  btn.disabled = true;
-  btn.textContent = 'Entrando...';
+  const btn = document.getElementById('btn-entrar');
+  if (btn) { btn.textContent = 'Entrando...'; btn.disabled = true; }
 
-  const hash = await hashSenha(senha);
+  try {
+    const hash = await hashSenha(senha);
 
-  const { data, error } = await supabase
-    .from('corretores')
-    .select('id, nome, email, ativo')
-    .eq('email', email)
-    .eq('senha_hash', hash)
-    .eq('ativo', true)
-    .single();
+    const { data, error } = await supabaseClient
+      .from('corretores')
+      .select('id, nome, email, ativo')
+      .eq('email', email)
+      .eq('senha_hash', hash)
+      .eq('ativo', true)
+      .maybeSingle();
 
-  if (error || !data) {
-    mostrarErro('Email ou senha incorretos.');
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
-    return;
+    if (error) {
+      console.error('Erro Supabase:', error);
+      if (erroEl) erroEl.textContent = 'Erro de conexão. Tente novamente.';
+      if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
+      return;
+    }
+
+    if (!data) {
+      if (erroEl) erroEl.textContent = 'Email ou senha incorretos.';
+      if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
+      return;
+    }
+
+    const expiraEm = lembrar
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+      : new Date(Date.now() + 60 * 60 * 1000).toISOString();
+
+    const sessao = {
+      corretor_id: data.id,
+      nome: data.nome,
+      email: data.email,
+      entrou_em: new Date().toISOString(),
+      expira_em: expiraEm,
+      lembrar: lembrar
+    };
+
+    sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
+
+    if (lembrar) {
+      localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
+      localStorage.setItem('corretor_email_salvo', email);
+    } else {
+      localStorage.removeItem('sessao_corretor_salva');
+      localStorage.removeItem('corretor_email_salvo');
+    }
+
+    // Registrar acesso
+    await supabaseClient.from('acessos_corretores').insert({
+      corretor_id: data.id,
+      entrou_em: sessao.entrou_em,
+      user_agent: navigator.userAgent.substring(0, 200)
+    });
+
+    window.location.href = './index.html';
+
+  } catch(e) {
+    console.error('Erro inesperado:', e);
+    if (erroEl) erroEl.textContent = 'Erro inesperado. Tente novamente.';
+    if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
   }
-
-  const expiraEm = lembrar
-    ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-    : new Date(Date.now() + 60 * 60 * 1000).toISOString();
-
-  const sessao = {
-    corretor_id: data.id,
-    nome: data.nome,
-    email: data.email,
-    entrou_em: new Date().toISOString(),
-    expira_em: expiraEm,
-    lembrar: lembrar
-  };
-  sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
-
-  if (lembrar) {
-    localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
-    localStorage.setItem('corretor_email_salvo', email);
-  } else {
-    localStorage.removeItem('sessao_corretor_salva');
-    localStorage.removeItem('corretor_email_salvo');
-  }
-
-  await supabase.from('acessos_corretores').insert({
-    corretor_id: data.id,
-    entrou_em: sessao.entrou_em,
-    ip: 'client',
-    user_agent: navigator.userAgent.substring(0, 200)
-  });
-
-  const { data: acesso } = await supabase
-    .from('acessos_corretores')
-    .select('id')
-    .eq('corretor_id', data.id)
-    .order('entrou_em', { ascending: false })
-    .limit(1)
-    .single();
-
-  if (acesso) sessionStorage.setItem('acesso_id', acesso.id);
-
-  window.location.href = './index.html';
 }
 
 window.addEventListener('DOMContentLoaded', async function() {
@@ -188,7 +208,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         sessao.expira_em = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
         localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
         sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
-        const { data } = await supabase.from('acessos_corretores')
+        const { data } = await supabaseClient.from('acessos_corretores')
           .insert({ corretor_id: sessao.corretor_id, entrou_em: new Date().toISOString(), user_agent: navigator.userAgent.substring(0, 200) })
           .select('id').single();
         if (data) sessionStorage.setItem('acesso_id', data.id);
