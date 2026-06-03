@@ -372,6 +372,59 @@ img { max-width: 100%; height: auto; }
 </head>
 <body>
 
+<script>
+(function() {
+  // Verifica se é acesso do admin (vindo do admin.html)
+  var adminLogado = sessionStorage.getItem('admin_logado');
+  if (adminLogado === 'true') return; // admin passa direto
+
+  // Verifica sessão do corretor no sessionStorage
+  var sessaoStr = sessionStorage.getItem('sessao_corretor');
+
+  // Se não tem no sessionStorage, verifica localStorage (lembrar de mim)
+  if (!sessaoStr) {
+    sessaoStr = localStorage.getItem('sessao_corretor_salva');
+    if (sessaoStr) {
+      // Transfere para sessionStorage
+      sessionStorage.setItem('sessao_corretor', sessaoStr);
+    }
+  }
+
+  if (!sessaoStr) {
+    window.location.replace('./login.html');
+    return;
+  }
+
+  try {
+    var sessao = JSON.parse(sessaoStr);
+    var agora = new Date();
+    var expira = new Date(sessao.expira_em);
+
+    if (agora > expira) {
+      // Sessão expirada
+      sessionStorage.removeItem('sessao_corretor');
+      localStorage.removeItem('sessao_corretor_salva');
+      window.location.replace('./login.html?expirado=true');
+      return;
+    }
+
+    // Renovar sessão por mais 1 hora (ou 30 dias se lembrar)
+    var novaExpiracao = sessao.lembrar
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+      : new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    sessao.expira_em = novaExpiracao;
+    sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
+    if (sessao.lembrar) {
+      localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
+    }
+
+  } catch(e) {
+    sessionStorage.removeItem('sessao_corretor');
+    window.location.replace('./login.html');
+  }
+})();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 const _SB_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
@@ -401,31 +454,6 @@ async function logout() {
   localStorage.removeItem('corretor_email_salvo');
   window.location.href = './login.html';
 }
-
-(function verificarAcesso() {
-  const isAdmin = sessionStorage.getItem('admin_logado');
-  if (isAdmin) return;
-  const sessaoStr = sessionStorage.getItem('sessao_corretor');
-  if (!sessaoStr) { window.location.href = './login.html'; return; }
-  try {
-    const sessao = JSON.parse(sessaoStr);
-    const agora = new Date();
-    const expira = new Date(sessao.expira_em);
-    if (agora > expira) {
-      registrarSaida(sessao, sessionStorage.getItem('acesso_id'));
-      sessionStorage.removeItem('sessao_corretor');
-      sessionStorage.removeItem('acesso_id');
-      window.location.href = './login.html?expirado=true';
-      return;
-    }
-    sessao.expira_em = new Date(Date.now() + 60 * 60 * 1000).toISOString();
-    sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
-    const nomeEl = document.getElementById('corretor-nome');
-    if (nomeEl) nomeEl.textContent = sessao.nome;
-  } catch(e) {
-    window.location.href = './login.html';
-  }
-})();
 
 window.addEventListener('beforeunload', function() {
   const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
