@@ -1177,15 +1177,21 @@ document.addEventListener('DOMContentLoaded', function() {
         imobiliario:'Mercado Imobiliário', comparativo:'Comparativos de Dados'
       };
 
+      // Fallback para registros sem coluna imagem_url no banco ainda
+      const IMAGEM_FALLBACK = {
+        'f78e8df9-b52b-4b68-9bb1-f64e5c904948': 'Foto para 09.06.png'
+      };
+
       function renderizarCard(item) {
         const temaLabel   = TEMA_LABELS[item.tema] || (item.tema || 'Dados');
         const dataFmt     = new Date(item.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
-        const temImagem   = item.imagem_url && item.imagem_url !== '';
+        const imagemUrl   = (item.imagem_url && item.imagem_url !== '') ? item.imagem_url : (IMAGEM_FALLBACK[item.id] || '');
+        const temImagem   = imagemUrl !== '';
         const isInstagram = item.link_fonte && item.link_fonte.includes('instagram');
         const btnTexto    = isInstagram ? '↗ Seguir no Instagram' : '↗ Ler notícia completa';
 
         const imgBlock = temImagem ? `
-          <img src="${item.imagem_url}" alt="${item.titulo}"
+          <img src="${imagemUrl}" alt="${item.titulo}"
             style="width:100%;height:200px;object-fit:cover;display:block;border-radius:10px 10px 0 0;">` : '';
 
         const kpiBlock = item.kpi_valor ? `
