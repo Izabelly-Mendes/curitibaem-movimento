@@ -485,6 +485,30 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 
 <div id="toast-container"></div>
 
+<!-- MODAL: Editar Corretor -->
+<div id="modal-editar-corretor" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:420px;margin:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Editar corretor</div>
+      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;">×</button>
+    </div>
+    <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">Nome</label>
+    <input id="edit-corretor-nome" type="text" placeholder="Nome completo" style="width:100%;height:40px;border:0.5px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:'DM Sans',sans-serif;outline:none;">
+    <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">E-mail</label>
+    <input id="edit-corretor-email" type="email" disabled style="width:100%;height:40px;border:0.5px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;background:#f5f5f0;color:#888;box-sizing:border-box;font-family:'DM Sans',sans-serif;">
+    <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">WhatsApp (com DDI e DDD, só dígitos)</label>
+    <input id="edit-corretor-whatsapp" type="text" placeholder="5541999999999" style="width:100%;height:40px;border:0.5px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:'DM Sans',sans-serif;outline:none;">
+    <label style="display:flex;align-items:center;gap:8px;margin-bottom:20px;cursor:pointer;">
+      <input id="edit-corretor-ativo" type="checkbox" checked style="accent-color:#FF6B00;">
+      <span style="font-size:13px;color:#555;">Corretor ativo</span>
+    </label>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="padding:9px 18px;border-radius:8px;border:0.5px solid #ddd;background:#f5f5f0;color:#555;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
+      <button onclick="salvarEdicaoCorretor()" style="padding:9px 18px;border-radius:8px;border:none;background:#FF6B00;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
@@ -1547,7 +1571,8 @@ async function renderTabelaCorretores(lista) {
       <td style="padding:12px 16px;font-size:12px;color:#888">${formatDt(ultimoAcesso[c.id])}</td>
       <td style="padding:12px 16px">
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button onclick="abrirRedefSenha('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(255,107,0,0.1);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#FF6B00;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Redefinir senha</button>
+          <button onclick="editarCorretor('${c.id}')" style="background:rgba(255,107,0,0.1);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#FF6B00;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">✏️ Editar</button>
+          <button onclick="abrirRedefSenha('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(0,0,0,0.05);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#555;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Redefinir senha</button>
           ${c.portal_token ? `<button onclick="copiarLink('${c.portal_token}')" style="background:rgba(0,120,255,0.08);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#0078ff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">🔗 Link portal</button>` : ''}
           <button onclick="excluirCorretor('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(231,76,60,0.08);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#c0392b;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Excluir</button>
         </div>
@@ -1574,6 +1599,39 @@ async function excluirCorretor(id, nome) {
   if (error) { toast('Erro ao excluir: ' + error.message, 'error'); return; }
   toast('Corretor excluído.', 'success');
   carregarCorretores();
+}
+
+async function editarCorretor(id) {
+  const { data, error } = await sb.from('corretores').select('*').eq('id', id).single();
+  if (error || !data) { toast('Erro ao carregar dados do corretor.', 'error'); return; }
+
+  document.getElementById('edit-corretor-nome').value = data.nome || '';
+  document.getElementById('edit-corretor-email').value = data.email || '';
+  document.getElementById('edit-corretor-whatsapp').value = data.whatsapp || '';
+  document.getElementById('edit-corretor-ativo').checked = data.ativo !== false;
+
+  const modal = document.getElementById('modal-editar-corretor');
+  modal.dataset.corretorId = id;
+  modal.style.display = 'flex';
+}
+
+async function salvarEdicaoCorretor() {
+  const modal = document.getElementById('modal-editar-corretor');
+  const id = modal?.dataset.corretorId;
+  if (!id) return;
+
+  const nome = document.getElementById('edit-corretor-nome').value.trim();
+  const whatsapp = document.getElementById('edit-corretor-whatsapp').value.replace(/\D/g, '') || null;
+  const ativo = document.getElementById('edit-corretor-ativo').checked;
+
+  if (!nome) { toast('Preencha o nome.', 'error'); return; }
+
+  const { error } = await sb.from('corretores').update({ nome, whatsapp, ativo, atualizado_em: new Date().toISOString() }).eq('id', id);
+  if (error) { toast('Erro ao salvar: ' + error.message, 'error'); return; }
+
+  modal.style.display = 'none';
+  mostrarToast('Corretor atualizado!');
+  await carregarCorretores();
 }
 
 function abrirModalNovoCorretor() {

@@ -491,17 +491,54 @@ window.addEventListener('beforeunload', registrarSaida);
 window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') registrarSaida(); });
 
 async function copiarMeuLink() {
-  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
-  if (!sessao.corretor_id) return;
-  const { data } = await supabase.from('corretores').select('portal_token').eq('id', sessao.corretor_id).single();
-  if (data?.portal_token) {
-    const url = `https://curitibaem-movimento.vercel.app/cliente.html?c=${data.portal_token}`;
-    navigator.clipboard.writeText(url);
-    const btn = document.getElementById('btn-meu-link');
-    btn.textContent = '✓ Link copiado!';
-    setTimeout(() => { btn.textContent = '🔗 Meu link do cliente'; }, 2000);
-  } else {
-    mostrarToast('Token não gerado ainda. Contate o admin.', 'erro');
+  const btn = document.getElementById('btn-meu-link');
+  if (btn) btn.textContent = '⏳ Gerando...';
+
+  try {
+    const sessaoStr = sessionStorage.getItem('sessao_corretor');
+    if (!sessaoStr) { alert('Sessão não encontrada. Faça login novamente.'); if (btn) btn.textContent = '🔗 Meu link do cliente'; return; }
+    const sessao = JSON.parse(sessaoStr);
+    if (!sessao.corretor_id) { alert('ID do corretor não encontrado na sessão.'); if (btn) btn.textContent = '🔗 Meu link do cliente'; return; }
+
+    const { data, error } = await supabase.from('corretores').select('portal_token, nome').eq('id', sessao.corretor_id).single();
+
+    if (error) { console.error('Erro Supabase:', error); alert('Erro ao buscar seu token. Verifique o console.'); if (btn) btn.textContent = '🔗 Meu link do cliente'; return; }
+
+    let token = data?.portal_token;
+    if (!token) {
+      token = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+      await supabase.from('corretores').update({ portal_token: token }).eq('id', sessao.corretor_id);
+    }
+
+    const url = `https://curitibaem-movimento.vercel.app/cliente.html?c=${token}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    }
+
+    if (btn) {
+      btn.textContent = '✓ Link copiado!';
+      btn.style.background = 'rgba(59,109,17,0.2)';
+      btn.style.borderColor = 'rgba(59,109,17,0.5)';
+      btn.style.color = '#3b6d11';
+      setTimeout(() => {
+        btn.textContent = '🔗 Meu link do cliente';
+        btn.style.background = 'rgba(255,107,0,0.15)';
+        btn.style.borderColor = 'rgba(255,107,0,0.4)';
+        btn.style.color = '#FF6B00';
+      }, 2500);
+    }
+  } catch(e) {
+    console.error('Erro:', e);
+    alert('Erro inesperado: ' + e.message);
+    if (btn) btn.textContent = '🔗 Meu link do cliente';
   }
 }
 
