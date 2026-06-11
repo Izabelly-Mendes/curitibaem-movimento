@@ -1469,6 +1469,27 @@ function formatDt(iso) {
   return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
+function formatarSaida(item) {
+  if (item.saiu_em) return new Date(item.saiu_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const diff = (new Date() - new Date(item.entrou_em)) / 3600000;
+  return diff < 2 ? '<span style="color:#FF6B00;font-weight:600;font-size:11px;">● Ativo agora</span>' : '—';
+}
+
+function formatarDuracao(item) {
+  if (item.duracao_minutos) {
+    const h = Math.floor(item.duracao_minutos/60), m = item.duracao_minutos%60;
+    return h > 0 ? `${h}h${m>0?' '+m+'min':''}` : `${m} min`;
+  }
+  const diff = (new Date() - new Date(item.entrou_em)) / 3600000;
+  if (diff < 2) { const m = Math.round(diff*60); return `<span style="color:#FF6B00;font-size:11px;">${m}min (em curso)</span>`; }
+  return '—';
+}
+
+function copiarLinkPortal(token) {
+  navigator.clipboard.writeText(`https://curitibaem-movimento.vercel.app/cliente.html?c=${token}`)
+    .then(() => mostrarToast('Link copiado!'));
+}
+
 let _onlineInterval = null;
 
 function switchCorSub(sub) {
@@ -1644,16 +1665,22 @@ async function carregarHistorico() {
     tb.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:32px;color:#bbb;font-size:13px">Nenhum acesso no período.</td></tr>';
     return;
   }
-  tb.innerHTML = rows.map(r => `
-    <tr style="border-bottom:0.5px solid #f0ede6">
+  tb.innerHTML = rows.map((r, i) => `
+    <tr data-idx="${i}" style="border-bottom:0.5px solid #f0ede6">
       <td style="padding:10px 16px">
         <div style="font-size:13px;font-weight:600;color:#1a1a1a">${r.corretores?.nome || '—'}</div>
         <div style="font-size:11px;color:#aaa">${r.corretores?.email || ''}</div>
       </td>
       <td style="padding:10px 16px;font-size:12px;color:#555">${formatDt(r.entrou_em)}</td>
-      <td style="padding:10px 16px;font-size:12px;color:#555">${formatDt(r.saiu_em)}</td>
-      <td style="padding:10px 16px;font-size:12px;color:#555">${r.duracao_minutos != null ? r.duracao_minutos + ' min' : '—'}</td>
+      <td class="td-saida" style="padding:10px 16px;font-size:12px;color:#555"></td>
+      <td class="td-duracao" style="padding:10px 16px;font-size:12px;color:#555"></td>
     </tr>`).join('');
+  rows.forEach((r, i) => {
+    const tr = tb.querySelector(`tr[data-idx="${i}"]`);
+    if (!tr) return;
+    tr.querySelector('.td-saida').innerHTML = formatarSaida(r);
+    tr.querySelector('.td-duracao').innerHTML = formatarDuracao(r);
+  });
 }
 
 async function carregarOnline() {

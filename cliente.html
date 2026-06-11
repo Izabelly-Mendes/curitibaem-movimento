@@ -291,6 +291,10 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 }
 .footer-src:hover { color: #FF6B00; border-color: rgba(255,107,0,0.3); }
 
+/* ── MICROINTERAÇÕES ADICIONAIS ─────────────────────────── */
+.cover-title { letter-spacing: -0.02em; }
+#scroll-progress { position:fixed; top:0; left:0; height:2px; background:#FF6B00; z-index:9999; pointer-events:none; transition:width 0.1s linear; }
+
 /* ── DESIGN TOKENS ───────────────────────────────────────── */
 :root {
   --text-xs: 11px; --text-sm: 13px; --text-base: 15px; --text-md: 18px;
@@ -828,7 +832,10 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
-  <div id="cta-investir"></div>
+  <div id="cta-mercado" style="margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <span style="font-size:13.5px;color:#555;line-height:1.5;">Quer entender como o crescimento do turismo em Curitiba impacta diretamente o seu investimento?</span>
+    <a id="cta-mercado-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+  </div>
 
   <!-- ════════════════════════════════════════ -->
   <!-- 11. HOSPEDAGEM CORPORATIVA              -->
@@ -906,7 +913,10 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
-  <div id="cta-corporativo"></div>
+  <div id="cta-corporativo" style="margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <span style="font-size:13.5px;color:#555;line-height:1.5;">Saiba como a demanda corporativa de Curitiba pode gerar renda consistente para o seu imóvel.</span>
+    <a id="cta-corporativo-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+  </div>
 
   <!-- ════════════════════════════════════════ -->
   <!-- 13. REGIÕES ESTRATÉGICAS                -->
@@ -936,7 +946,10 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
-  <div id="cta-regioes"></div>
+  <div id="cta-regioes" style="margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <span style="font-size:13.5px;color:#555;line-height:1.5;">Seu imóvel está em uma das regiões mais valorizadas de Curitiba. Tire suas dúvidas com seu corretor.</span>
+    <a id="cta-regioes-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+  </div>
 
   <!-- ════════════════════════════════════════ -->
   <!-- 14. NOTÍCIAS                            -->
@@ -1194,21 +1207,45 @@ function getWhatsAppUrl(mensagem) {
 }
 
 async function inicializarPortal() {
-  const c = await getCorretor();
-  if (!c) return;
-  const tag = document.querySelector('.cover-tag');
-  if (tag) tag.textContent = `Para investidores Bicalho · ${c.nome}`;
-  inicializarWhatsFloat();
-  const ctas = [
-    { id: 'cta-investir',   texto: 'Quer entender melhor o potencial de retorno? <strong>Fale com seu corretor.</strong>', msg: 'Olá! Gostaria de entender melhor o retorno do investimento em Curitiba.' },
-    { id: 'cta-corporativo',texto: 'Interessado nas oportunidades de hospedagem corporativa? <strong>Consulte as opções disponíveis.</strong>', msg: 'Olá! Tenho interesse em hospedagem corporativa em Curitiba.' },
-    { id: 'cta-regioes',    texto: 'Quer saber quais unidades estão disponíveis nessas regiões? <strong>Fale com seu corretor.</strong>', msg: 'Olá! Gostaria de ver unidades disponíveis nas regiões estratégicas de Curitiba.' }
-  ];
-  ctas.forEach(({ id, texto, msg }) => {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('c');
+  let whatsNum = '5541999999999';
+  let nomeCorretor = 'meu corretor';
+
+  if (token) {
+    const { data } = await supabaseClient
+      .from('corretores')
+      .select('nome, whatsapp')
+      .eq('portal_token', token)
+      .eq('ativo', true)
+      .maybeSingle();
+    if (data) {
+      if (data.whatsapp) {
+        whatsNum = data.whatsapp.replace(/\D/g, '');
+        if (!whatsNum.startsWith('55')) whatsNum = '55' + whatsNum;
+      }
+      if (data.nome) nomeCorretor = data.nome.split(' ')[0];
+    }
+  }
+
+  const tooltip = document.getElementById('whats-tooltip');
+  if (tooltip) tooltip.textContent = `Falar com ${nomeCorretor}`;
+
+  const msgFloat = encodeURIComponent('Olá! Estou acompanhando o portal Curitiba em Dados e gostaria de conversar sobre meu investimento.');
+  const btn = document.getElementById('whats-btn');
+  if (btn) btn.href = `https://wa.me/${whatsNum}?text=${msgFloat}`;
+
+  const ctaMsgs = {
+    'cta-mercado-btn':    'Olá! Quero entender como o crescimento do turismo em Curitiba impacta meu investimento.',
+    'cta-regioes-btn':    'Olá! Quero saber mais sobre a valorização da região onde está meu imóvel em Curitiba.',
+    'cta-corporativo-btn':'Olá! Quero entender como a demanda corporativa de Curitiba pode beneficiar meu investimento.'
+  };
+  Object.entries(ctaMsgs).forEach(([id, msg]) => {
     const el = document.getElementById(id);
-    if (!el) return;
-    const cta = renderizarCTA(texto, msg);
-    if (cta) el.appendChild(cta);
+    if (el) {
+      el.href = `https://wa.me/${whatsNum}?text=${encodeURIComponent(msg)}`;
+      el.textContent = `Falar com ${nomeCorretor} →`;
+    }
   });
 }
 
@@ -1387,6 +1424,17 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
   });
 })();
 </script>
+
+
+<div id="whats-float" style="position:fixed;bottom:24px;right:24px;z-index:9998;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+  <div id="whats-tooltip" style="display:none;background:#1a1a1a;color:#fff;font-size:12px;padding:8px 14px;border-radius:8px;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2);">Falar com meu corretor</div>
+  <a id="whats-btn" href="#" target="_blank"
+    style="width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:all 0.2s;text-decoration:none;"
+    onmouseover="document.getElementById('whats-tooltip').style.display='block';this.style.transform='scale(1.08)'"
+    onmouseout="document.getElementById('whats-tooltip').style.display='none';this.style.transform='scale(1)'">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
 
 </body>
 </html>

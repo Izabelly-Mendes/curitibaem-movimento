@@ -464,23 +464,22 @@ const _SB_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
 const _SB_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
 const supabase = window.supabase.createClient(_SB_URL, _SB_KEY);
 
-async function registrarSaida(sessao, acessoId) {
-  if (!acessoId) return;
-  const entrou = new Date(sessao.entrou_em);
-  const saiu = new Date();
-  const duracao = Math.round((saiu - entrou) / 60000);
-  try {
-    await supabase.from('acessos_corretores').update({
-      saiu_em: saiu.toISOString(),
-      duracao_minutos: duracao
-    }).eq('id', acessoId);
-  } catch(e) {}
+function registrarSaida() {
+  const acessoId = sessionStorage.getItem('acesso_id');
+  const sessaoStr = sessionStorage.getItem('sessao_corretor');
+  if (!acessoId || !sessaoStr) return;
+  const sessao = JSON.parse(sessaoStr);
+  const duracao = Math.round((new Date() - new Date(sessao.entrou_em)) / 60000);
+  const payload = JSON.stringify({ saiu_em: new Date().toISOString(), duracao_minutos: duracao });
+  fetch(`https://uocnikcoynoflxgcknii.supabase.co/rest/v1/acessos_corretores?id=eq.${acessoId}`, {
+    method: 'PATCH',
+    headers: { 'apikey': 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2', 'Authorization': 'Bearer sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2', 'Content-Type': 'application/json' },
+    body: payload, keepalive: true
+  }).catch(() => {});
 }
 
 async function logout() {
-  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
-  const acessoId = sessionStorage.getItem('acesso_id');
-  await registrarSaida(sessao, acessoId);
+  registrarSaida();
   sessionStorage.removeItem('sessao_corretor');
   sessionStorage.removeItem('acesso_id');
   localStorage.removeItem('sessao_corretor_salva');
@@ -488,13 +487,8 @@ async function logout() {
   window.location.href = './login.html';
 }
 
-window.addEventListener('beforeunload', function() {
-  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
-  const acessoId = sessionStorage.getItem('acesso_id');
-  if (sessao.corretor_id && acessoId) {
-    registrarSaida(sessao, acessoId);
-  }
-});
+window.addEventListener('beforeunload', registrarSaida);
+window.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') registrarSaida(); });
 
 async function copiarMeuLink() {
   const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
