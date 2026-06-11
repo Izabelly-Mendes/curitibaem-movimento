@@ -462,7 +462,7 @@ img { max-width: 100%; height: auto; }
 <script>
 const _SB_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
 const _SB_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
-const supabase = window.supabase.createClient(_SB_URL, _SB_KEY);
+const supabaseClient = window.supabase.createClient(_SB_URL, _SB_KEY);
 
 function registrarSaida() {
   const acessoId = sessionStorage.getItem('acesso_id');
@@ -499,13 +499,13 @@ async function copiarMeuLink() {
     if (!sessaoStr) { alert('Sessão não encontrada. Faça login novamente.'); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
     const sessao = JSON.parse(sessaoStr);
 
-    const { data, error } = await supabase.from('corretores').select('portal_token').eq('id', sessao.corretor_id).single();
+    const { data, error } = await supabaseClient.from('corretores').select('portal_token').eq('id', sessao.corretor_id).single();
     if (error) { alert('Erro: ' + error.message); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
 
     let token = data?.portal_token;
     if (!token) {
       token = Math.random().toString(36).substring(2,10) + Math.random().toString(36).substring(2,10);
-      await supabase.from('corretores').update({ portal_token: token }).eq('id', sessao.corretor_id);
+      await supabaseClient.from('corretores').update({ portal_token: token }).eq('id', sessao.corretor_id);
     }
 
     const url = `https://curitibaem-movimento.vercel.app/cliente.html?c=${token}`;
