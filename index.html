@@ -492,21 +492,19 @@ window.addEventListener('visibilitychange', () => { if (document.visibilityState
 
 async function copiarMeuLink() {
   const btn = document.getElementById('btn-meu-link');
-  if (btn) btn.textContent = '⏳ Gerando...';
+  if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
 
   try {
     const sessaoStr = sessionStorage.getItem('sessao_corretor');
-    if (!sessaoStr) { alert('Sessão não encontrada. Faça login novamente.'); if (btn) btn.textContent = '🔗 Meu link do cliente'; return; }
+    if (!sessaoStr) { alert('Sessão não encontrada. Faça login novamente.'); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
     const sessao = JSON.parse(sessaoStr);
-    if (!sessao.corretor_id) { alert('ID do corretor não encontrado na sessão.'); if (btn) btn.textContent = '🔗 Meu link do cliente'; return; }
 
-    const { data, error } = await supabase.from('corretores').select('portal_token, nome').eq('id', sessao.corretor_id).single();
-
-    if (error) { console.error('Erro Supabase:', error); alert('Erro ao buscar seu token. Verifique o console.'); if (btn) btn.textContent = '🔗 Meu link do cliente'; return; }
+    const { data, error } = await supabase.from('corretores').select('portal_token').eq('id', sessao.corretor_id).single();
+    if (error) { alert('Erro: ' + error.message); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
 
     let token = data?.portal_token;
     if (!token) {
-      token = Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+      token = Math.random().toString(36).substring(2,10) + Math.random().toString(36).substring(2,10);
       await supabase.from('corretores').update({ portal_token: token }).eq('id', sessao.corretor_id);
     }
 
@@ -525,20 +523,16 @@ async function copiarMeuLink() {
 
     if (btn) {
       btn.textContent = '✓ Link copiado!';
-      btn.style.background = 'rgba(59,109,17,0.2)';
-      btn.style.borderColor = 'rgba(59,109,17,0.5)';
-      btn.style.color = '#3b6d11';
+      btn.style.cssText = 'background:rgba(59,109,17,0.2);border:0.5px solid rgba(59,109,17,0.5);border-radius:8px;padding:5px 12px;color:#3b6d11;font-size:11px;cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap;';
       setTimeout(() => {
-        btn.textContent = '🔗 Meu link do cliente';
-        btn.style.background = 'rgba(255,107,0,0.15)';
-        btn.style.borderColor = 'rgba(255,107,0,0.4)';
-        btn.style.color = '#FF6B00';
+        btn.textContent = '🔗 Meu link';
+        btn.style.cssText = 'background:rgba(255,107,0,0.15);border:0.5px solid rgba(255,107,0,0.4);border-radius:8px;padding:5px 12px;color:#FF6B00;font-size:11px;cursor:pointer;font-family:DM Sans,sans-serif;white-space:nowrap;';
+        btn.disabled = false;
       }, 2500);
     }
   } catch(e) {
-    console.error('Erro:', e);
-    alert('Erro inesperado: ' + e.message);
-    if (btn) btn.textContent = '🔗 Meu link do cliente';
+    alert('Erro: ' + e.message);
+    if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; }
   }
 }
 

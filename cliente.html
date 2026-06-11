@@ -187,61 +187,72 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   overflow: hidden;
   border-radius: 10px;
   cursor: pointer;
-  min-height: 220px;
-  max-height: 320px;
+  min-height: 180px;
+  max-height: 280px;
   background: #1a1a1a;
   display: block;
   text-decoration: none;
 }
 .news-item img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center top;
   display: block;
   transition: transform 0.4s ease;
+  max-height: 280px;
 }
 .news-item:hover img { transform: scale(1.04); }
 .news-overlay {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
-  padding: 20px 16px 14px;
+  padding: 20px 14px 12px;
   pointer-events: none;
 }
 .news-tag {
-  font-size: 9px; font-weight: 600; letter-spacing: 0.15em;
-  text-transform: uppercase; color: #FF6B00;
-  margin-bottom: 6px; display: block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #FF6B00;
+  margin-bottom: 5px;
+  display: block;
 }
 .news-title {
-  font-family: 'Cambria', 'Georgia', serif;
-  font-size: 15px; font-weight: 700;
-  color: #fff; line-height: 1.25;
-  margin-bottom: 6px;
+  font-family: 'Syne', 'Arial', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 4px;
 }
-.news-item.featured .news-title { font-size: 22px; }
-.news-item.featured { min-height: 400px; max-height: 500px; }
+.news-item.featured .news-title { font-size: 17px; }
+.news-item.featured { min-height: 280px; max-height: 400px; }
 .news-desc {
-  font-size: 11.5px; color: rgba(255,255,255,0.65);
-  line-height: 1.5; display: none;
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.4;
+  display: none;
 }
 .news-item.featured .news-desc { display: block; }
 .news-source {
-  font-size: 10px; color: rgba(255,255,255,0.35);
-  margin-top: 6px; display: block;
+  font-size: 9px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
+  display: block;
 }
-.news-item:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
+.news-item:nth-child(1) { grid-column: 1; grid-row: 1 / 3; min-height: 280px; max-height: 400px; }
 .news-item:nth-child(2) { grid-column: 2; grid-row: 1; }
 .news-item:nth-child(3) { grid-column: 3; grid-row: 1; }
 .news-item:nth-child(4) { grid-column: 2 / 4; grid-row: 2; }
-.news-grid .news-item:not(.featured) { height: 220px; }
 .news-row2 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
-.news-row2 .news-item { height: 220px; }
+.news-row2 .news-item { min-height: 160px; max-height: 200px; }
 .news-item::after {
   content: '↗ Ler notícia';
   position: absolute;
@@ -391,12 +402,14 @@ img { max-width: 100%; height: auto; }
   .footer-logo--bicalho { height: 24px; }
 
   .news-grid { grid-template-columns: 1fr 1fr; }
-  .news-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  .news-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; min-height: 200px; max-height: 260px; }
   .news-item:nth-child(2) { grid-column: 1; grid-row: 2; }
   .news-item:nth-child(3) { grid-column: 2; grid-row: 2; }
   .news-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
   .news-row2 { grid-template-columns: 1fr; }
-  .news-item.featured { min-height: 280px; max-height: 320px; }
+  .news-item.featured { min-height: 200px; max-height: 260px; }
+  .news-title { font-size: 12px; }
+  .news-item.featured .news-title { font-size: 14px; }
   table { display: block; overflow-x: auto; }
 }
 
@@ -832,7 +845,7 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
-  <div id="cta-mercado" style="margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+  <div id="cta-mercado" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <span style="font-size:13.5px;color:#555;line-height:1.5;">Quer entender como o crescimento do turismo em Curitiba impacta diretamente o seu investimento?</span>
     <a id="cta-mercado-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
   </div>
@@ -913,7 +926,7 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
-  <div id="cta-corporativo" style="margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+  <div id="cta-corporativo" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <span style="font-size:13.5px;color:#555;line-height:1.5;">Saiba como a demanda corporativa de Curitiba pode gerar renda consistente para o seu imóvel.</span>
     <a id="cta-corporativo-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
   </div>
@@ -946,7 +959,7 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
-  <div id="cta-regioes" style="margin-top:16px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+  <div id="cta-regioes" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
     <span style="font-size:13.5px;color:#555;line-height:1.5;">Seu imóvel está em uma das regiões mais valorizadas de Curitiba. Tire suas dúvidas com seu corretor.</span>
     <a id="cta-regioes-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
   </div>
