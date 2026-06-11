@@ -446,6 +446,10 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
         <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Email</label>
         <input type="email" id="nc-email" placeholder="email@corretor.com" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
       </div>
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">WhatsApp</label>
+        <input type="tel" id="nc-whatsapp" placeholder="5541999999999 (com DDI e DDD)" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+      </div>
       <div style="margin-bottom:6px">
         <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Senha inicial</label>
         <input type="text" id="nc-senha" placeholder="mínimo 6 caracteres" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
@@ -1439,6 +1443,16 @@ function toast(msg, type) {
   setTimeout(() => t.remove(), 3500);
 }
 
+function mostrarToast(mensagem, tipo = 'sucesso') {
+  const border = tipo === 'erro' ? '#e24b4a' : '#FF6B00';
+  const el = document.createElement('div');
+  el.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;border:0.5px solid ${border};color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;z-index:99999;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;box-shadow:0 8px 32px rgba(0,0,0,0.3);white-space:nowrap;`;
+  el.textContent = mensagem;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => { el.style.transform = 'translateX(-50%) translateY(0)'; el.style.opacity = '1'; });
+  setTimeout(() => { el.style.transform = 'translateX(-50%) translateY(80px)'; el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
+}
+
 // ══════════════════════════════════════════════════════
 // CORRETORES
 // ══════════════════════════════════════════════════════
@@ -1511,8 +1525,9 @@ async function renderTabelaCorretores(lista) {
       </td>
       <td style="padding:12px 16px;font-size:12px;color:#888">${formatDt(ultimoAcesso[c.id])}</td>
       <td style="padding:12px 16px">
-        <div style="display:flex;gap:6px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button onclick="abrirRedefSenha('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(255,107,0,0.1);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#FF6B00;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Redefinir senha</button>
+          ${c.portal_token ? `<button onclick="copiarLink('${c.portal_token}')" style="background:rgba(0,120,255,0.08);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#0078ff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">🔗 Link portal</button>` : ''}
           <button onclick="excluirCorretor('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(231,76,60,0.08);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#c0392b;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Excluir</button>
         </div>
       </td>
@@ -1543,6 +1558,7 @@ async function excluirCorretor(id, nome) {
 function abrirModalNovoCorretor() {
   document.getElementById('nc-nome').value = '';
   document.getElementById('nc-email').value = '';
+  document.getElementById('nc-whatsapp').value = '';
   document.getElementById('nc-senha').value = '';
   document.getElementById('modal-novo-corretor').classList.add('open');
 }
@@ -1550,15 +1566,22 @@ function abrirModalNovoCorretor() {
 async function salvarNovoCorretor() {
   const nome = document.getElementById('nc-nome').value.trim();
   const email = document.getElementById('nc-email').value.trim().toLowerCase();
+  const whatsapp = document.getElementById('nc-whatsapp').value.trim();
   const senha = document.getElementById('nc-senha').value;
-  if (!nome || !email || !senha) { toast('Preencha todos os campos.', 'error'); return; }
+  if (!nome || !email || !senha) { toast('Preencha nome, email e senha.', 'error'); return; }
   if (senha.length < 6) { toast('Senha deve ter mínimo 6 caracteres.', 'error'); return; }
   const hash = await hashSenha(senha);
-  const { error } = await sb.from('corretores').insert({ nome, email, senha_hash: hash });
+  const portal_token = Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2,'0')).join('');
+  const { error } = await sb.from('corretores').insert({ nome, email, senha_hash: hash, whatsapp: whatsapp || null, portal_token });
   if (error) { toast('Erro: ' + (error.message.includes('unique') ? 'Email já cadastrado.' : error.message), 'error'); return; }
   toast('Corretor criado com sucesso!', 'success');
   closeModal('modal-novo-corretor');
   carregarCorretores();
+}
+
+function copiarLink(token) {
+  const url = `https://curitibaem-movimento.vercel.app/cliente.html?c=${token}`;
+  navigator.clipboard.writeText(url).then(() => toast('Link copiado!', 'success'));
 }
 
 function abrirRedefSenha(id, nome) {

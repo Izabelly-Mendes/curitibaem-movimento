@@ -291,6 +291,45 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 }
 .footer-src:hover { color: #FF6B00; border-color: rgba(255,107,0,0.3); }
 
+/* ── DESIGN TOKENS ───────────────────────────────────────── */
+:root {
+  --text-xs: 11px; --text-sm: 13px; --text-base: 15px; --text-md: 18px;
+  --text-lg: 24px; --text-xl: 36px;
+  --space-1: 8px; --space-2: 16px; --space-3: 24px; --space-4: 32px;
+  --space-5: 40px; --space-6: 48px;
+  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+}
+
+/* ── MICROINTERAÇÕES ─────────────────────────────────────── */
+.card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.kpi { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.kpi:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+button { transition: all 0.15s ease; }
+button:active { transform: scale(0.97); }
+.sec-label a { transition: all 0.2s ease; }
+.secao.ativa { animation: fadeInUp 0.25s ease; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.cover-title, .card-h { letter-spacing: -0.02em; }
+.cover.scrolled { backdrop-filter: blur(12px); background: rgba(26,26,26,0.92); }
+
+/* ── SKELETON ────────────────────────────────────────────── */
+@keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+.skeleton { background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
+
+/* ── SCROLL PROGRESS ─────────────────────────────────────── */
+#scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: #FF6B00; z-index: 9999; transition: width 0.1s linear; }
+
+/* ── CTA WHATSAPP ────────────────────────────────────────── */
+.cta-whats { background: #1a1a1a; border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
+.cta-whats p { font-size: 13.5px; color: rgba(255,255,255,0.75); margin: 0; line-height: 1.5; flex: 1; }
+.cta-whats p strong { color: #fff; }
+.cta-whats a { background: #25D366; color: #fff; text-decoration: none; border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; transition: background 0.2s; }
+.cta-whats a:hover { background: #1ebe5a; }
+
 /* ── RESPONSIVIDADE MOBILE ───────────────────────────────── */
 img { max-width: 100%; height: auto; }
 
@@ -416,8 +455,18 @@ img { max-width: 100%; height: auto; }
       <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
     </div>
   </div>
-  <div class="cover-title" data-pt="Curitiba em&lt;br&gt;&lt;span&gt;movimento&lt;/span&gt;" data-en="Curitiba&lt;br&gt;&lt;span&gt;in Motion&lt;/span&gt;" data-zh="库里提巴&lt;br&gt;&lt;span&gt;活力涌动&lt;/span&gt;">Curitiba em<br><span>movimento</span></div>
-  <div class="cover-sub" data-pt="Turismo, eventos e oportunidades de investimento · 2024/2025" data-en="Tourism, events and investment opportunities · 2024/2025" data-zh="旅游、活动与房地产影响 · 2024/2025">Turismo, eventos e oportunidades de investimento · 2024/2025</div>
+  <div class="cover-tag" data-pt="Para investidores Bicalho" data-en="For Bicalho investors" data-zh="面向Bicalho投资者">Para investidores Bicalho</div>
+  <div class="cover-title" data-pt="Curitiba em&lt;br&gt;&lt;span&gt;dados&lt;/span&gt;" data-en="Curitiba&lt;br&gt;&lt;span&gt;in Data&lt;/span&gt;" data-zh="库里提巴&lt;br&gt;&lt;span&gt;数据洞察&lt;/span&gt;">Curitiba em<br><span>dados</span></div>
+  <div class="cover-sub" data-pt="Turismo, economia e potencial de valorização · 2024/2025" data-en="Tourism, economy and appreciation potential · 2024/2025" data-zh="旅游、经济与增值潜力 · 2024/2025">Turismo, economia e potencial de valorização · 2024/2025</div>
+  <div style="margin-bottom:28px;">
+    <a href="https://diferencialinvest.com.br" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,107,0,0.12);border:0.5px solid rgba(255,107,0,0.35);border-radius:12px;padding:12px 18px;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.2)'" onmouseout="this.style.background='rgba(255,107,0,0.12)'">
+      <span style="font-size:20px;">🏢</span>
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FF6B00;" data-pt="Acompanhe sua unidade" data-en="Track your unit" data-zh="跟踪您的单元">Acompanhe sua unidade</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);" data-pt="Portal do investidor Diferencial" data-en="Diferencial investor portal" data-zh="Diferencial投资者门户">Portal do investidor Diferencial →</div>
+      </div>
+    </a>
+  </div>
   <div class="pills">
     <div class="pill o" data-pt="Dados oficiais" data-en="Official Data" data-zh="官方数据">Dados oficiais</div>
     <div class="pill">IMT</div>
@@ -436,7 +485,7 @@ img { max-width: 100%; height: auto; }
   <!-- 1. RECONHECIMENTO INTERNACIONAL         -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-reconhecimento">
-    <div class="sec-label"><span data-pt="Reconhecimento internacional" data-en="International recognition" data-zh="国际认可">Reconhecimento internacional</span> <a href="https://www.lonelyplanet.es/lp/best-in-travel-2025-las-10-mejores-ciudades" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Reconhecimento internacional" data-en="International recognition" data-zh="国际认可">Reconhecimento internacional</span> <a href="https://www.lonelyplanet.es/lp/best-in-travel-2025-las-10-mejores-ciudades" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver publicação da Lonely Planet →</a></div>
     <div class="award">
       <div class="award-ico">🏆</div>
       <div>
@@ -454,7 +503,7 @@ img { max-width: 100%; height: auto; }
   <!-- 2. FLUXO TURÍSTICO                      -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-fluxo">
-    <div class="sec-label"><span data-pt="Visão geral do fluxo turístico" data-en="Tourist flow overview" data-zh="旅游客流概览">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Visão geral do fluxo turístico" data-en="Tourist flow overview" data-zh="旅游客流概览">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver dado oficial da Prefeitura →</a></div>
     <div class="kpi-grid">
       <div class="kpi dk">
         <div class="kpi-num"><span>10M</span></div>
@@ -484,7 +533,7 @@ img { max-width: 100%; height: auto; }
   <!-- 3. PERFIL DOS VISITANTES                -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-perfil">
-    <div class="sec-label"><span data-pt="Perfil dos visitantes: mudança histórica" data-en="Visitor profile: a historic shift" data-zh="访客画像：历史性转变">Perfil dos visitantes: mudança histórica</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Perfil dos visitantes: mudança histórica" data-en="Visitor profile: a historic shift" data-zh="访客画像：历史性转变">Perfil dos visitantes: mudança histórica</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver publicação oficial →</a></div>
     <div class="card">
       <div class="card-h" data-pt="Pela primeira vez, lazer superou negócios" data-en="For the first time, leisure outpaced business travel" data-zh="首次：休闲旅游超越商务旅游">Pela primeira vez, lazer superou negócios</div>
       <div class="card-b" style="margin-bottom:16px" data-pt="Em 2024 ocorreu uma virada inédita: as viagens por &lt;span class=&quot;hl&quot;&gt;lazer passaram a ser a principal motivação&lt;/span&gt;, superando o turismo corporativo que historicamente dominava a cidade." data-en="In 2024, an unprecedented shift occurred: &lt;span class=&quot;hl&quot;&gt;leisure travel became the top motivation&lt;/span&gt;, surpassing corporate tourism that had historically dominated the city." data-zh="2024年出现历史性转变：&lt;span class=&quot;hl&quot;&gt;休闲旅游跃升为首要出行动机&lt;/span&gt;，超越了长期主导该市的商务旅游。">Em 2024 ocorreu uma virada inédita: as viagens por <span class="hl">lazer passaram a ser a principal motivação</span>, superando o turismo corporativo que historicamente dominava a cidade.</div>
@@ -507,7 +556,7 @@ img { max-width: 100%; height: auto; }
   <!-- 4. LINHA TURISMO                        -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-linha">
-    <div class="sec-label"><span data-pt="Linha turismo: termômetro do turismo de lazer" data-en="Tourism Line: the leisure tourism barometer" data-zh="旅游线路：休闲旅游晴雨表">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Linha turismo: termômetro do turismo de lazer" data-en="Tourism Line: the leisure tourism barometer" data-zh="旅游线路：休闲旅游晴雨表">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver resultado completo →</a></div>
     <div class="kpi2">
       <div class="kpi">
         <div class="kpi-num">908<span>mil</span></div>
@@ -530,7 +579,7 @@ img { max-width: 100%; height: auto; }
   <!-- 5. EVENTOS, SHOWS E CONGRESSOS          -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-eventos">
-    <div class="sec-label"><span data-pt="Eventos, shows e congressos" data-en="Events, shows and congresses" data-zh="活动、演出与大会">Eventos, shows e congressos</span> <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Eventos, shows e congressos" data-en="Events, shows and congresses" data-zh="活动、演出与大会">Eventos, shows e congressos</span> <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver matéria completa →</a></div>
     <div class="kpi3">
       <div class="kpi">
         <div class="kpi-num"><span>140</span></div>
@@ -627,7 +676,7 @@ img { max-width: 100%; height: auto; }
   <!-- 6. NATAL DE CURITIBA 2025               -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-natal">
-    <div class="sec-label"><span data-pt="Natal de Curitiba 2025" data-en="Christmas in Curitiba 2025" data-zh="库里提巴圣诞节 2025">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Natal de Curitiba 2025" data-en="Christmas in Curitiba 2025" data-zh="库里提巴圣诞节 2025">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver resultado completo →</a></div>
     <div class="award">
       <div class="award-ico">🎄</div>
       <div>
@@ -662,7 +711,7 @@ img { max-width: 100%; height: auto; }
   <!-- 7. HOTELARIA E INFRAESTRUTURA           -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-hotelaria">
-    <div class="sec-label"><span data-pt="Hotelaria e infraestrutura" data-en="Hotels and infrastructure" data-zh="酒店业与基础设施">Hotelaria e infraestrutura</span> <a href="https://www.parana.pr.gov.br/aen/Noticia/Hoteis-de-Curitiba-registram-90-de-ocupacao-em-outubro" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Hotelaria e infraestrutura" data-en="Hotels and infrastructure" data-zh="酒店业与基础设施">Hotelaria e infraestrutura</span> <a href="https://www.parana.pr.gov.br/aen/Noticia/Hoteis-de-Curitiba-registram-90-de-ocupacao-em-outubro" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver dado oficial →</a></div>
     <div class="kpi3">
       <div class="kpi">
         <div class="kpi-num">20<span>mil</span></div>
@@ -712,7 +761,7 @@ img { max-width: 100%; height: auto; }
   <!-- 8. AEROPORTO E CONECTIVIDADE            -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-aeroporto">
-    <div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity" data-zh="机场与连通性">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity" data-zh="机场与连通性">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver matéria completa →</a></div>
     <div class="kpi2">
       <div class="kpi">
         <div class="kpi-num">6,08<span>M</span></div>
@@ -779,6 +828,7 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
+  <div id="cta-investir"></div>
 
   <!-- ════════════════════════════════════════ -->
   <!-- 11. HOSPEDAGEM CORPORATIVA              -->
@@ -819,7 +869,7 @@ img { max-width: 100%; height: auto; }
   <!-- 12. AIRBNB EM CURITIBA                  -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-airbnb">
-    <div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market" data-zh="库里提巴Airbnb：短租市场">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" title="Ver fonte" style="color:#FF6B00;font-size:16px;text-decoration:none;font-weight:600;letter-spacing:0;text-transform:none;line-height:1;flex-shrink:0;opacity:0.8;transition:opacity 0.15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">↗</a></div>
+    <div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market" data-zh="库里提巴Airbnb：短租市场">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver dados do Airbnb →</a></div>
     <div class="kpi3">
       <div class="kpi dk">
         <div class="kpi-num"><span>5.190</span></div>
@@ -856,6 +906,7 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
+  <div id="cta-corporativo"></div>
 
   <!-- ════════════════════════════════════════ -->
   <!-- 13. REGIÕES ESTRATÉGICAS                -->
@@ -885,6 +936,7 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
+  <div id="cta-regioes"></div>
 
   <!-- ════════════════════════════════════════ -->
   <!-- 14. NOTÍCIAS                            -->
@@ -1119,6 +1171,93 @@ document.addEventListener('DOMContentLoaded', function() {
      ══════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const _PORTAL_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
+const _PORTAL_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
+const supabaseClient = window.supabase.createClient(_PORTAL_URL, _PORTAL_KEY);
+
+let _corretor = null;
+
+async function getCorretor() {
+  if (_corretor) return _corretor;
+  const token = new URLSearchParams(window.location.search).get('c');
+  if (!token) return null;
+  const { data } = await supabaseClient.from('corretores').select('id,nome,whatsapp,portal_token').eq('portal_token', token).single();
+  _corretor = data || null;
+  if (_corretor) sessionStorage.setItem('portal_corretor', JSON.stringify(_corretor));
+  return _corretor;
+}
+
+function getWhatsAppUrl(mensagem) {
+  if (!_corretor || !_corretor.whatsapp) return null;
+  const num = _corretor.whatsapp.replace(/\D/g, '');
+  return `https://wa.me/${num}?text=${encodeURIComponent(mensagem)}`;
+}
+
+async function inicializarPortal() {
+  const c = await getCorretor();
+  if (!c) return;
+  const tag = document.querySelector('.cover-tag');
+  if (tag) tag.textContent = `Para investidores Bicalho · ${c.nome}`;
+  inicializarWhatsFloat();
+  const ctas = [
+    { id: 'cta-investir',   texto: 'Quer entender melhor o potencial de retorno? <strong>Fale com seu corretor.</strong>', msg: 'Olá! Gostaria de entender melhor o retorno do investimento em Curitiba.' },
+    { id: 'cta-corporativo',texto: 'Interessado nas oportunidades de hospedagem corporativa? <strong>Consulte as opções disponíveis.</strong>', msg: 'Olá! Tenho interesse em hospedagem corporativa em Curitiba.' },
+    { id: 'cta-regioes',    texto: 'Quer saber quais unidades estão disponíveis nessas regiões? <strong>Fale com seu corretor.</strong>', msg: 'Olá! Gostaria de ver unidades disponíveis nas regiões estratégicas de Curitiba.' }
+  ];
+  ctas.forEach(({ id, texto, msg }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const cta = renderizarCTA(texto, msg);
+    if (cta) el.appendChild(cta);
+  });
+}
+
+function renderizarCTA(texto, mensagemWhats) {
+  const url = getWhatsAppUrl(mensagemWhats);
+  if (!url) return null;
+  const div = document.createElement('div');
+  div.className = 'cta-whats';
+  div.innerHTML = `<p>${texto}</p><a href="${url}" target="_blank">💬 Falar com corretor</a>`;
+  return div;
+}
+
+function inicializarWhatsFloat() {
+  if (!_corretor || !_corretor.whatsapp) return;
+  if (document.getElementById('whats-float')) return;
+  const btn = document.createElement('a');
+  btn.id = 'whats-float';
+  btn.href = getWhatsAppUrl('Olá! Tenho interesse em saber mais sobre os imóveis em Curitiba.');
+  btn.target = '_blank';
+  btn.title = 'Falar com corretor';
+  btn.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9998;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(37,211,102,0.4);text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;';
+  btn.innerHTML = '<span style="line-height:1">💬</span>';
+  btn.onmouseover = () => { btn.style.transform = 'scale(1.1)'; btn.style.boxShadow = '0 6px 28px rgba(37,211,102,0.5)'; };
+  btn.onmouseout  = () => { btn.style.transform = 'scale(1)';   btn.style.boxShadow = '0 4px 20px rgba(37,211,102,0.4)'; };
+  document.body.appendChild(btn);
+}
+
+function mostrarToast(mensagem, tipo = 'sucesso') {
+  const cores = { sucesso: { border: '#FF6B00' }, erro: { border: '#e24b4a' } };
+  const border = (cores[tipo] || cores.sucesso).border;
+  const toast = document.createElement('div');
+  toast.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;border:0.5px solid ${border};color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-family:'DM Sans',Arial,sans-serif;z-index:99999;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;box-shadow:0 8px 32px rgba(0,0,0,0.3);white-space:nowrap;`;
+  toast.textContent = mensagem;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; });
+  setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(80px)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+}
+
+(function() {
+  const bar = document.createElement('div');
+  bar.id = 'scroll-progress';
+  document.body.prepend(bar);
+  window.addEventListener('scroll', () => {
+    const total = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
+  });
+})();
+</script>
+<script>
 (function() {
   const SURL = 'https://uocnikcoynoflxgcknii.supabase.co';
   const SKEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
@@ -1244,6 +1383,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('DOMContentLoaded', function() {
     aplicarVisibilidade();
     carregarDadosCuritiba();
+    inicializarPortal();
   });
 })();
 </script>
