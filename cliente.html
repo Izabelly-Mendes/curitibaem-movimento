@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="apple-touch-icon" href="diferencial_logo.png">
-<link rel="icon" type="image/png" href="diferencial_logo.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="shortcut icon" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Curitiba em Movimento">
 <meta name="application-name" content="Curitiba em Movimento">
+<meta name="theme-color" content="#1a1a1a">
 <title>Curitiba em Movimento · Portal do Investidor</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
@@ -515,7 +517,9 @@ img { max-width: 100%; height: auto; }
 </div>
 
 <!-- DADOS DE CURITIBA (curadoria aprovada) -->
-<div id="dados-curitiba" style="display:none;padding:28px 48px 0"></div>
+<div class="secao ativa" id="secao-dados-curitiba">
+  <div id="dados-curitiba" style="padding:28px 48px 0"></div>
+</div>
 
 <div class="body">
 
@@ -865,10 +869,10 @@ img { max-width: 100%; height: auto; }
       <div class="tag" data-pt="Investimento em lazer" data-en="Leisure Investment" data-zh="休闲投资">Investimento em lazer</div>
     </div>
     <div class="divider"></div>
-  </div>
-  <div id="cta-mercado" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-    <span style="font-size:13.5px;color:#555;line-height:1.5;">Quer entender como o crescimento do turismo em Curitiba impacta diretamente o seu investimento?</span>
-    <a id="cta-mercado-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    <div id="cta-mercado" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <span style="font-size:13.5px;color:#555;line-height:1.5;">Quer entender como o crescimento do turismo em Curitiba impacta diretamente o seu investimento?</span>
+      <a id="cta-mercado-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    </div>
   </div>
 
   <!-- ════════════════════════════════════════ -->
@@ -904,6 +908,10 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
     <div class="divider"></div>
+    <div id="cta-corporativo" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <span style="font-size:13.5px;color:#555;line-height:1.5;">Saiba como a demanda corporativa de Curitiba pode gerar renda consistente para o seu imóvel.</span>
+      <a id="cta-corporativo-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    </div>
   </div>
 
   <!-- ════════════════════════════════════════ -->
@@ -947,10 +955,6 @@ img { max-width: 100%; height: auto; }
     </div>
     <div class="divider"></div>
   </div>
-  <div id="cta-corporativo" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-    <span style="font-size:13.5px;color:#555;line-height:1.5;">Saiba como a demanda corporativa de Curitiba pode gerar renda consistente para o seu imóvel.</span>
-    <a id="cta-corporativo-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
-  </div>
 
   <!-- ════════════════════════════════════════ -->
   <!-- 13. REGIÕES ESTRATÉGICAS                -->
@@ -979,10 +983,10 @@ img { max-width: 100%; height: auto; }
       <div class="ins" data-pt="Um studio nessas regiões comprado como investimento tem dois motores de retorno simultâneos: &lt;strong&gt;valorização patrimonial acima da média da cidade&lt;/strong&gt; (confirmada pelos dados Loft 2025) e &lt;strong&gt;renda de short stay consistente ao longo de todos os meses do ano&lt;/strong&gt;, ancorada no calendário de eventos que Curitiba consolidou." data-en="A studio in these neighborhoods, purchased as an investment, operates with two simultaneous return drivers: &lt;strong&gt;above-average property appreciation&lt;/strong&gt; (confirmed by Loft 2025 data) and &lt;strong&gt;consistent short-term rental income throughout every month of the year&lt;/strong&gt;, anchored by the event calendar that Curitiba has firmly established." data-zh="在这些区域购置公寓作为投资，拥有双重同步回报驱动力：&lt;strong&gt;高于全市平均的资产增值&lt;/strong&gt;（Loft 2025年数据印证）以及&lt;strong&gt;全年每月持续稳定的短租收入&lt;/strong&gt;，由Curitiba已巩固确立的活动日历提供有力支撑。">Um studio nessas regiões comprado como investimento tem dois motores de retorno simultâneos: <strong>valorização patrimonial acima da média da cidade</strong> (confirmada pelos dados Loft 2025) e <strong>renda de short stay consistente ao longo de todos os meses do ano</strong>, ancorada no calendário de eventos que Curitiba consolidou.</div>
     </div>
     <div class="divider"></div>
-  </div>
-  <div id="cta-regioes" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-    <span style="font-size:13.5px;color:#555;line-height:1.5;">Seu imóvel está em uma das regiões mais valorizadas de Curitiba. Tire suas dúvidas com seu corretor.</span>
-    <a id="cta-regioes-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    <div id="cta-regioes" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <span style="font-size:13.5px;color:#555;line-height:1.5;">Seu imóvel está em uma das regiões mais valorizadas de Curitiba. Tire suas dúvidas com seu corretor.</span>
+      <a id="cta-regioes-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    </div>
   </div>
 
   <!-- ════════════════════════════════════════ -->
