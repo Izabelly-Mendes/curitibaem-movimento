@@ -1516,7 +1516,7 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
     var num = parseFloat(numStr);
     if (isNaN(num) || num === 0) return;
     var temDecimal = match[1].indexOf(',') > -1;
-    var duracao = 1400;
+    var duracao = 1800;
     var inicio = null;
     function tick(ts) {
       if (!inicio) inicio = ts;
