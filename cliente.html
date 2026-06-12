@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon.png">
 <link rel="shortcut icon" href="favicon.png">
-<link rel="apple-touch-icon" href="favicon.png">
+<link rel="apple-touch-icon" sizes="192x192" href="favicon.png">
+<link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Curitiba em Movimento">
@@ -448,6 +449,15 @@ img { max-width: 100%; height: auto; }
   .news-item:nth-child(3) { grid-column: 1; grid-row: auto; }
   .news-item:nth-child(4) { grid-column: 1; grid-row: auto; }
   .news-row2 { grid-template-columns: 1fr; }
+}
+.card, .kpi, .result-box, .insight-box, .award {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.card.visivel, .kpi.visivel, .result-box.visivel, .insight-box.visivel, .award.visivel {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
 </head>
@@ -1495,11 +1505,56 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
     .on('postgres_changes',{event:'*',schema:'public',table:'rascunhos_curadoria'}, carregarDadosCuritiba)
     .subscribe();
 
+  function animarKPI(el) {
+    if (el.dataset.animado) return;
+    el.dataset.animado = 'true';
+    var htmlOriginal = el.innerHTML;
+    var textoCompleto = el.textContent.trim();
+    var match = textoCompleto.match(/(\d+[.,]?\d*)/);
+    if (!match) return;
+    var numStr = match[1].replace(',', '.');
+    var num = parseFloat(numStr);
+    if (isNaN(num) || num === 0) return;
+    var temDecimal = match[1].indexOf(',') > -1;
+    var duracao = 1400;
+    var inicio = null;
+    function tick(ts) {
+      if (!inicio) inicio = ts;
+      var p = Math.min((ts - inicio) / duracao, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      var atual = num * ease;
+      var formatado = temDecimal ? atual.toFixed(1).replace('.', ',') : Math.round(atual).toString();
+      el.innerHTML = htmlOriginal.replace(match[1], formatado);
+      if (p < 1) { requestAnimationFrame(tick); } else { el.innerHTML = htmlOriginal; }
+    }
+    requestAnimationFrame(tick);
+  }
+  function iniciarContadores() {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) { animarKPI(entry.target); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.kpi-num').forEach(function(el) { obs.observe(el); });
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     aplicarVisibilidade();
     carregarDadosCuritiba();
     inicializarPortal();
     setTimeout(animarContadores, 300);
+    setTimeout(iniciarContadores, 500);
+    var scrollObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visivel');
+          scrollObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.card, .kpi, .result-box, .insight-box, .award').forEach(function(el) {
+      scrollObserver.observe(el);
+    });
   });
 })();
 </script>
