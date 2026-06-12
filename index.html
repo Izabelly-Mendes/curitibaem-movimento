@@ -613,7 +613,7 @@ function animarContadores() {
       if (isNaN(num) || num === 0) return;
       const prefix = texto.substring(0, texto.indexOf(match[0]));
       const suffix = texto.substring(texto.indexOf(match[0]) + match[0].length);
-      const duracao = 1200;
+      const duracao = 1800;
       const inicio = performance.now();
       function atualizar(agora) {
         const progresso = Math.min((agora - inicio) / duracao, 1);
@@ -667,8 +667,8 @@ function iniciarContadores() {
   document.querySelectorAll('.kpi-num').forEach(function(el) { observer.observe(el); });
 }
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(animarContadores, 300);
-  setTimeout(iniciarContadores, 500);
+  setTimeout(animarContadores, 800);
+  setTimeout(iniciarContadores, 1000);
   var scrollObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
