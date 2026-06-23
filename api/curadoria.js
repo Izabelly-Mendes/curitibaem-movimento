@@ -296,7 +296,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const isTest  = req.query?.test === 'true';
+  const CRON_SECRET = process.env.CRON_SECRET || 'curitiba-bicalho-2026';
+  const authHeader = req.headers['authorization'];
+  const isTest = req.query?.test === 'true';
+  const isAuthorized = authHeader === `Bearer ${CRON_SECRET}` || isTest;
+
+  if (!isAuthorized) {
+    return res.status(401).json({ error: 'Não autorizado' });
+  }
   const dataStr = new Date().toLocaleDateString('pt-BR',{ weekday:'long', year:'numeric', month:'long', day:'numeric' });
   console.log(`[curadoria] Iniciando${isTest?' (TESTE)':''} — ${dataStr}`);
 
