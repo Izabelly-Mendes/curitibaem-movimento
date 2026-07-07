@@ -1457,7 +1457,41 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
         'f78e8df9-b52b-4b68-9bb1-f64e5c904948': 'Foto para 09.06.png'
       };
 
+      function renderizarCardAwards(item) {
+        return `
+          <div style="background:linear-gradient(135deg,#1a1200,#2a1e00);border-radius:16px;border:1.5px solid #c9a84c;padding:0;overflow:hidden;margin-bottom:14px;box-shadow:0 8px 32px rgba(201,168,76,0.2);">
+            <div style="background:linear-gradient(90deg,#c9a84c,#f0d060,#c9a84c);padding:10px 20px;text-align:center;">
+              <span style="font-size:10px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#1a1200;">✦ Real Estate Awards 2026 ✦</span>
+            </div>
+            <div style="padding:24px;">
+              <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#f0d060;margin-bottom:10px;text-align:center;">${item.titulo}</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.65;margin-bottom:20px;text-align:center;">${item.conteudo}</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div>
+                  <a href="https://awards.atrincarealestate.com.br/?utm_source=Instagram&utm_medium=ATRE&mcp_token=eyJwaWQiOjQxNzE2NjEsInNpZCI6ODQzMTg4MzgzLCJheCI6IjFlNmEwNjVkNDFlZmRkMzAxYWE3ZTNjMWM0NDRkOWY2IiwidHMiOjE3ODMzODQzOTIsImV4cCI6MTc4NTgwMzU5Mn0.jkdld_IbBRNhQxQEftHtNiPWSFhebY0TqvIsdpZJjJM#/categoria/incorporadora-revelacao/candidato/47b1a019-1ff7-4f78-86e1-7389cd9f427f" target="_blank" style="display:block;text-decoration:none;">
+                    <img src="awards_bicalho.png.png" alt="Votar Bicalho" style="width:100%;border-radius:10px;display:block;" onerror="this.style.display='none'">
+                    <div style="text-align:center;margin-top:8px;font-size:11px;color:#c9a84c;font-weight:600;letter-spacing:0.05em;">👆 Clique aqui para votar</div>
+                  </a>
+                </div>
+                <div>
+                  <a href="https://awards.atrincarealestate.com.br/?utm_source=Instagram&utm_medium=ATRE&mcp_token=eyJwaWQiOjQxNzE2NjEsInNpZCI6ODQzMTg4MzgzLCJheCI6IjFlNmEwNjVkNDFlZmRkMzAxYWE3ZTNjMWM0NDRkOWY2IiwidHMiOjE3ODMzODQzOTIsImV4cCI6MTc4NTgwMzU5Mn0.jkdld_IbBRNhQxQEftHtNiPWSFhebY0TqvIsdpZJjJM#/categoria/imobiliaria-destaque-sul/candidato/bddfdae3-2258-491e-aeeb-56d14b6ffeb6" target="_blank" style="display:block;text-decoration:none;">
+                    <img src="awards_diferencial.png.png" alt="Votar Diferencial" style="width:100%;border-radius:10px;display:block;" onerror="this.style.display='none'">
+                    <div style="text-align:center;margin-top:8px;font-size:11px;color:#c9a84c;font-weight:600;letter-spacing:0.05em;">👆 Clique aqui para votar</div>
+                  </a>
+                </div>
+              </div>
+              <div style="text-align:center;font-size:11px;color:rgba(255,255,255,0.4);border-top:0.5px solid rgba(201,168,76,0.2);padding-top:12px;">
+                Indicação pela ATrinca Real Estate · Votação popular aberta
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       function renderizarCard(item) {
+        if (item.titulo && item.titulo.includes('Real Estate Awards')) {
+          return renderizarCardAwards(item);
+        }
         const temaLabel   = TEMA_LABELS[item.tema] || (item.tema || 'Dados');
         const dataFmt     = new Date(item.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
         const imagemUrl   = (item.imagem_url && item.imagem_url !== '') ? item.imagem_url : (IMAGEM_FALLBACK[item.id] || '');
