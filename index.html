@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#1a1a1a">
 <title>Curitiba em Movimento · Bicalho Imóveis</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; color: #1a1a1a; }
@@ -100,11 +100,31 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 
 /* ── COVER ───────────────────────────────────────────────── */
 .cover {
-  background: #1a1a1a;
-  padding: 52px 48px 44px;
   position: relative;
   overflow: hidden;
+  background-color: #1a1a1a;
+  background-image: url('jardim-botanico.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px 48px;
 }
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(26,26,26,0.92) 0%,
+    rgba(26,26,26,0.75) 50%,
+    rgba(26,26,26,0.45) 100%
+  );
+  z-index: 0;
+}
+.cover > * { position: relative; z-index: 1; }
 .cover-circle1 {
   position: absolute; top: -80px; right: -80px;
   width: 320px; height: 320px; border-radius: 50%;
@@ -433,6 +453,55 @@ img { max-width: 100%; height: auto; }
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ── REFINAMENTOS VISUAIS (redesign) ─────────────────────── */
+.main-wrapper { background: #f8f7f4; }
+
+.sidebar { background: #111111; border-right: 0.5px solid rgba(255,255,255,0.06); }
+
+.sidebar-item {
+  font-size: 13px;
+  padding: 10px 20px;
+  color: rgba(255,255,255,0.45);
+  border-radius: 0;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar-item:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.04);
+  border-left-color: rgba(255,107,0,0.4);
+}
+.sidebar-item.menu-ativo {
+  color: #FF6B00;
+  background: rgba(255,107,0,0.08);
+  border-left-color: #FF6B00;
+  font-weight: 600;
+}
+
+.card { background: #ffffff; border: 0.5px solid #ebebeb; border-radius: 14px; }
+
+.secao { padding: 32px 48px; }
+
+.sec-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #FF6B00;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kpi { border-radius: 12px; border: 0.5px solid #ebebeb; }
+
+@media (max-width: 768px) {
+  .secao { padding: 20px 20px; }
+  #barra-busca-wrapper { padding: 16px 20px 0; }
+  .cover { padding: 24px 20px; min-height: 300px; }
+}
 </style>
 </head>
 <body>
@@ -496,6 +565,114 @@ const _SB_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
 const _SB_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
 const db = window.supabase.createClient(_SB_URL, _SB_KEY);
 
+const temaIcones = {
+  'eventos': '🎪', 'aeroporto': '✈️', 'hotelaria': '🏨',
+  'turismo': '🏙️', 'imobiliario': '🏠', 'congresso': '🏢',
+  'comparativo': '📊', 'esportivo': '⚽'
+};
+
+// ── WIDGET DE CLIMA E DATA ──────────────────────────────────
+async function carregarClima() {
+  try {
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-25.4284&longitude=-49.2733&current=temperature_2m,weathercode&timezone=America%2FSao_Paulo');
+    const data = await res.json();
+    const temp = Math.round(data.current.temperature_2m);
+    const code = data.current.weathercode;
+
+    const icones = {
+      0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+      45: '🌫️', 48: '🌫️', 51: '🌦️', 61: '🌧️',
+      71: '❄️', 80: '🌦️', 95: '⛈️'
+    };
+    const icone = icones[code] || '🌡️';
+
+    const condicoes = {
+      0: 'Ensolarado', 1: 'Poucas nuvens', 2: 'Parcialmente nublado',
+      3: 'Nublado', 45: 'Neblina', 51: 'Garoa', 61: 'Chuva',
+      71: 'Neve', 80: 'Pancadas', 95: 'Tempestade'
+    };
+    const condicao = condicoes[code] || 'Curitiba';
+
+    const now = new Date();
+    const dataFormatada = now.toLocaleDateString('pt-BR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    const widget = document.getElementById('widget-clima');
+    if (widget) {
+      widget.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;">
+            <span style="font-size:18px;">${icone}</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;">${temp}°C</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.5);">${condicao}</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:8px 14px;">
+            <div style="font-size:11px;font-weight:600;color:#fff;">${dataFormatada}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);">Curitiba, PR</div>
+          </div>
+        </div>
+      `;
+    }
+  } catch(e) {
+    console.log('Clima indisponível');
+  }
+}
+
+// ── BARRA DE KPIs — carregada do Supabase ────────────────────
+async function carregarBarraKPIs() {
+  const container = document.getElementById('barra-kpis');
+  if (!container) return;
+
+  try {
+    const { data } = await db
+      .from('rascunhos_curadoria')
+      .select('titulo, kpi_valor, kpi_label, tema')
+      .eq('status', 'aprovado')
+      .eq('foi_publicado', true)
+      .not('kpi_valor', 'is', null)
+      .order('created_at', { ascending: false })
+      .limit(4);
+
+    if (!data || data.length === 0) {
+      container.style.display = 'none';
+      return;
+    }
+
+    container.innerHTML = `
+      <div style="display:flex;align-items:stretch;">
+        ${data.map((item, i) => `
+          <div style="flex:1;padding:16px 24px;${i < data.length - 1 ? 'border-right:0.5px solid rgba(255,255,255,0.08);' : ''}display:flex;align-items:center;gap:12px;">
+            <span style="font-size:20px;opacity:0.7;">${temaIcones[item.tema] || '📌'}</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#FF6B00;line-height:1.1;">${item.kpi_valor}</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;line-height:1.3;">${item.kpi_label || item.titulo.substring(0, 50)}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } catch(e) {
+    container.style.display = 'none';
+  }
+}
+
+function ativarBuscaSecoes() {
+  document.getElementById('busca-secoes')?.addEventListener('input', function() {
+    const termo = this.value.toLowerCase().trim();
+    if (!termo) {
+      document.querySelectorAll('.sidebar-item').forEach(item => { item.style.display = ''; });
+      return;
+    }
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+      const texto = item.textContent.toLowerCase();
+      item.style.display = texto.includes(termo) ? '' : 'none';
+    });
+  });
+}
+
 // ── DADOS DE CURITIBA — carregado do Supabase ────────────────────────────
 
 function renderizarCardAwardsInterno(item) {
@@ -529,6 +706,57 @@ function renderizarCardAwardsInterno(item) {
   `;
 }
 
+function renderizarCardHorizontalInterno(item, temaFormatado) {
+  const dataFmt     = new Date(item.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+  const isInstagram = item.link_fonte && item.link_fonte.includes('instagram');
+  const btnTexto    = isInstagram ? '↗ Seguir no Instagram' : '✏️ Ler notícia completa';
+  return `
+    <div style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;overflow:hidden;margin-bottom:14px;display:flex;min-height:200px;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s ease;"
+      onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.1)'"
+      onmouseout="this.style.transform='';this.style.boxShadow=''">
+
+      <div style="width:260px;flex-shrink:0;position:relative;overflow:hidden;">
+        <img src="${item.imagem_url}" alt="${item.titulo}"
+          style="width:100%;height:100%;object-fit:cover;display:block;"
+          onerror="this.parentElement.style.display='none'">
+        ${item.kpi_valor ? `
+          <div style="position:absolute;bottom:12px;left:12px;background:rgba(26,26,26,0.85);backdrop-filter:blur(8px);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+            <span style="font-size:16px;">${temaIcones[item.tema] || '📌'}</span>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#FF6B00;line-height:1;">${item.kpi_valor}</div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.6);margin-top:2px;">${item.kpi_label || ''}</div>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+
+      <div style="flex:1;padding:24px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+            <span style="font-size:9px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B00;">✦ ${temaFormatado}</span>
+            ${item.kpi_label ? `<span style="font-size:10px;color:#888;background:#f5f5f0;border:0.5px solid #e0ddd5;border-radius:20px;padding:2px 10px;">${item.kpi_label}</span>` : ''}
+          </div>
+          <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:#1a1a1a;margin-bottom:10px;line-height:1.3;">${item.titulo}</div>
+          <div style="font-size:13px;color:#666;line-height:1.65;">${(item.conteudo || '').substring(0, 220)}${(item.conteudo || '').length > 220 ? '...' : ''}</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
+          ${item.link_fonte ? `
+            <a href="${item.link_fonte}" target="_blank"
+              style="font-size:12px;color:#FF6B00;text-decoration:none;display:inline-flex;align-items:center;gap:6px;border:0.5px solid rgba(255,107,0,0.3);border-radius:20px;padding:6px 14px;font-weight:500;transition:all 0.2s;"
+              onmouseover="this.style.background='rgba(255,107,0,0.08)'"
+              onmouseout="this.style.background=''">
+              ${btnTexto}
+            </a>
+          ` : '<span></span>'}
+          <span style="font-size:10px;color:#bbb;display:flex;align-items:center;gap:4px;">
+            📅 ${dataFmt}
+          </span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderizarCardInternoSupabase(item) {
   // Card especial Awards
   if (item.titulo && item.titulo.includes('Real Estate Awards')) {
@@ -547,12 +775,16 @@ function renderizarCardInternoSupabase(item) {
   }[item.tema] || item.tema || 'Curitiba';
 
   const temImagem = item.imagem_url && item.imagem_url !== '';
+
+  if (temImagem) {
+    return renderizarCardHorizontalInterno(item, temaFormatado);
+  }
+
   const isInstagram = item.link_fonte && item.link_fonte.includes('instagram');
   const btnTexto = isInstagram ? '↗ Seguir no Instagram' : '↗ Ler notícia completa';
 
   return `
     <div style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;border-left:4px solid #FF6B00;overflow:hidden;margin-bottom:14px;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.25s ease;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 16px 40px rgba(0,0,0,0.13)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
-      ${temImagem ? `<img src="${item.imagem_url}" alt="${item.titulo}" style="width:100%;height:200px;object-fit:cover;display:block;" onerror="this.style.display='none'">` : ''}
       <div style="padding:22px 24px;">
         <span style="font-size:9px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#FF6B00;display:block;margin-bottom:10px;">✦ Dados de Curitiba · ${temaFormatado}</span>
         ${item.kpi_valor ? `
@@ -778,6 +1010,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(animarContadores, 800);
   setTimeout(iniciarContadores, 1000);
   carregarDadosCuritibaInterno();
+  carregarClima();
+  carregarBarraKPIs();
+  ativarBuscaSecoes();
   var scrollObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
@@ -852,6 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <button onclick="copiarMeuLink()" id="btn-meu-link" style="position:relative;z-index:10000;background:rgba(255,107,0,0.15);border:0.5px solid rgba(255,107,0,0.4);border-radius:8px;padding:5px 12px;color:#FF6B00;font-size:11px;cursor:pointer;font-family:'DM Sans',Arial,sans-serif;transition:all 0.2s;">🔗 Meu link do cliente</button>
       <button onclick="logout()" style="background:none;border:0.5px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 12px;color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;font-family:'DM Sans',Arial,sans-serif;margin-right:12px;">Sair</button>
     </div>
+    <div id="widget-clima" style="margin-right:12px;"></div>
     <div id="lang-selector" style="display:flex;align-items:center;gap:8px;position:relative;z-index:9999;pointer-events:auto;">
       <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(255,255,255,0.12);border:1.5px solid #FF6B00;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
       <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
@@ -867,6 +1103,18 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="pill">SEHA</div>
     <div class="pill">Embratur</div>
     <div class="pill" data-pt="Prefeitura de Curitiba" data-en="City of Curitiba" data-zh="库里提巴市政府">Prefeitura de Curitiba</div>
+  </div>
+</div>
+
+<div id="barra-kpis" style="background:#1a1a1a;border-bottom:0.5px solid rgba(255,255,255,0.08);padding:0 48px;overflow:hidden;"></div>
+
+<div style="padding:20px 48px 0;background:#f8f7f4;" id="barra-busca-wrapper">
+  <div style="position:relative;max-width:600px;">
+    <input type="text" id="busca-secoes" placeholder="Buscar informações, eventos, notícias..."
+      style="width:100%;height:44px;border:0.5px solid #e0ddd5;border-radius:10px;padding:0 44px 0 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:#555;background:#fff;outline:none;box-sizing:border-box;"
+      onfocus="this.style.borderColor='#FF6B00'"
+      onblur="this.style.borderColor='#e0ddd5'">
+    <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#aaa;font-size:16px;">🔍</span>
   </div>
 </div>
 
