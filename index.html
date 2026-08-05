@@ -803,6 +803,19 @@ const CATEGORIA_IMG_INTERNO = {
   default:     'https://images.unsplash.com/photo-1774112168796-69c896af2730?q=80&w=900&auto=format&fit=crop'
 };
 
+// Card editorial fixo (não vem do Supabase) — renderizado com o mesmo componente dc-card
+const CARD_WELLNESS_INTERNO = {
+  tema: 'imobiliario',
+  titulo: 'Wellness e o novo perfil do comprador imobiliário',
+  conteudo: 'Pesquisa da Brain Inteligência Estratégica com mais de mil entrevistados em março de 2026 mostra que 78% afirmam que empreendimentos voltados ao bem-estar influenciam positivamente sua decisão de compra. O imóvel passa a ser percebido como parte da rotina de saúde, conforto e qualidade de vida — não apenas moradia.',
+  kpi_valor: '78%',
+  kpi_label: 'afirmam que wellness influencia a decisão de compra — Brain 2026',
+  link_fonte: 'https://www.braininteligencia.com.br',
+  imagem_url: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=900&auto=format&fit=crop',
+  created_at: '2026-03-01T00:00:00.000Z',
+  fonte_label: 'Brain Inteligência Estratégica, março 2026'
+};
+
 function renderizarCardAwardsInterno(item) {
   return `
     <div style="background:linear-gradient(135deg,#1a1200,#2a1e00);border-radius:20px;border:1.5px solid #c9a84c;padding:0;overflow:hidden;margin-bottom:16px;box-shadow:0 10px 30px rgba(201,168,76,0.2);">
@@ -841,7 +854,7 @@ function renderizarCardInternoSupabase(item) {
   }
 
   const temaFormatado = TEMA_LABELS_INTERNO[item.tema] || item.tema || 'Dados de Curitiba';
-  const dataFmt        = new Date(item.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+  const dataFmt        = item.fonte_label || new Date(item.created_at).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
   const isInstagram     = item.link_fonte && item.link_fonte.includes('instagram');
   const btnTexto        = isInstagram ? '↗ Seguir no Instagram' : 'Ler matéria completa →';
   const imagemUrl       = (item.imagem_url && item.imagem_url !== '')
@@ -880,18 +893,16 @@ async function carregarDadosCuritibaInterno() {
       .eq('foi_publicado', true)
       .order('created_at', { ascending: false });
 
-    if (error || !data || data.length === 0) {
-      container.innerHTML = '<div style="color:#aaa;font-size:13px;padding:20px 0;">Nenhum dado disponível no momento.</div>';
-      return;
-    }
+    const itens = (error || !data) ? [] : data.slice();
+    itens.push(CARD_WELLNESS_INTERNO);
 
-    container.innerHTML = data.map(renderizarCardInternoSupabase).join('');
+    container.innerHTML = itens.map(renderizarCardInternoSupabase).join('');
 
     const statCount   = document.getElementById('dc-stat-count');
     const statUpdated = document.getElementById('dc-stat-updated');
-    if (statCount) statCount.textContent = data.length;
+    if (statCount) statCount.textContent = itens.length;
     if (statUpdated) {
-      const maisRecente = new Date(data[0].created_at);
+      const maisRecente = new Date(itens[0].created_at);
       const hoje = new Date();
       const mesmoDia = maisRecente.toDateString() === hoje.toDateString();
       statUpdated.textContent = mesmoDia ? 'Hoje' : maisRecente.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
