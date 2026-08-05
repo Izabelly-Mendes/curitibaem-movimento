@@ -812,7 +812,7 @@ const CARD_WELLNESS_INTERNO = {
   kpi_label: 'afirmam que wellness influencia a decisão de compra — Brain 2026',
   link_fonte: 'https://www.braininteligencia.com.br',
   imagem_url: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=900&auto=format&fit=crop',
-  created_at: '2026-03-01T00:00:00.000Z',
+  created_at: new Date().toISOString(),
   fonte_label: 'Brain Inteligência Estratégica, março 2026'
 };
 
@@ -902,7 +902,10 @@ async function carregarDadosCuritibaInterno() {
     const statUpdated = document.getElementById('dc-stat-updated');
     if (statCount) statCount.textContent = itens.length;
     if (statUpdated) {
-      const maisRecente = new Date(itens[0].created_at);
+      const maisRecente = itens.reduce((max, it) => {
+        const d = new Date(it.created_at);
+        return d > max ? d : max;
+      }, new Date(0));
       const hoje = new Date();
       const mesmoDia = maisRecente.toDateString() === hoje.toDateString();
       statUpdated.textContent = mesmoDia ? 'Hoje' : maisRecente.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
