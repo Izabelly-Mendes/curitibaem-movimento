@@ -12,13 +12,14 @@
 <meta name="apple-mobile-web-app-title" content="Curitiba em Movimento">
 <meta name="application-name" content="Curitiba em Movimento">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1a1a1a">
+<meta name="theme-color" content="#FAFAF8">
 <title>Curitiba em Movimento · Portal do Investidor</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; color: #1a1a1a; }
+body { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); }
 
 /* ── SIDEBAR ─────────────────────────────────────────────── */
 .sidebar {
@@ -26,45 +27,45 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   top: 0; left: 0;
   height: 100vh;
   width: 220px;
-  background: #1a1a1a;
+  background: var(--color-bg-secondary);
   z-index: 1000;
   transition: width 0.3s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border-right: 0.5px solid rgba(255,255,255,0.08);
+  border-right: 1px solid var(--color-border);
 }
 .sidebar.collapsed { width: 56px; overflow: visible; }
 .sidebar-toggle {
   padding: 16px;
   cursor: pointer;
-  color: #FF6B00;
+  color: var(--color-primary);
   font-size: 18px;
   border: none;
   background: none;
   text-align: left;
   white-space: nowrap;
-  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid var(--color-border);
   flex-shrink: 0;
 }
 .sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 8px 0; }
 .sidebar-nav::-webkit-scrollbar { width: 3px; }
-.sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: rgba(10,77,140,0.15); border-radius: 2px; }
 .sidebar-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  color: rgba(255,255,255,0.5);
+  color: var(--color-text-secondary);
   text-decoration: none;
-  font-family: 'Arial', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-body);
   font-size: 12.5px;
   white-space: nowrap;
   transition: color 0.15s, background 0.15s;
   cursor: pointer;
 }
-.sidebar-item:hover { color: #FF6B00; background: rgba(255,107,0,0.07); }
-.sidebar-item.menu-ativo { color: #FF6B00; background: rgba(255,107,0,0.1); }
+.sidebar-item:hover { color: var(--color-primary); background: rgba(10,77,140,0.07); }
+.sidebar-item.menu-ativo { color: var(--color-primary); background: rgba(10,77,140,0.1); }
 .sidebar-item .icon { font-size: 16px; flex-shrink: 0; width: 24px; text-align: center; }
 .sidebar-item .label { opacity: 1; transition: opacity 0.2s; }
 .sidebar.collapsed .label { opacity: 0; pointer-events: none; }
@@ -102,7 +103,7 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 .cover {
   position: relative;
   overflow: hidden;
-  background-color: #1a1a1a;
+  background-color: var(--color-bg);
   background-image: url('jardim-botanico.jpg');
   background-size: cover;
   background-position: center 30%;
@@ -110,7 +111,7 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 40px 48px;
+  padding: var(--space-6) var(--space-6);
 }
 .cover::before {
   content: '';
@@ -118,9 +119,9 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(26,26,26,0.92) 0%,
-    rgba(26,26,26,0.75) 50%,
-    rgba(26,26,26,0.45) 100%
+    rgba(250,250,248,0.95) 0%,
+    rgba(250,250,248,0.82) 50%,
+    rgba(250,250,248,0.55) 100%
   );
   z-index: 0;
 }
@@ -128,75 +129,75 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 .cover-circle1 {
   position: absolute; top: -80px; right: -80px;
   width: 320px; height: 320px; border-radius: 50%;
-  background: rgba(255,107,0,0.07);
+  background: rgba(10,77,140,0.06);
   pointer-events: none;
 }
 .cover-circle2 {
   position: absolute; bottom: -100px; left: 60px;
   width: 220px; height: 220px; border-radius: 50%;
-  background: rgba(255,107,0,0.04);
+  background: rgba(10,77,140,0.04);
   pointer-events: none;
 }
-.logo-img { height: 48px; filter: brightness(0) invert(1); margin-bottom: 52px; display: block; }
-.cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #FF6B00; margin-bottom: 14px; }
-.cover-title { font-family: 'Cambria', 'Georgia', serif; font-size: 44px; font-weight: bold; color: #fff; line-height: 1.05; margin-bottom: 14px; }
-.cover-title span { color: #FF6B00; }
-.cover-sub { font-size: 15px; color: rgba(255,255,255,0.45); font-weight: 400; margin-bottom: 36px; }
+.logo-img { height: 48px; margin-bottom: 52px; display: block; }
+.cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-2); }
+.cover-title { font-family: var(--font-heading); font-size: var(--text-h1-size); font-weight: var(--text-h1-weight); color: var(--color-text); line-height: var(--text-h1-lh); margin-bottom: var(--space-2); }
+.cover-title span { color: var(--color-primary); }
+.cover-sub { font-size: var(--text-body-size); color: var(--color-text-secondary); font-weight: 400; margin-bottom: var(--space-4); }
 .pills { display: flex; gap: 9px; flex-wrap: wrap; }
-.pill { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.14); border-radius: 100px; padding: 6px 14px; font-size: 11.5px; color: rgba(255,255,255,0.6); }
-.pill.o { background: rgba(255,107,0,0.14); border-color: rgba(255,107,0,0.3); color: #FF6B00; }
+.pill { background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 100px; padding: 6px 14px; font-size: 11.5px; color: var(--color-text-secondary); }
+.pill.o { background: rgba(10,77,140,0.1); border-color: rgba(10,77,140,0.3); color: var(--color-primary); }
 .pill-icon { display: none; }
 
 /* ── BODY ────────────────────────────────────────────────── */
-.body { padding: 40px 48px 56px; }
+.body { padding: var(--space-6) var(--space-6) var(--space-8); }
 
 .sec-label {
   font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
-  color: #FF6B00; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  color: var(--color-primary); margin-bottom: var(--space-3); display: flex; align-items: center; gap: 10px;
 }
-.sec-label::after { content: ''; flex: 1; height: 0.5px; background: #ddd; }
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--color-divider); }
 
-.kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
-.kpi2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-.kpi3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-2); margin-bottom: var(--space-3); }
+.kpi2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-bottom: var(--space-3); }
+.kpi3 { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--space-2); margin-bottom: var(--space-3); }
 
-.kpi { background: #fff; border-radius: 12px; border: 0.5px solid #e0ddd5; padding: 18px 16px; }
-.kpi.dk { background: #1a1a1a; border-color: #1a1a1a; }
-.kpi-num { font-family: 'Cambria', 'Georgia', serif; font-size: 27px; font-weight: 700; color: #1a1a1a; line-height: 1; margin-bottom: 4px; letter-spacing: -0.02em; }
-.kpi-num span { color: #FF6B00; }
-.kpi.dk .kpi-num { color: #FF6B00; }
-.kpi-lbl { font-size: 12px; color: #888; line-height: 1.5; }
-.kpi.dk .kpi-lbl { color: rgba(255,255,255,0.5); }
-.kpi-src { font-size: 10px; color: #bbb; margin-top: 6px; }
-.kpi.dk .kpi-src { color: rgba(255,255,255,0.25); }
+.kpi { background: var(--color-card); border-radius: var(--radius-md); border: 1px solid var(--color-border); padding: 18px 16px; }
+.kpi.dk { background: var(--color-bg); border-color: var(--color-border); }
+.kpi-num { font-family: var(--font-heading); font-size: 27px; font-weight: 700; color: var(--color-text); line-height: 1; margin-bottom: 4px; letter-spacing: -0.02em; }
+.kpi-num span { color: var(--color-primary); }
+.kpi.dk .kpi-num { color: var(--color-primary); }
+.kpi-lbl { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+.kpi.dk .kpi-lbl { color: var(--color-text-secondary); }
+.kpi-src { font-size: 10px; color: var(--color-text-secondary); margin-top: 6px; }
+.kpi.dk .kpi-src { color: var(--color-text-secondary); }
 
 
-.card { background: #fff; border-radius: 14px; border: 0.5px solid #e0ddd5; padding: 22px 24px; margin-bottom: 14px; }
-.card-h { font-family: 'Cambria', 'Georgia', serif; font-size: 15px; font-weight: bold; margin-bottom: 8px; }
-.card-b { font-size: 13.5px; color: #555; line-height: 1.72; }
-.card-b strong { color: #1a1a1a; font-weight: 700; }
-.hl { color: #FF6B00; font-weight: 700; }
+.card { background: var(--color-card); border-radius: var(--radius-card); border: 1px solid var(--color-border); padding: 22px 24px; margin-bottom: var(--space-2); }
+.card-h { font-family: var(--font-heading); font-size: var(--text-h4-size); font-weight: 600; margin-bottom: var(--space-1); }
+.card-b { font-size: var(--text-body-size); color: var(--color-text-secondary); line-height: 1.72; }
+.card-b strong { color: var(--color-text); font-weight: 700; }
+.hl { color: var(--color-primary); font-weight: 700; }
 
-.ins { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.65; }
+.ins { background: rgba(10,77,140,0.06); border-left: 3px solid var(--color-primary); border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: var(--space-2); font-size: 13px; color: var(--color-primary-hover); line-height: 1.65; }
 
 .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.bar-lbl { font-size: 12px; color: #555; width: 90px; flex-shrink: 0; }
-.bar-track { flex: 1; height: 6px; background: #f0ede6; border-radius: 10px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 10px; background: #FF6B00; }
-.bar-val { font-size: 12px; font-weight: 700; color: #1a1a1a; width: 36px; text-align: right; }
+.bar-lbl { font-size: 12px; color: var(--color-text-secondary); width: 90px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 6px; background: var(--color-divider); border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 10px; background: var(--color-primary); }
+.bar-val { font-size: 12px; font-weight: 700; color: var(--color-text); width: 36px; text-align: right; }
 
-.award { background: #1a1a1a; border-radius: 12px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
-.award-ico { width: 42px; height: 42px; background: rgba(255,107,0,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-.award strong { font-family: 'Cambria', 'Georgia', serif; font-size: 14px; font-weight: bold; color: #fff; display: block; margin-bottom: 3px; }
-.award span { font-size: 12px; color: rgba(255,255,255,0.4); }
+.award { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: 18px 22px; display: flex; align-items: center; gap: 16px; margin-bottom: var(--space-2); }
+.award-ico { width: 42px; height: 42px; background: rgba(10,77,140,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.award strong { font-family: var(--font-heading); font-size: 14px; font-weight: 600; color: var(--color-text); display: block; margin-bottom: 3px; }
+.award span { font-size: 12px; color: var(--color-text-secondary); }
 
-.divider { height: 0.5px; background: #e0ddd5; margin: 32px 0; }
+.divider { height: 1px; background: var(--color-divider); margin: var(--space-4) 0; }
 
-.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.tag { background: #f5f5f0; border: 0.5px solid #ddd; border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: #555; }
-.tag.o { background: rgba(255,107,0,0.07); border-color: rgba(255,107,0,0.2); color: #c85200; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: var(--space-2); }
+.tag { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 6px; padding: 4px 10px; font-size: 11.5px; color: var(--color-text-secondary); }
+.tag.o { background: rgba(10,77,140,0.06); border-color: rgba(10,77,140,0.2); color: var(--color-primary-hover); }
 
-.insight-box { background: rgba(255,107,0,0.06); border-left: 3px solid #FF6B00; border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: 12px; font-size: 13px; color: #c85200; line-height: 1.65; }
+.insight-box { background: rgba(10,77,140,0.06); border-left: 3px solid var(--color-primary); border-radius: 0 8px 8px 0; padding: 13px 16px; margin-top: var(--space-2); font-size: 13px; color: var(--color-primary-hover); line-height: 1.65; }
 .insight-box p { margin: 0; }
 
 /* ── NEWS GRID ───────────────────────────────────────────── */
@@ -217,9 +218,9 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 .news-item {
   position: relative;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  background: #1a1a1a;
+  background: var(--color-text);
   display: block;
   text-decoration: none;
   height: 200px;
@@ -249,12 +250,12 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #FF6B00;
+  color: #6FA8DC;
   margin-bottom: 5px;
   display: block;
 }
 .news-title {
-  font-family: 'Syne', 'Arial', sans-serif;
+  font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 700;
   color: #fff;
@@ -283,7 +284,7 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   content: '↗ Ler notícia';
   position: absolute;
   top: 12px; right: 12px;
-  background: rgba(255,107,0,0.9);
+  background: rgba(10,77,140,0.9);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
@@ -296,15 +297,15 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 .news-item:hover::after { opacity: 1; }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
-.footer { background: #1a1a1a; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
-.footer-txt { font-size: 11px; color: rgba(255,255,255,0.3); }
-.footer-logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.35; }
+.footer { background: var(--color-bg-secondary); border-top: 1px solid var(--color-border); padding: var(--space-3) var(--space-6); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.footer-txt { font-size: 11px; color: var(--color-text-secondary); }
+.footer-logo { height: 26px; opacity: 0.6; }
 .footer-logo--bicalho { height: 30px; }
 
 /* ── LANGUAGE SELECTOR ───────────────────────────────────── */
 .lang-btn {
-  background: rgba(255,255,255,0.08);
-  border: 0.5px solid rgba(255,255,255,0.15);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 4px 7px;
   cursor: pointer;
@@ -313,48 +314,27 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   transition: background 0.15s, border-color 0.15s;
   font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 }
-.lang-btn:hover { background: rgba(255,255,255,0.16); }
-.lang-btn-active { background: rgba(255,107,0,0.18); border-color: rgba(255,107,0,0.45); }
+.lang-btn:hover { background: var(--color-divider); }
+.lang-btn-active { background: rgba(10,77,140,0.12); border-color: rgba(10,77,140,0.4); }
 
 .footer-src {
   font-size: 11px;
-  color: rgba(255,255,255,0.35);
+  color: var(--color-text-secondary);
   text-decoration: none;
-  background: rgba(255,255,255,0.05);
-  border: 0.5px solid rgba(255,255,255,0.1);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 4px 10px;
   transition: color 0.15s, border-color 0.15s;
 }
-.footer-src:hover { color: #FF6B00; border-color: rgba(255,107,0,0.3); }
+.footer-src:hover { color: var(--color-primary); border-color: rgba(10,77,140,0.3); }
 
 /* ── MICROINTERAÇÕES ADICIONAIS ─────────────────────────── */
 .cover-title { letter-spacing: -0.02em; }
-#scroll-progress { position:fixed; top:0; left:0; height:2px; background:#FF6B00; z-index:9999; pointer-events:none; transition:width 0.1s linear; }
+#scroll-progress { position:fixed; top:0; left:0; height:2px; background:var(--color-primary); z-index:9999; pointer-events:none; transition:width 0.1s linear; }
 
 /* ── DESIGN TOKENS ───────────────────────────────────────── */
-:root {
-  --text-xs: 11px; --text-sm: 13px; --text-base: 15px; --text-md: 18px;
-  --text-lg: 24px; --text-xl: 36px;
-  --space-1: 8px; --space-2: 16px; --space-3: 24px; --space-4: 32px;
-  --space-5: 40px; --space-6: 48px;
-  --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
-
-  --primary: #FF6B00;
-  --surface: #ffffff;
-  --surface-alt: #f5f5f0;
-  --border: #e0ddd5;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666;
-  --text-muted: #999;
-  --radius-card: 20px;
-  --shadow-card: 0 10px 30px rgba(0,0,0,.06);
-  --shadow-card-hover: 0 20px 40px rgba(0,0,0,.10);
-  --transition-base: 250ms cubic-bezier(.4,0,.2,1);
-}
+/* Tokens centralizados em design-system.css (linkado no <head>). */
 
 /* ── DADOS DE CURITIBA · CARD PREMIUM (dc-*) ───────────────── */
 .dc-page-header {
@@ -362,7 +342,7 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   gap: 24px; margin-bottom: 24px; flex-wrap: wrap;
 }
 .dc-page-title {
-  font-family: 'Syne', 'Arial', sans-serif; font-size: 30px; font-weight: 700;
+  font-family: var(--font-heading); font-size: 30px; font-weight: 700;
   color: var(--text-primary); letter-spacing: -0.02em; margin-bottom: 6px;
 }
 .dc-page-sub { font-size: 13.5px; color: var(--text-muted); max-width: 540px; line-height: 1.55; }
@@ -372,7 +352,7 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   padding: 10px 18px; text-align: center; min-width: 92px;
 }
 .dc-stat-chip b {
-  display: block; font-family: 'Syne', 'Arial', sans-serif; font-size: 18px;
+  display: block; font-family: var(--font-heading); font-size: 18px;
   font-weight: 700; color: var(--primary); line-height: 1.2;
 }
 .dc-stat-chip span {
@@ -404,16 +384,16 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   padding: 5px 12px 5px 10px; font-size: 11px; font-weight: 600; color: var(--text-secondary);
   transition: border-color var(--transition-base), color var(--transition-base);
 }
-.dc-card:hover .dc-badge { border-color: rgba(255,107,0,0.35); color: var(--primary); }
+.dc-card:hover .dc-badge { border-color: rgba(10,77,140,0.35); color: var(--primary); }
 .dc-badge .dc-badge-ico { font-size: 13px; line-height: 1; }
 
 .dc-kpi-hero {
-  font-family: 'Syne', 'Arial', sans-serif; font-size: 42px; font-weight: 700;
+  font-family: var(--font-heading); font-size: 42px; font-weight: 700;
   color: var(--primary); line-height: 1; letter-spacing: -0.02em;
 }
 
 .dc-title {
-  font-family: 'Syne', 'Arial', sans-serif; font-size: 19px; font-weight: 700;
+  font-family: var(--font-heading); font-size: 19px; font-weight: 700;
   color: var(--text-primary); line-height: 1.32;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
@@ -432,7 +412,7 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
   color: var(--primary); font-size: 12.5px; font-weight: 600; text-decoration: none;
   white-space: nowrap; transition: color var(--transition-base);
 }
-.dc-link:hover { text-decoration: underline; color: #d65a00; }
+.dc-link:hover { text-decoration: underline; color: var(--color-primary-hover); }
 
 @media (max-width: 1024px) {
   .dc-card { grid-template-columns: 1fr; }
@@ -452,27 +432,27 @@ body { font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #f5f5f0; 
 
 /* ── MICROINTERAÇÕES ─────────────────────────────────────── */
 .card {
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   will-change: transform;
 }
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.13), 0 4px 12px rgba(255,107,0,0.08);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
 }
 .kpi {
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   will-change: transform;
 }
 .kpi:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.10), 0 3px 10px rgba(255,107,0,0.07);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
 }
 .award {
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 .award:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-card-hover);
 }
 button { transition: all 0.15s ease; }
 button:active { transform: scale(0.97); }
@@ -487,13 +467,13 @@ button:active { transform: scale(0.97); }
 .skeleton { background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size: 400px 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
 
 /* ── SCROLL PROGRESS ─────────────────────────────────────── */
-#scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: #FF6B00; z-index: 9999; transition: width 0.1s linear; }
+#scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--color-primary); z-index: 9999; transition: width 0.1s linear; }
 
 /* ── CTA WHATSAPP ────────────────────────────────────────── */
-.cta-whats { background: #1a1a1a; border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 24px 0; flex-wrap: wrap; }
-.cta-whats p { font-size: 13.5px; color: rgba(255,255,255,0.75); margin: 0; line-height: 1.5; flex: 1; }
-.cta-whats p strong { color: #fff; }
-.cta-whats a { background: #25D366; color: #fff; text-decoration: none; border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; transition: background 0.2s; }
+.cta-whats { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: var(--space-3) 0; flex-wrap: wrap; }
+.cta-whats p { font-size: 13.5px; color: var(--color-text-secondary); margin: 0; line-height: 1.5; flex: 1; }
+.cta-whats p strong { color: var(--color-text); }
+.cta-whats a { background: #25D366; color: #fff; text-decoration: none; border-radius: var(--radius-btn); padding: 10px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; transition: background 0.2s; }
 .cta-whats a:hover { background: #1ebe5a; }
 
 /* ── RESPONSIVIDADE MOBILE ───────────────────────────────── */
@@ -588,49 +568,50 @@ img { max-width: 100%; height: auto; }
 }
 
 /* ── REFINAMENTOS VISUAIS (redesign) ─────────────────────── */
-.main-wrapper { background: #f8f7f4; }
+.main-wrapper { background: var(--color-bg); }
 
-.sidebar { background: #111111; border-right: 0.5px solid rgba(255,255,255,0.06); }
+.sidebar { background: var(--color-bg-secondary); border-right: 1px solid var(--color-border); }
 
 .sidebar-item {
+  font-family: var(--font-body);
   font-size: 13px;
   padding: 10px 20px;
-  color: rgba(255,255,255,0.45);
+  color: var(--color-text-secondary);
   border-radius: 0;
-  transition: color 0.2s cubic-bezier(.4,0,.2,1), background 0.2s cubic-bezier(.4,0,.2,1), border-color 0.2s cubic-bezier(.4,0,.2,1), padding-left 0.2s cubic-bezier(.4,0,.2,1);
+  transition: color var(--transition-base), background var(--transition-base), border-color var(--transition-base), padding-left var(--transition-base);
   border-left: 2px solid transparent;
 }
 .sidebar-item:hover {
-  color: rgba(255,255,255,0.85);
-  background: rgba(255,255,255,0.04);
-  border-left-color: rgba(255,107,0,0.4);
+  color: var(--color-text);
+  background: rgba(10,77,140,0.05);
+  border-left-color: rgba(10,77,140,0.4);
   padding-left: 24px;
 }
 .sidebar-item.menu-ativo {
-  color: #FF6B00;
-  background: rgba(255,107,0,0.08);
-  border-left-color: #FF6B00;
+  color: var(--color-primary);
+  background: rgba(10,77,140,0.08);
+  border-left-color: var(--color-primary);
   font-weight: 600;
 }
 .sidebar-item.menu-ativo:hover { padding-left: 20px; }
 
-.card { background: #ffffff; border: 0.5px solid #ebebeb; border-radius: 14px; }
+.card { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
 
-.secao { padding: 32px 48px; }
+.secao { padding: var(--space-4) var(--space-6); }
 
 .sec-label {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #FF6B00;
-  margin-bottom: 20px;
+  color: var(--color-primary);
+  margin-bottom: var(--space-3);
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.kpi { border-radius: 12px; border: 0.5px solid #ebebeb; }
+.kpi { border-radius: var(--radius-md); border: 1px solid var(--color-border); }
 
 @media (max-width: 768px) {
   .secao { padding: 20px 20px; }
@@ -695,12 +676,12 @@ img { max-width: 100%; height: auto; }
     align-items: center !important;
     gap: 14px !important;
     width: 100% !important;
-    background: #FF6B00 !important;
+    background: var(--color-primary) !important;
     border: none !important;
     border-radius: 20px !important;
     height: 72px !important;
     padding: 0 22px !important;
-    box-shadow: 0 10px 28px rgba(255,107,0,0.35) !important;
+    box-shadow: 0 10px 28px rgba(10,77,140,0.35) !important;
     transition: transform 200ms ease, box-shadow 200ms ease !important;
   }
   .cta-premium:active { transform: scale(0.98) !important; }
@@ -731,7 +712,7 @@ img { max-width: 100%; height: auto; }
     transition: transform 200ms ease !important;
   }
   .pill:active { transform: translateY(-2px) !important; }
-  .pill.o { border: 1px solid rgba(255,107,0,0.45) !important; }
+  .pill.o { border: 1px solid rgba(10,77,140,0.45) !important; }
   .pill-icon { display: inline-block !important; font-size: 20px !important; }
   .pill-label { font-size: 13px !important; font-weight: 600 !important; }
 
@@ -765,7 +746,7 @@ img { max-width: 100%; height: auto; }
 <body>
 
 <!-- SIDEBAR MOBILE BUTTON -->
-<button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" style="display:none;position:fixed;top:14px;left:14px;z-index:1100;background:#1a1a1a;border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#FF6B00;line-height:1;">☰</button>
+<button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" style="display:none;position:fixed;top:14px;left:14px;z-index:1100;background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--color-primary);line-height:1;">☰</button>
 
 <!-- SIDEBAR OVERLAY -->
 <div id="sidebar-overlay" onclick="toggleMobileSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;"></div>
@@ -805,20 +786,20 @@ img { max-width: 100%; height: auto; }
     <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis" style="margin-bottom:0;flex-shrink:0;">
     <div id="widget-clima" style="margin-left:auto;margin-right:12px;"></div>
     <div id="lang-selector" style="display:flex;align-items:center;gap:8px;position:relative;z-index:9999;pointer-events:auto;">
-      <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(255,255,255,0.12);border:1.5px solid #FF6B00;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
-      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
-      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
+      <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(10,77,140,0.08);border:1.5px solid var(--color-primary);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
+      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
+      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
     </div>
   </div>
   <div class="cover-tag" data-pt="Para investidores Bicalho" data-en="For Bicalho investors" data-zh="面向Bicalho投资者">Para investidores Bicalho</div>
   <div class="cover-title" data-pt="Curitiba em&lt;br&gt;&lt;span&gt;dados&lt;/span&gt;" data-en="Curitiba&lt;br&gt;&lt;span&gt;in Data&lt;/span&gt;" data-zh="库里提巴&lt;br&gt;&lt;span&gt;数据洞察&lt;/span&gt;">Curitiba em<br><span>dados</span></div>
   <div class="cover-sub" data-pt="Turismo, economia e potencial de valorização · 2024/2025" data-en="Tourism, economy and appreciation potential · 2024/2025" data-zh="旅游、经济与增值潜力 · 2024/2025">Turismo, economia e potencial de valorização · 2024/2025</div>
   <div class="cta-premium-wrap" style="margin-bottom:28px;">
-    <a href="https://diferencialinvest.com.br" target="_blank" class="cta-premium" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,107,0,0.12);border:0.5px solid rgba(255,107,0,0.35);border-radius:12px;padding:12px 18px;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.2)'" onmouseout="this.style.background='rgba(255,107,0,0.12)'">
+    <a href="https://diferencialinvest.com.br" target="_blank" class="cta-premium" style="display:inline-flex;align-items:center;gap:10px;background:rgba(10,77,140,0.12);border:0.5px solid rgba(10,77,140,0.35);border-radius:12px;padding:12px 18px;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.2)'" onmouseout="this.style.background='rgba(10,77,140,0.12)'">
       <span class="cta-premium-ico" style="font-size:20px;">🏢</span>
       <div class="cta-premium-text">
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#FF6B00;" data-pt="Acompanhe sua unidade" data-en="Track your unit" data-zh="跟踪您的单元">Acompanhe sua unidade</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);" data-pt="Portal do investidor Diferencial" data-en="Diferencial investor portal" data-zh="Diferencial投资者门户">Portal do investidor Diferencial →</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-primary);" data-pt="Acompanhe sua unidade" data-en="Track your unit" data-zh="跟踪您的单元">Acompanhe sua unidade</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);" data-pt="Portal do investidor Diferencial" data-en="Diferencial investor portal" data-zh="Diferencial投资者门户">Portal do investidor Diferencial →</div>
       </div>
     </a>
   </div>
@@ -833,13 +814,13 @@ img { max-width: 100%; height: auto; }
 
 <div id="barra-kpis" style="background:#1a1a1a;border-bottom:0.5px solid rgba(255,255,255,0.08);padding:0 48px;overflow:hidden;"></div>
 
-<div style="padding:20px 48px 0;background:#f8f7f4;" id="barra-busca-wrapper">
+<div style="padding:20px 48px 0;background:var(--color-bg);" id="barra-busca-wrapper">
   <div style="position:relative;max-width:600px;">
     <input type="text" id="busca-secoes" placeholder="Buscar informações, eventos, notícias..."
-      style="width:100%;height:44px;border:0.5px solid #e0ddd5;border-radius:10px;padding:0 44px 0 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:#555;background:#fff;outline:none;box-sizing:border-box;"
-      onfocus="this.style.borderColor='#FF6B00'"
-      onblur="this.style.borderColor='#e0ddd5'">
-    <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#aaa;font-size:16px;">🔍</span>
+      style="width:100%;height:44px;border:1px solid var(--color-border);border-radius:10px;padding:0 44px 0 16px;font-family:var(--font-body);font-size:14px;color:var(--color-text-secondary);background:var(--color-bg-secondary);outline:none;box-sizing:border-box;"
+      onfocus="this.style.borderColor='#0A4D8C'"
+      onblur="this.style.borderColor='#E9E9E9'">
+    <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--color-text-secondary);font-size:16px;">🔍</span>
   </div>
 </div>
 
@@ -870,7 +851,7 @@ img { max-width: 100%; height: auto; }
   <!-- 1. RECONHECIMENTO INTERNACIONAL         -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-reconhecimento">
-    <div class="sec-label"><span data-pt="Reconhecimento internacional" data-en="International recognition" data-zh="国际认可">Reconhecimento internacional</span> <a href="https://www.lonelyplanet.es/lp/best-in-travel-2025-las-10-mejores-ciudades" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver publicação da Lonely Planet →</a></div>
+    <div class="sec-label"><span data-pt="Reconhecimento internacional" data-en="International recognition" data-zh="国际认可">Reconhecimento internacional</span> <a href="https://www.lonelyplanet.es/lp/best-in-travel-2025-las-10-mejores-ciudades" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver publicação da Lonely Planet →</a></div>
     <div class="award">
       <div class="award-ico">🏆</div>
       <div>
@@ -878,8 +859,8 @@ img { max-width: 100%; height: auto; }
         <span data-pt="Única cidade brasileira na lista do guia de viagens mais respeitado do mundo" data-en="The only Brazilian city on the world's most respected travel guide list" data-zh="全球最权威旅行指南榜单上唯一的巴西城市">Única cidade brasileira na lista do guia de viagens mais respeitado do mundo</span>
       </div>
     </div>
-    <div class="card" style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:16px 20px;margin-bottom:0;">
-      <p style="font-size:11.5px;color:#aaa;margin:0;font-style:italic;" data-pt="A Lonely Planet é a maior editora de guias de viagem e conteúdos de turismo do mundo, presente em mais de 120 países." data-en="Lonely Planet is the world's largest travel guide publisher and tourism content provider, present in more than 120 countries." data-zh="Lonely Planet是全球最大的旅行指南出版商及旅游内容提供商，业务覆盖120多个国家。">A Lonely Planet é a maior editora de guias de viagem e conteúdos de turismo do mundo, presente em mais de 120 países.</p>
+    <div class="card" style="background:var(--color-card);border-radius:var(--radius-card);border:1px solid var(--color-border);padding:16px 20px;margin-bottom:0;">
+      <p style="font-size:11.5px;color:var(--color-text-secondary);margin:0;font-style:italic;" data-pt="A Lonely Planet é a maior editora de guias de viagem e conteúdos de turismo do mundo, presente em mais de 120 países." data-en="Lonely Planet is the world's largest travel guide publisher and tourism content provider, present in more than 120 countries." data-zh="Lonely Planet是全球最大的旅行指南出版商及旅游内容提供商，业务覆盖120多个国家。">A Lonely Planet é a maior editora de guias de viagem e conteúdos de turismo do mundo, presente em mais de 120 países.</p>
     </div>
     <div class="divider"></div>
   </div>
@@ -888,7 +869,7 @@ img { max-width: 100%; height: auto; }
   <!-- 2. FLUXO TURÍSTICO                      -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-fluxo">
-    <div class="sec-label"><span data-pt="Visão geral do fluxo turístico" data-en="Tourist flow overview" data-zh="旅游客流概览">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver dado oficial da Prefeitura →</a></div>
+    <div class="sec-label"><span data-pt="Visão geral do fluxo turístico" data-en="Tourist flow overview" data-zh="旅游客流概览">Visão geral do fluxo turístico</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver dado oficial da Prefeitura →</a></div>
     <div class="kpi-grid">
       <div class="kpi dk">
         <div class="kpi-num"><span>10M</span></div>
@@ -918,7 +899,7 @@ img { max-width: 100%; height: auto; }
   <!-- 3. PERFIL DOS VISITANTES                -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-perfil">
-    <div class="sec-label"><span data-pt="Perfil dos visitantes: mudança histórica" data-en="Visitor profile: a historic shift" data-zh="访客画像：历史性转变">Perfil dos visitantes: mudança histórica</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver publicação oficial →</a></div>
+    <div class="sec-label"><span data-pt="Perfil dos visitantes: mudança histórica" data-en="Visitor profile: a historic shift" data-zh="访客画像：历史性转变">Perfil dos visitantes: mudança histórica</span> <a href="https://www.curitiba.pr.gov.br/noticias/pela-primeira-vez-turismo-de-lazer-supera-o-de-negocios-em-curitiba/78858" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver publicação oficial →</a></div>
     <div class="card">
       <div class="card-h" data-pt="Pela primeira vez, lazer superou negócios" data-en="For the first time, leisure outpaced business travel" data-zh="首次：休闲旅游超越商务旅游">Pela primeira vez, lazer superou negócios</div>
       <div class="card-b" style="margin-bottom:16px" data-pt="Em 2024 ocorreu uma virada inédita: as viagens por &lt;span class=&quot;hl&quot;&gt;lazer passaram a ser a principal motivação&lt;/span&gt;, superando o turismo corporativo que historicamente dominava a cidade." data-en="In 2024, an unprecedented shift occurred: &lt;span class=&quot;hl&quot;&gt;leisure travel became the top motivation&lt;/span&gt;, surpassing corporate tourism that had historically dominated the city." data-zh="2024年出现历史性转变：&lt;span class=&quot;hl&quot;&gt;休闲旅游跃升为首要出行动机&lt;/span&gt;，超越了长期主导该市的商务旅游。">Em 2024 ocorreu uma virada inédita: as viagens por <span class="hl">lazer passaram a ser a principal motivação</span>, superando o turismo corporativo que historicamente dominava a cidade.</div>
@@ -929,10 +910,10 @@ img { max-width: 100%; height: auto; }
       </div>
       <div class="bar-row">
         <div class="bar-lbl" data-pt="Negócios" data-en="Business" data-zh="商务">Negócios</div>
-        <div class="bar-track"><div class="bar-fill" style="width:47%;background:#ccc"></div></div>
+        <div class="bar-track"><div class="bar-fill" style="width:47%;background:var(--color-border)"></div></div>
         <div class="bar-val">24%</div>
       </div>
-      <div class="card-b" style="margin-top:10px;font-size:11.5px;color:#bbb" data-pt="Fonte: IMT, percentuais restantes referem-se a visitas a amigos/familiares e outros motivos" data-en="Source: IMT. Remaining percentages refer to visits to friends/family and other reasons." data-zh="数据来源：IMT。其余百分比为探亲访友及其他出行动机。">Fonte: IMT, percentuais restantes referem-se a visitas a amigos/familiares e outros motivos</div>
+      <div class="card-b" style="margin-top:10px;font-size:11.5px;color:var(--color-text-secondary)" data-pt="Fonte: IMT, percentuais restantes referem-se a visitas a amigos/familiares e outros motivos" data-en="Source: IMT. Remaining percentages refer to visits to friends/family and other reasons." data-zh="数据来源：IMT。其余百分比为探亲访友及其他出行动机。">Fonte: IMT, percentuais restantes referem-se a visitas a amigos/familiares e outros motivos</div>
     </div>
     <div class="divider"></div>
   </div>
@@ -941,7 +922,7 @@ img { max-width: 100%; height: auto; }
   <!-- 4. LINHA TURISMO                        -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-linha">
-    <div class="sec-label"><span data-pt="Linha turismo: termômetro do turismo de lazer" data-en="Tourism Line: the leisure tourism barometer" data-zh="旅游线路：休闲旅游晴雨表">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver resultado completo →</a></div>
+    <div class="sec-label"><span data-pt="Linha turismo: termômetro do turismo de lazer" data-en="Tourism Line: the leisure tourism barometer" data-zh="旅游线路：休闲旅游晴雨表">Linha turismo: termômetro do turismo de lazer</span> <a href="https://www.curitiba.pr.gov.br/noticias/linha-turismo-bate-recorde-de-movimento-com-908-mil-embarques-em-2025/81239" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver resultado completo →</a></div>
     <div class="kpi2">
       <div class="kpi">
         <div class="kpi-num">908<span>mil</span></div>
@@ -964,7 +945,7 @@ img { max-width: 100%; height: auto; }
   <!-- 5. EVENTOS, SHOWS E CONGRESSOS          -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-eventos">
-    <div class="sec-label"><span data-pt="Eventos, shows e congressos" data-en="Events, shows and congresses" data-zh="活动、演出与大会">Eventos, shows e congressos</span> <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver matéria completa →</a></div>
+    <div class="sec-label"><span data-pt="Eventos, shows e congressos" data-en="Events, shows and congresses" data-zh="活动、演出与大会">Eventos, shows e congressos</span> <a href="https://www.centralpress.com.br/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios/" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver matéria completa →</a></div>
     <div class="kpi3">
       <div class="kpi">
         <div class="kpi-num"><span>140</span></div>
@@ -985,13 +966,13 @@ img { max-width: 100%; height: auto; }
     <div class="card">
       <div class="card-h" data-pt="Principais espaços de eventos da cidade" data-en="Main event venues in the city" data-zh="城市主要活动场馆">Principais espaços de eventos da cidade</div>
       <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;">
-        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Arena da Baixada&lt;/strong&gt;, 42 mil lugares, teto retrátil, único na América do Sul" data-en="&lt;strong&gt;Arena da Baixada&lt;/strong&gt;, 42,000 seats, retractable roof, unique in South America" data-zh="&lt;strong&gt;Arena da Baixada&lt;/strong&gt;，42,000个座位，伸缩屋顶，南美独一无二"><strong>Arena da Baixada</strong>, 42 mil lugares, teto retrátil, único na América do Sul</span></li>
-        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Pedreira Paulo Leminski&lt;/strong&gt;, anfiteatro ao ar livre para grandes shows" data-en="&lt;strong&gt;Pedreira Paulo Leminski&lt;/strong&gt;, open-air amphitheater for major concerts" data-zh="&lt;strong&gt;Pedreira Paulo Leminski&lt;/strong&gt;，大型演出露天圆形剧场"><strong>Pedreira Paulo Leminski</strong>, anfiteatro ao ar livre para grandes shows</span></li>
-        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Teatro Positivo&lt;/strong&gt;, 3,9 mil lugares, referência para shows e espetáculos" data-en="&lt;strong&gt;Teatro Positivo&lt;/strong&gt;, 3,900 seats, benchmark venue for concerts and performances" data-zh="&lt;strong&gt;Teatro Positivo&lt;/strong&gt;，3,900个座位，演出场馆标杆"><strong>Teatro Positivo</strong>, 3,9 mil lugares, referência para shows e espetáculos</span></li>
-        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Teatro Guaíra&lt;/strong&gt;, maior complexo cultural do Paraná" data-en="&lt;strong&gt;Teatro Guaíra&lt;/strong&gt;, Paraná's largest cultural complex" data-zh="&lt;strong&gt;Teatro Guaíra&lt;/strong&gt;，巴拉那州最大文化综合体"><strong>Teatro Guaíra</strong>, maior complexo cultural do Paraná</span></li>
-        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Viasoft Experience&lt;/strong&gt;, 7,3 mil m² de exposição, mais de 150 eventos confirmados em 2025" data-en="&lt;strong&gt;Viasoft Experience&lt;/strong&gt;, 7,300 m² of exhibition space, over 150 events confirmed in 2025" data-zh="&lt;strong&gt;Viasoft Experience&lt;/strong&gt;，7,300平方米展览空间，2025年已确认逾150场活动"><strong>Viasoft Experience</strong>, 7,3 mil m² de exposição, mais de 150 eventos confirmados em 2025</span></li>
-        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Expotrade Convention Center&lt;/strong&gt;, centro de convenções referência no Sul do Brasil" data-en="&lt;strong&gt;Expotrade Convention Center&lt;/strong&gt;, benchmark convention center in southern Brazil" data-zh="&lt;strong&gt;Expotrade Convention Center&lt;/strong&gt;，巴西南部标志性会议中心"><strong>Expotrade Convention Center</strong>, centro de convenções referência no Sul do Brasil</span></li>
-        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:#555;line-height:1.6;"><span style="color:#FF6B00;font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;UP Experience&lt;/strong&gt;, Teatro Positivo + auditórios; eleito Centro de Convenções do Ano no Prêmio Capivara" data-en="&lt;strong&gt;UP Experience&lt;/strong&gt;, Teatro Positivo + auditoriums; named Convention Center of the Year at the Capivara Awards" data-zh="&lt;strong&gt;UP Experience&lt;/strong&gt;，Teatro Positivo + 多功能厅；荣获Capivara奖年度会议中心"><strong>UP Experience</strong>, Teatro Positivo + auditórios; eleito Centro de Convenções do Ano no Prêmio Capivara</span></li>
+        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;"><span style="color:var(--color-primary);font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Arena da Baixada&lt;/strong&gt;, 42 mil lugares, teto retrátil, único na América do Sul" data-en="&lt;strong&gt;Arena da Baixada&lt;/strong&gt;, 42,000 seats, retractable roof, unique in South America" data-zh="&lt;strong&gt;Arena da Baixada&lt;/strong&gt;，42,000个座位，伸缩屋顶，南美独一无二"><strong>Arena da Baixada</strong>, 42 mil lugares, teto retrátil, único na América do Sul</span></li>
+        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;"><span style="color:var(--color-primary);font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Pedreira Paulo Leminski&lt;/strong&gt;, anfiteatro ao ar livre para grandes shows" data-en="&lt;strong&gt;Pedreira Paulo Leminski&lt;/strong&gt;, open-air amphitheater for major concerts" data-zh="&lt;strong&gt;Pedreira Paulo Leminski&lt;/strong&gt;，大型演出露天圆形剧场"><strong>Pedreira Paulo Leminski</strong>, anfiteatro ao ar livre para grandes shows</span></li>
+        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;"><span style="color:var(--color-primary);font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Teatro Positivo&lt;/strong&gt;, 3,9 mil lugares, referência para shows e espetáculos" data-en="&lt;strong&gt;Teatro Positivo&lt;/strong&gt;, 3,900 seats, benchmark venue for concerts and performances" data-zh="&lt;strong&gt;Teatro Positivo&lt;/strong&gt;，3,900个座位，演出场馆标杆"><strong>Teatro Positivo</strong>, 3,9 mil lugares, referência para shows e espetáculos</span></li>
+        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;"><span style="color:var(--color-primary);font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Teatro Guaíra&lt;/strong&gt;, maior complexo cultural do Paraná" data-en="&lt;strong&gt;Teatro Guaíra&lt;/strong&gt;, Paraná's largest cultural complex" data-zh="&lt;strong&gt;Teatro Guaíra&lt;/strong&gt;，巴拉那州最大文化综合体"><strong>Teatro Guaíra</strong>, maior complexo cultural do Paraná</span></li>
+        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;"><span style="color:var(--color-primary);font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Viasoft Experience&lt;/strong&gt;, 7,3 mil m² de exposição, mais de 150 eventos confirmados em 2025" data-en="&lt;strong&gt;Viasoft Experience&lt;/strong&gt;, 7,300 m² of exhibition space, over 150 events confirmed in 2025" data-zh="&lt;strong&gt;Viasoft Experience&lt;/strong&gt;，7,300平方米展览空间，2025年已确认逾150场活动"><strong>Viasoft Experience</strong>, 7,3 mil m² de exposição, mais de 150 eventos confirmados em 2025</span></li>
+        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;"><span style="color:var(--color-primary);font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;Expotrade Convention Center&lt;/strong&gt;, centro de convenções referência no Sul do Brasil" data-en="&lt;strong&gt;Expotrade Convention Center&lt;/strong&gt;, benchmark convention center in southern Brazil" data-zh="&lt;strong&gt;Expotrade Convention Center&lt;/strong&gt;，巴西南部标志性会议中心"><strong>Expotrade Convention Center</strong>, centro de convenções referência no Sul do Brasil</span></li>
+        <li style="display:flex;align-items:baseline;gap:8px;font-size:13.5px;color:var(--color-text-secondary);line-height:1.6;"><span style="color:var(--color-primary);font-weight:700;flex-shrink:0;">›</span><span data-pt="&lt;strong&gt;UP Experience&lt;/strong&gt;, Teatro Positivo + auditórios; eleito Centro de Convenções do Ano no Prêmio Capivara" data-en="&lt;strong&gt;UP Experience&lt;/strong&gt;, Teatro Positivo + auditoriums; named Convention Center of the Year at the Capivara Awards" data-zh="&lt;strong&gt;UP Experience&lt;/strong&gt;，Teatro Positivo + 多功能厅；荣获Capivara奖年度会议中心"><strong>UP Experience</strong>, Teatro Positivo + auditórios; eleito Centro de Convenções do Ano no Prêmio Capivara</span></li>
       </ul>
       <div class="ins" data-pt="Em uma única semana de março de 2025, Festival de Teatro, Smart City Expo, show da Olivia Rodrigo e Expo Turismo Paraná simultâneos, os hotéis de Curitiba atingiram &lt;strong&gt;100% de ocupação&lt;/strong&gt;." data-en="During a single week in March 2025 — with the Theater Festival, Smart City Expo, an Olivia Rodrigo concert, and Expo Turismo Paraná all running simultaneously — Curitiba's hotels reached &lt;strong&gt;100% occupancy&lt;/strong&gt;." data-zh="2025年3月某一周，戏剧节、智慧城市博览会、Olivia Rodrigo演唱会与巴拉那旅游博览会同期举行，Curitiba各大酒店入住率达到&lt;strong&gt;100%&lt;/strong&gt;。">Em uma única semana de março de 2025, Festival de Teatro, Smart City Expo, show da Olivia Rodrigo e Expo Turismo Paraná simultâneos, os hotéis de Curitiba atingiram <strong>100% de ocupação</strong>.</div>
     </div>
@@ -1061,7 +1042,7 @@ img { max-width: 100%; height: auto; }
   <!-- 6. NATAL DE CURITIBA 2025               -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-natal">
-    <div class="sec-label"><span data-pt="Natal de Curitiba 2025" data-en="Christmas in Curitiba 2025" data-zh="库里提巴圣诞节 2025">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver resultado completo →</a></div>
+    <div class="sec-label"><span data-pt="Natal de Curitiba 2025" data-en="Christmas in Curitiba 2025" data-zh="库里提巴圣诞节 2025">Natal de Curitiba 2025</span> <a href="https://www.curitiba.pr.gov.br/noticias/natal-de-curitiba-2025-bate-todos-os-recordes-com-3-09-milhoes-de-espectadores-e-r-722-milhoes-de-impacto-economico/81573" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver resultado completo →</a></div>
     <div class="award">
       <div class="award-ico">🎄</div>
       <div>
@@ -1096,7 +1077,7 @@ img { max-width: 100%; height: auto; }
   <!-- 7. HOTELARIA E INFRAESTRUTURA           -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-hotelaria">
-    <div class="sec-label"><span data-pt="Hotelaria e infraestrutura" data-en="Hotels and infrastructure" data-zh="酒店业与基础设施">Hotelaria e infraestrutura</span> <a href="https://www.bemparana.com.br/noticias/parana/curitiba-vive-boom-turistico-hoteis-atingem-90-de-ocupacao-e-natal-deve-atrair-25-milhoes-de-visitantes/" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver dado oficial →</a></div>
+    <div class="sec-label"><span data-pt="Hotelaria e infraestrutura" data-en="Hotels and infrastructure" data-zh="酒店业与基础设施">Hotelaria e infraestrutura</span> <a href="https://www.bemparana.com.br/noticias/parana/curitiba-vive-boom-turistico-hoteis-atingem-90-de-ocupacao-e-natal-deve-atrair-25-milhoes-de-visitantes/" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver dado oficial →</a></div>
     <div class="kpi3">
       <div class="kpi">
         <div class="kpi-num">20<span>mil</span></div>
@@ -1146,7 +1127,7 @@ img { max-width: 100%; height: auto; }
   <!-- 8. AEROPORTO E CONECTIVIDADE            -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-aeroporto">
-    <div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity" data-zh="机场与连通性">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver matéria completa →</a></div>
+    <div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity" data-zh="机场与连通性">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver matéria completa →</a></div>
     <div class="kpi2">
       <div class="kpi">
         <div class="kpi-num">6,08<span>M</span></div>
@@ -1172,9 +1153,9 @@ img { max-width: 100%; height: auto; }
   <div class="sec-label" data-pt="Cruzeiros e Porto de Paranaguá" data-en="Cruise Ships and Port of Paranaguá" data-zh="游轮与帕拉纳瓜港">
     Cruzeiros e Porto de Paranaguá
     <a href="https://www.parana.pr.gov.br/aen/Noticia/Parana-entra-na-rota-de-cruzeiros-da-MSC-para-temporada-20262027" target="_blank"
-      style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 12px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;transition:all 0.2s;margin-left:12px;"
-      onmouseover="this.style.background='rgba(255,107,0,0.16)'"
-      onmouseout="this.style.background='rgba(255,107,0,0.08)'">
+      style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 12px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;transition:all 0.2s;margin-left:12px;"
+      onmouseover="this.style.background='rgba(10,77,140,0.16)'"
+      onmouseout="this.style.background='rgba(10,77,140,0.08)'">
       Ver dado oficial →
     </a>
   </div>
@@ -1187,25 +1168,25 @@ img { max-width: 100%; height: auto; }
   </div>
 
   <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;">
-    <div class="kpi" style="background:#1a1a1a;border-radius:14px;padding:20px;">
-      <div class="kpi-num" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#FF6B00;">14 mil</div>
-      <div class="kpi-lbl" data-pt="cruzeiristas esperados na temporada 2026/2027" data-en="cruise passengers expected in the 2026/2027 season" data-zh="2026/2027季度预计游轮乘客人数" style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:6px;">cruzeiristas esperados na temporada 2026/2027</div>
-      <div class="kpi-src" style="font-size:9px;color:rgba(255,255,255,0.3);margin-top:8px;">Portos do Paraná / Governo do Paraná</div>
+    <div class="kpi" style="background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:20px;">
+      <div class="kpi-num" style="font-family:var(--font-heading);font-size:28px;font-weight:700;color:var(--color-primary);">14 mil</div>
+      <div class="kpi-lbl" data-pt="cruzeiristas esperados na temporada 2026/2027" data-en="cruise passengers expected in the 2026/2027 season" data-zh="2026/2027季度预计游轮乘客人数" style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;">cruzeiristas esperados na temporada 2026/2027</div>
+      <div class="kpi-src" style="font-size:9px;color:var(--color-text-secondary);margin-top:8px;">Portos do Paraná / Governo do Paraná</div>
     </div>
-    <div class="kpi" style="background:#fff;border:0.5px solid #e0ddd5;border-radius:14px;padding:20px;">
-      <div class="kpi-num" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#1a1a1a;">14 escalas</div>
-      <div class="kpi-lbl" data-pt="do navio MSC Lirica, semanais a partir de dezembro/2026" data-en="of the MSC Lirica ship, weekly starting December 2026" data-zh="MSC Lirica邮轮每周停靠，自2026年12月起" style="font-size:11px;color:#888;margin-top:6px;">do navio MSC Lirica, semanais a partir de dezembro/2026</div>
-      <div class="kpi-src" style="font-size:9px;color:#bbb;margin-top:8px;">Portos do Paraná</div>
+    <div class="kpi" style="background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:20px;">
+      <div class="kpi-num" style="font-family:var(--font-heading);font-size:28px;font-weight:700;color:var(--color-text);">14 escalas</div>
+      <div class="kpi-lbl" data-pt="do navio MSC Lirica, semanais a partir de dezembro/2026" data-en="of the MSC Lirica ship, weekly starting December 2026" data-zh="MSC Lirica邮轮每周停靠，自2026年12月起" style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;">do navio MSC Lirica, semanais a partir de dezembro/2026</div>
+      <div class="kpi-src" style="font-size:9px;color:var(--color-text-secondary);margin-top:8px;">Portos do Paraná</div>
     </div>
-    <div class="kpi" style="background:#fff;border:0.5px solid #e0ddd5;border-radius:14px;padding:20px;">
-      <div class="kpi-num" style="font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:#1a1a1a;">R$ 500</div>
-      <div class="kpi-lbl" data-pt="gasto médio por cruzeirista na região" data-en="average spending per cruise passenger in the region" data-zh="每位游轮乘客在该地区的平均消费" style="font-size:11px;color:#888;margin-top:6px;">gasto médio por cruzeirista na região</div>
-      <div class="kpi-src" style="font-size:9px;color:#bbb;margin-top:8px;">JB Litoral / Portos do Paraná</div>
+    <div class="kpi" style="background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:20px;">
+      <div class="kpi-num" style="font-family:var(--font-heading);font-size:28px;font-weight:700;color:var(--color-text);">R$ 500</div>
+      <div class="kpi-lbl" data-pt="gasto médio por cruzeirista na região" data-en="average spending per cruise passenger in the region" data-zh="每位游轮乘客在该地区的平均消费" style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;">gasto médio por cruzeirista na região</div>
+      <div class="kpi-src" style="font-size:9px;color:var(--color-text-secondary);margin-top:8px;">JB Litoral / Portos do Paraná</div>
     </div>
   </div>
 
-  <div class="insight-box" style="background:#FFF8F0;border-left:4px solid #FF6B00;border-radius:10px;padding:18px 20px;margin-top:16px;">
-    <p data-pt="Curitiba funciona como hub de conexão para o turismo de cruzeiros: o turista chega pelo Aeroporto Afonso Pena, pernoita ou passeia na capital, e segue para o embarque em Paranaguá — ou faz o caminho inverso ao desembarcar. Esse fluxo gera movimento econômico direto para hospedagem, restaurantes e serviços na cidade, especialmente durante a temporada de verão." data-en="Curitiba acts as a connection hub for cruise tourism: tourists arrive via Afonso Pena Airport, stay overnight or sightsee in the capital, then head to Paranaguá for embarkation — or follow the reverse route upon disembarking. This flow generates direct economic activity for lodging, restaurants and services in the city, especially during the summer season." data-zh="库里蒂巴是游轮旅游的连接枢纽：游客通过阿丰索·佩纳机场抵达，在首府过夜或观光，然后前往帕拉纳瓜登船，或在下船后走相反的路线。这一客流为城市的住宿、餐饮和服务业带来直接的经济活动，尤其是在夏季旅游高峰期。" style="font-size:13px;color:#555;line-height:1.65;margin:0;">
+  <div class="insight-box" style="background:rgba(10,77,140,0.06);border-left:4px solid var(--color-primary);border-radius:10px;padding:18px 20px;margin-top:16px;">
+    <p data-pt="Curitiba funciona como hub de conexão para o turismo de cruzeiros: o turista chega pelo Aeroporto Afonso Pena, pernoita ou passeia na capital, e segue para o embarque em Paranaguá — ou faz o caminho inverso ao desembarcar. Esse fluxo gera movimento econômico direto para hospedagem, restaurantes e serviços na cidade, especialmente durante a temporada de verão." data-en="Curitiba acts as a connection hub for cruise tourism: tourists arrive via Afonso Pena Airport, stay overnight or sightsee in the capital, then head to Paranaguá for embarkation — or follow the reverse route upon disembarking. This flow generates direct economic activity for lodging, restaurants and services in the city, especially during the summer season." data-zh="库里蒂巴是游轮旅游的连接枢纽：游客通过阿丰索·佩纳机场抵达，在首府过夜或观光，然后前往帕拉纳瓜登船，或在下船后走相反的路线。这一客流为城市的住宿、餐饮和服务业带来直接的经济活动，尤其是在夏季旅游高峰期。" style="font-size:13px;color:var(--color-primary);line-height:1.65;margin:0;">
       Curitiba funciona como hub de conexão para o turismo de cruzeiros: o turista chega pelo Aeroporto Afonso Pena, pernoita ou passeia na capital, e segue para o embarque em Paranaguá, ou faz o caminho inverso ao desembarcar. Esse fluxo gera movimento econômico direto para hospedagem, restaurantes e serviços na cidade, especialmente durante a temporada de verão.
     </p>
   </div>
@@ -1260,9 +1241,9 @@ img { max-width: 100%; height: auto; }
       <div class="tag" data-pt="Investimento em lazer" data-en="Leisure Investment" data-zh="休闲投资">Investimento em lazer</div>
     </div>
     <div class="divider"></div>
-    <div id="cta-mercado" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <span style="font-size:13.5px;color:#555;line-height:1.5;">Quer entender como o crescimento do turismo em Curitiba impacta diretamente o seu investimento?</span>
-      <a id="cta-mercado-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    <div id="cta-mercado" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(10,77,140,0.06),rgba(10,77,140,0.02));border:0.5px solid rgba(10,77,140,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <span style="font-size:13.5px;color:var(--color-text-secondary);line-height:1.5;">Quer entender como o crescimento do turismo em Curitiba impacta diretamente o seu investimento?</span>
+      <a id="cta-mercado-btn" href="#" target="_blank" style="background:var(--color-primary);color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
     </div>
   </div>
 
@@ -1278,7 +1259,7 @@ img { max-width: 100%; height: auto; }
         Empresas como <strong>O Boticário, Madero, LG</strong> e similares têm sede em Curitiba e geram fluxo contínuo de visitantes externos para reuniões, treinamentos e auditorias. Esse perfil de demanda é exatamente o que os hotéis de negócios e o short stay corporativo capturam, um argumento de contexto sólido para o investimento imobiliário na cidade.
       </div>
       <div class="insight-box">
-        <p data-pt="A localização estratégica e a infraestrutura de Curitiba são os principais atrativos para grandes eventos corporativos. Em 2024, os 140 eventos captados pelo CCVB trouxeram 10 milhões de visitantes e geraram impacto econômico de &lt;strong&gt;R$ 13,8 bilhões&lt;/strong&gt;. Do total, 38% dos turistas vieram motivados por compromissos de negócios, elevando a ocupação hoteleira a &lt;strong&gt;100%&lt;/strong&gt; no auge da temporada de congressos." data-en="Curitiba's strategic location and infrastructure are the primary draws for large-scale corporate events. In 2024, the 140 events secured by CCVB attracted 10 million visitors and generated an economic impact of &lt;strong&gt;R$13.8 billion&lt;/strong&gt;. Of the total, 38% of tourists were motivated by business commitments, pushing hotel occupancy to &lt;strong&gt;100%&lt;/strong&gt; at the peak of the congress season." data-zh="Curitiba的战略地位和基础设施是吸引大型企业活动的核心优势。2024年，CCVB承接的140场活动共吸引1,000万名访客，创造了&lt;strong&gt;138亿雷亚尔&lt;/strong&gt;的经济效益。其中38%的游客以商务出行为目的，在大会旺季将酒店入住率推升至&lt;strong&gt;100%&lt;/strong&gt;。">A localização estratégica e a infraestrutura de Curitiba são os principais atrativos para grandes eventos corporativos. Em 2024, os 140 eventos captados pelo CCVB trouxeram 10 milhões de visitantes e geraram impacto econômico de <strong>R$ 13,8 bilhões</strong>. Do total, 38% dos turistas vieram motivados por compromissos de negócios, elevando a ocupação hoteleira a <strong>100%</strong> no auge da temporada de congressos. <a href="https://gazetadasemana.com.br/noticia/248840/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios" target="_blank" style="color:#FF6B00;font-size:11px;">Fonte: Gazeta da Semana</a></p>
+        <p data-pt="A localização estratégica e a infraestrutura de Curitiba são os principais atrativos para grandes eventos corporativos. Em 2024, os 140 eventos captados pelo CCVB trouxeram 10 milhões de visitantes e geraram impacto econômico de &lt;strong&gt;R$ 13,8 bilhões&lt;/strong&gt;. Do total, 38% dos turistas vieram motivados por compromissos de negócios, elevando a ocupação hoteleira a &lt;strong&gt;100%&lt;/strong&gt; no auge da temporada de congressos." data-en="Curitiba's strategic location and infrastructure are the primary draws for large-scale corporate events. In 2024, the 140 events secured by CCVB attracted 10 million visitors and generated an economic impact of &lt;strong&gt;R$13.8 billion&lt;/strong&gt;. Of the total, 38% of tourists were motivated by business commitments, pushing hotel occupancy to &lt;strong&gt;100%&lt;/strong&gt; at the peak of the congress season." data-zh="Curitiba的战略地位和基础设施是吸引大型企业活动的核心优势。2024年，CCVB承接的140场活动共吸引1,000万名访客，创造了&lt;strong&gt;138亿雷亚尔&lt;/strong&gt;的经济效益。其中38%的游客以商务出行为目的，在大会旺季将酒店入住率推升至&lt;strong&gt;100%&lt;/strong&gt;。">A localização estratégica e a infraestrutura de Curitiba são os principais atrativos para grandes eventos corporativos. Em 2024, os 140 eventos captados pelo CCVB trouxeram 10 milhões de visitantes e geraram impacto econômico de <strong>R$ 13,8 bilhões</strong>. Do total, 38% dos turistas vieram motivados por compromissos de negócios, elevando a ocupação hoteleira a <strong>100%</strong> no auge da temporada de congressos. <a href="https://gazetadasemana.com.br/noticia/248840/curitiba-reforca-protagonismo-nacional-em-eventos-de-negocios" target="_blank" style="color:var(--color-primary);font-size:11px;">Fonte: Gazeta da Semana</a></p>
       </div>
     </div>
     <div class="card">
@@ -1292,16 +1273,16 @@ img { max-width: 100%; height: auto; }
       <div class="card-h" data-pt="Curitiba como capital dos grandes shows e eventos em 2025" data-en="Curitiba as the major shows and events capital in 2025" data-zh="2025年：库里提巴成为大型演出之都">Curitiba como capital dos grandes shows e eventos em 2025</div>
       <div class="card-b" data-pt="Curitiba consolidou em 2025 sua posição como um dos principais destinos de shows e eventos do Brasil. A cidade recebeu grandes nomes internacionais ao longo do ano, com destaque para shows de artistas como &lt;strong&gt;Twenty One Pilots, Olivia Rodrigo, Sting e Anitta&lt;/strong&gt;, e já tem para 2026 uma agenda com mais de &lt;strong&gt;40 shows internacionais confirmados&lt;/strong&gt; em espaços como a Arena da Baixada, a Pedreira Paulo Leminski e o Teatro Positivo.&lt;br&gt;&lt;br&gt;O Viasoft Experience, com 7,3 mil m² de área de exposição, confirmou &lt;strong&gt;mais de 150 eventos para 2025&lt;/strong&gt;, entre congressos, feiras e convenções. O complexo UP Experience foi eleito Centro de Convenções do Ano no Prêmio Capivara. O investimento público em infraestrutura e o ISS reduzido de 5% para 2% para eventos tornaram Curitiba diretamente competitiva com São Paulo e Rio de Janeiro na captação de grandes turnês e eventos corporativos." data-en="Curitiba cemented its position in 2025 as one of Brazil's premier concert and events destinations. The city welcomed major international acts throughout the year, highlighted by artists such as &lt;strong&gt;Twenty One Pilots, Olivia Rodrigo, Sting, and Anitta&lt;/strong&gt;, and already has a 2026 lineup of over &lt;strong&gt;40 confirmed international shows&lt;/strong&gt; at venues including Arena da Baixada, Pedreira Paulo Leminski, and Teatro Positivo.&lt;br&gt;&lt;br&gt;Viasoft Experience, with 7,300 m² of exhibition space, confirmed &lt;strong&gt;more than 150 events for 2025&lt;/strong&gt;, including congresses, trade fairs, and conventions. The UP Experience complex was named Convention Center of the Year at the Capivara Awards. Public investment in infrastructure and the reduced ISS — from 5% to 2% for events — has made Curitiba directly competitive with São Paulo and Rio de Janeiro in attracting major tours and corporate events." data-zh="2025年，Curitiba进一步巩固了其作为巴西顶级演出与活动目的地的地位。全年吸引众多国际知名艺人登台，尤以&lt;strong&gt;Twenty One Pilots、Olivia Rodrigo、Sting和Anitta&lt;/strong&gt;最为瞩目，2026年已确认逾&lt;strong&gt;40场国际演出&lt;/strong&gt;，演出场馆涵盖Arena da Baixada、Pedreira Paulo Leminski和Teatro Positivo。&lt;br&gt;&lt;br&gt;Viasoft Experience拥有7,300平方米展览面积，已确认&lt;strong&gt;2025年逾150场活动&lt;/strong&gt;，包括大会、展会和商业峰会。UP Experience综合体荣获Capivara奖年度会议中心。公共基础设施投资及将活动服务税从5%降至2%的举措，使Curitiba在承接大型巡演和企业活动方面已可直接与圣保罗和里约热内卢竞争。">
         Curitiba consolidou em 2025 sua posição como um dos principais destinos de shows e eventos do Brasil. A cidade recebeu grandes nomes internacionais ao longo do ano, com destaque para shows de artistas como <strong>Twenty One Pilots, Olivia Rodrigo, Sting e Anitta</strong>, e já tem para 2026 uma agenda com mais de <strong>40 shows internacionais confirmados</strong> em espaços como a Arena da Baixada, a Pedreira Paulo Leminski e o Teatro Positivo.<br><br>
-        O Viasoft Experience, com 7,3 mil m² de área de exposição, confirmou <strong>mais de 150 eventos para 2025</strong>, entre congressos, feiras e convenções. O complexo UP Experience foi eleito Centro de Convenções do Ano no Prêmio Capivara. O investimento público em infraestrutura e o ISS reduzido de 5% para 2% para eventos tornaram Curitiba diretamente competitiva com São Paulo e Rio de Janeiro na captação de grandes turnês e eventos corporativos. <a href="https://xvcuritiba.com.br/curitiba-se-consolida-como-capital-dos-grandes-shows-e-eventos-em-2025/" target="_blank" style="color:#FF6B00;font-size:11px;">Fonte: XV Curitiba</a>
+        O Viasoft Experience, com 7,3 mil m² de área de exposição, confirmou <strong>mais de 150 eventos para 2025</strong>, entre congressos, feiras e convenções. O complexo UP Experience foi eleito Centro de Convenções do Ano no Prêmio Capivara. O investimento público em infraestrutura e o ISS reduzido de 5% para 2% para eventos tornaram Curitiba diretamente competitiva com São Paulo e Rio de Janeiro na captação de grandes turnês e eventos corporativos. <a href="https://xvcuritiba.com.br/curitiba-se-consolida-como-capital-dos-grandes-shows-e-eventos-em-2025/" target="_blank" style="color:var(--color-primary);font-size:11px;">Fonte: XV Curitiba</a>
       </div>
       <div class="insight-box">
         <p data-pt="Mais de &lt;strong&gt;50% do turismo em Curitiba&lt;/strong&gt; corresponde a congressos e eventos técnico-científicos. O crescimento do turismo de negócios e MICE equilibra a balança sazonal da hotelaria durante todos os meses do ano, o que sustenta a demanda por hospedagem tanto em hotel quanto em short stay de forma consistente e previsível." data-en="More than &lt;strong&gt;50% of tourism in Curitiba&lt;/strong&gt; corresponds to congresses and technical-scientific events. The growth of business and MICE tourism balances the hotel sector's seasonal swings throughout all months of the year — sustaining consistent and predictable demand for accommodation in both hotels and short-term rentals." data-zh="Curitiba&lt;strong&gt;逾50%的旅游活动&lt;/strong&gt;属于大会及技术科学类活动。商务旅游与MICE的增长，有效平衡了酒店业全年的季节性波动，使酒店和短租市场的住宿需求保持持续稳定、可预期的态势。">Mais de <strong>50% do turismo em Curitiba</strong> corresponde a congressos e eventos técnico-científicos. O crescimento do turismo de negócios e MICE equilibra a balança sazonal da hotelaria durante todos os meses do ano, o que sustenta a demanda por hospedagem tanto em hotel quanto em short stay de forma consistente e previsível.</p>
       </div>
     </div>
     <div class="divider"></div>
-    <div id="cta-corporativo" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <span style="font-size:13.5px;color:#555;line-height:1.5;">Saiba como a demanda corporativa de Curitiba pode gerar renda consistente para o seu imóvel.</span>
-      <a id="cta-corporativo-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    <div id="cta-corporativo" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(10,77,140,0.06),rgba(10,77,140,0.02));border:0.5px solid rgba(10,77,140,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <span style="font-size:13.5px;color:var(--color-text-secondary);line-height:1.5;">Saiba como a demanda corporativa de Curitiba pode gerar renda consistente para o seu imóvel.</span>
+      <a id="cta-corporativo-btn" href="#" target="_blank" style="background:var(--color-primary);color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
     </div>
   </div>
 
@@ -1309,7 +1290,7 @@ img { max-width: 100%; height: auto; }
   <!-- 12. AIRBNB EM CURITIBA                  -->
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-airbnb">
-    <div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market" data-zh="库里提巴Airbnb：短租市场">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" style="font-size:10px;font-weight:600;color:#FF6B00;text-decoration:none;background:rgba(255,107,0,0.08);border:0.5px solid rgba(255,107,0,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,107,0,0.15)'" onmouseout="this.style.background='rgba(255,107,0,0.08)'">Ver dados do Airbnb →</a></div>
+    <div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market" data-zh="库里提巴Airbnb：短租市场">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" style="font-size:10px;font-weight:600;color:var(--color-primary);text-decoration:none;background:rgba(10,77,140,0.08);border:0.5px solid rgba(10,77,140,0.25);border-radius:20px;padding:4px 10px;white-space:nowrap;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.15)'" onmouseout="this.style.background='rgba(10,77,140,0.08)'">Ver dados do Airbnb →</a></div>
     <div class="kpi3">
       <div class="kpi dk">
         <div class="kpi-num"><span>5.190</span></div>
@@ -1352,19 +1333,19 @@ img { max-width: 100%; height: auto; }
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-regioes">
     <div class="sec-label" data-pt="Regiões estratégicas: em destaque" data-en="Strategic regions: where Bicalho operates" data-zh="战略区域：比卡略的布局">Regiões estratégicas: em destaque</div>
-    <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card" style="border-left: 3px solid var(--color-primary); border-radius: 0 14px 14px 0;">
       <div class="card-h" data-pt="Água Verde" data-en="Água Verde" data-zh="绿水区（Água Verde）">Água Verde</div>
       <div class="card-b" data-pt="Um dos bairros com &lt;strong&gt;maior valorização de tíquete médio em 2025: +33%&lt;/strong&gt;, chegando a R$ 1,3 milhão (Loft, dez/2025). O preço do metro quadrado avançou expressivamente, impulsionado pela alta demanda e pela escassez de terrenos. O bairro combina perfil residencial consolidado com excelente infraestrutura de comércio, gastronomia e mobilidade. A proximidade com o Batel, um dos metros quadrados mais valorizados de Curitiba (R$ 16.240/m²), cria um efeito de valorização por contiguidade.&lt;br&gt;&lt;br&gt;Para o Airbnb, Água Verde é destino recorrente de turistas que buscam &lt;strong&gt;localização central sem pagar o preço do Batel&lt;/strong&gt;, com acesso fácil à Linha Turismo, ao Centro Histórico e ao eixo gastronômico da Sete de Setembro." data-en="One of the neighborhoods with the &lt;strong&gt;highest average ticket appreciation in 2025: +33%&lt;/strong&gt;, reaching R$1.3 million (Loft, Dec/2025). Price per square meter has advanced significantly, driven by strong demand and land scarcity. The neighborhood combines a consolidated residential profile with excellent commercial, dining, and mobility infrastructure. Its proximity to Batel — one of the most valuable locations in Curitiba (R$16,240/m²) — creates a contiguity appreciation effect.&lt;br&gt;&lt;br&gt;For Airbnb, Água Verde is a recurring destination for tourists seeking &lt;strong&gt;central location without paying Batel prices&lt;/strong&gt;, with easy access to the Tourism Line, the Historic Center, and the Sete de Setembro dining corridor." data-zh="2025年&lt;strong&gt;平均票价涨幅最大的社区之一：+33%&lt;/strong&gt;，均价达到130万雷亚尔（Loft，2025年12月）。受强劲需求和土地稀缺性驱动，每平方米价格大幅攀升。该社区兼具成熟的住宅属性和完善的商业、餐饮及交通配套。毗邻Batel——Curitiba地价最高区域之一（每平方米16,240雷亚尔）——产生显著的地段溢价传导效应。&lt;br&gt;&lt;br&gt;对于Airbnb市场，Água Verde是希望&lt;strong&gt;以低于Batel价格获得市中心区位&lt;/strong&gt;的游客首选目的地，可便捷通达旅游线路、历史城区及Sete de Setembro餐饮轴线。">Um dos bairros com <strong>maior valorização de tíquete médio em 2025: +33%</strong>, chegando a R$ 1,3 milhão (Loft, dez/2025). O preço do metro quadrado avançou expressivamente, impulsionado pela alta demanda e pela escassez de terrenos. O bairro combina perfil residencial consolidado com excelente infraestrutura de comércio, gastronomia e mobilidade. A proximidade com o Batel, um dos metros quadrados mais valorizados de Curitiba (R$ 16.240/m²), cria um efeito de valorização por contiguidade.<br><br>Para o Airbnb, Água Verde é destino recorrente de turistas que buscam <strong>localização central sem pagar o preço do Batel</strong>, com acesso fácil à Linha Turismo, ao Centro Histórico e ao eixo gastronômico da Sete de Setembro.</div>
     </div>
-    <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card" style="border-left: 3px solid var(--color-primary); border-radius: 0 14px 14px 0;">
       <div class="card-h" data-pt="Bigorrilho" data-en="Bigorrilho" data-zh="比戈利略（Bigorrilho）">Bigorrilho</div>
       <div class="card-b" data-pt="O Bigorrilho registrou &lt;strong&gt;valorização de 23% no tíquete médio e +31% no preço por metro quadrado em 2025&lt;/strong&gt;, chegando a R$ 15.061/m² (Loft, dez/2025). É o bairro mais gastronômico de Curitiba, com o eixo Batel Soho consolidado como referência de restaurantes, bares e vida noturna, o que atrai diretamente o turista de lazer que a cidade vem captando.&lt;br&gt;&lt;br&gt;Para short stay, o Bigorrilho tem perfil duplo: serve tanto o turista de lazer em busca de experiências gastronômicas quanto o executivo que prefere um apartamento no estilo de vida de bairro a ficar em hotel. Diárias no Airbnb no Bigorrilho partem de R$ 107 e chegam a R$ 247 para studios, com altíssima avaliação de hóspedes." data-en="Bigorrilho posted &lt;strong&gt;23% average ticket appreciation and +31% price-per-square-meter growth in 2025&lt;/strong&gt;, reaching R$15,061/m² (Loft, Dec/2025). It is Curitiba's most gastronomically vibrant neighborhood, with the Batel Soho corridor established as the benchmark for restaurants, bars, and nightlife — directly attracting the leisure tourists the city has been capturing.&lt;br&gt;&lt;br&gt;For short-term rentals, Bigorrilho has a dual profile: it serves both leisure tourists seeking culinary experiences and executives who prefer a neighborhood apartment lifestyle over a hotel. Airbnb daily rates in Bigorrilho start at R$107 and reach R$247 for studios, with exceptionally high guest ratings." data-zh="Bigorrilho在2025年录得&lt;strong&gt;平均票价涨幅23%，每平方米价格上涨31%&lt;/strong&gt;，达到每平方米15,061雷亚尔（Loft，2025年12月）。作为Curitiba美食资源最丰富的社区，Batel Soho轴线已成为餐厅、酒吧和夜生活的标杆，直接吸引了Curitiba近年积极开拓的休闲旅客群体。&lt;br&gt;&lt;br&gt;在短租市场，Bigorrilho呈现双重客群特征：既吸引寻求美食体验的休闲游客，也吸引偏好街区生活感公寓而非酒店的商务人士。Bigorrilho的Airbnb公寓日租价格从107雷亚尔起步，精品公寓可达247雷亚尔，房客评价极高。">O Bigorrilho registrou <strong>valorização de 23% no tíquete médio e +31% no preço por metro quadrado em 2025</strong>, chegando a R$ 15.061/m² (Loft, dez/2025). É o bairro mais gastronômico de Curitiba, com o eixo Batel Soho consolidado como referência de restaurantes, bares e vida noturna, o que atrai diretamente o turista de lazer que a cidade vem captando.<br><br>Para short stay, o Bigorrilho tem perfil duplo: serve tanto o turista de lazer em busca de experiências gastronômicas quanto o executivo que prefere um apartamento no estilo de vida de bairro a ficar em hotel. Diárias no Airbnb no Bigorrilho partem de R$ 107 e chegam a R$ 247 para studios, com altíssima avaliação de hóspedes.</div>
     </div>
-    <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card" style="border-left: 3px solid var(--color-primary); border-radius: 0 14px 14px 0;">
       <div class="card-h" data-pt="Av. Iguaçu: novo eixo de expansão" data-en="Av. Iguaçu: the new expansion axis" data-zh="伊瓜苏大道：新扩张轴线">Av. Iguaçu: novo eixo de expansão</div>
       <div class="card-b" data-pt="A Avenida Iguaçu conecta o Centro ao Água Verde e ao eixo sul da cidade, com excelente acesso à Linha Turismo e aos principais equipamentos culturais. É um corredor em valorização, beneficiado pela pressão de demanda que transborda do Batel e do Água Verde, dois bairros que já operam com oferta restrita de novos lançamentos.&lt;br&gt;&lt;br&gt;Para investimento em short stay, a localização é estratégica: está entre dois dos bairros mais buscados no Airbnb de Curitiba, com menor ticket de entrada e maior potencial de valorização nos próximos ciclos." data-en="Avenida Iguaçu connects Centro to Água Verde and the city's southern corridor, with excellent access to the Tourism Line and major cultural venues. It is an appreciating corridor, benefiting from the demand pressure spilling over from Batel and Água Verde — two neighborhoods already operating with constrained new-inventory supply.&lt;br&gt;&lt;br&gt;For short-term rental investment, the location is strategic: it sits between two of the most sought-after neighborhoods on Curitiba's Airbnb, with a lower entry price point and greater appreciation potential in upcoming real estate cycles." data-zh="Avenida Iguaçu连接Centro与Água Verde及城市南部轴线，可便捷通达旅游线路和主要文化设施。这一轴线正处于升值通道，受益于从Batel和Água Verde溢出的需求压力——两个社区的新房供应均已趋于紧张。&lt;br&gt;&lt;br&gt;对于短租投资而言，此处区位极具战略价值：坐落于Curitiba Airbnb搜索量最高的两个社区之间，入市价格较低，在未来房地产周期中具有更大升值潜力。">A Avenida Iguaçu conecta o Centro ao Água Verde e ao eixo sul da cidade, com excelente acesso à Linha Turismo e aos principais equipamentos culturais. É um corredor em valorização, beneficiado pela pressão de demanda que transborda do Batel e do Água Verde, dois bairros que já operam com oferta restrita de novos lançamentos.<br><br>Para investimento em short stay, a localização é estratégica: está entre dois dos bairros mais buscados no Airbnb de Curitiba, com menor ticket de entrada e maior potencial de valorização nos próximos ciclos.</div>
     </div>
-    <div class="card" style="border-left: 3px solid #FF6B00; border-radius: 0 14px 14px 0;">
+    <div class="card" style="border-left: 3px solid var(--color-primary); border-radius: 0 14px 14px 0;">
       <div class="card-h" data-pt="Sete de Setembro: eixo central nobre" data-en="Sete de Setembro: the noble central axis" data-zh="九月七日街：核心高档轴线">Sete de Setembro: eixo central nobre</div>
       <div class="card-b" data-pt="A Sete de Setembro é um dos endereços mais tradicionais e valorizados de Curitiba, conectando o Centro ao Batel e ao Bigorrilho. O Centro liderou a alta de preço por metro quadrado em 2025, com &lt;strong&gt;+48%, chegando a R$ 10.250/m²&lt;/strong&gt; (Loft, dez/2025). A localização favorece tanto o turista de lazer quanto o corporativo, com acesso direto ao Shopping Curitiba, ao Pátio Batel e à malha de transporte urbano.&lt;br&gt;&lt;br&gt;Para short stay, o eixo Centro/Batel é onde estão os Airbnbs com as &lt;strong&gt;maiores diárias e maior taxa de ocupação&lt;/strong&gt; da cidade, perfil ideal para studios compactos de alto padrão." data-en="Sete de Setembro is one of Curitiba's most traditional and prestigious addresses, connecting Centro to Batel and Bigorrilho. Centro led the price-per-square-meter increase in 2025 with &lt;strong&gt;+48%, reaching R$10,250/m²&lt;/strong&gt; (Loft, Dec/2025). The location appeals to both leisure and corporate travelers, with direct access to Shopping Curitiba, Pátio Batel, and the city's public transportation network.&lt;br&gt;&lt;br&gt;For short-term rentals, the Centro/Batel corridor is where Curitiba's &lt;strong&gt;highest daily rates and occupancy levels&lt;/strong&gt; are found — the ideal profile for premium compact studios." data-zh="Sete de Setembro是Curitiba最传统、最具价值的地址之一，连接Centro、Batel和Bigorrilho。2025年，Centro以&lt;strong&gt;每平方米价格涨幅48%、达10,250雷亚尔/平方米&lt;/strong&gt;（Loft，2025年12月）领涨全市。该区位兼具休闲和商务旅客的双重吸引力，可直达Shopping Curitiba、Pátio Batel及城市公交网络。&lt;br&gt;&lt;br&gt;在短租市场，Centro/Batel轴线是Curitiba&lt;strong&gt;日租价格最高、入住率最高&lt;/strong&gt;的区域，非常适合打造高档紧凑型公寓。">A Sete de Setembro é um dos endereços mais tradicionais e valorizados de Curitiba, conectando o Centro ao Batel e ao Bigorrilho. O Centro liderou a alta de preço por metro quadrado em 2025, com <strong>+48%, chegando a R$ 10.250/m²</strong> (Loft, dez/2025). A localização favorece tanto o turista de lazer quanto o corporativo, com acesso direto ao Shopping Curitiba, ao Pátio Batel e à malha de transporte urbano.<br><br>Para short stay, o eixo Centro/Batel é onde estão os Airbnbs com as <strong>maiores diárias e maior taxa de ocupação</strong> da cidade, perfil ideal para studios compactos de alto padrão.</div>
     </div>
@@ -1374,9 +1355,9 @@ img { max-width: 100%; height: auto; }
       <div class="ins" data-pt="Um studio nessas regiões comprado como investimento tem dois motores de retorno simultâneos: &lt;strong&gt;valorização patrimonial acima da média da cidade&lt;/strong&gt; (confirmada pelos dados Loft 2025) e &lt;strong&gt;renda de short stay consistente ao longo de todos os meses do ano&lt;/strong&gt;, ancorada no calendário de eventos que Curitiba consolidou." data-en="A studio in these neighborhoods, purchased as an investment, operates with two simultaneous return drivers: &lt;strong&gt;above-average property appreciation&lt;/strong&gt; (confirmed by Loft 2025 data) and &lt;strong&gt;consistent short-term rental income throughout every month of the year&lt;/strong&gt;, anchored by the event calendar that Curitiba has firmly established." data-zh="在这些区域购置公寓作为投资，拥有双重同步回报驱动力：&lt;strong&gt;高于全市平均的资产增值&lt;/strong&gt;（Loft 2025年数据印证）以及&lt;strong&gt;全年每月持续稳定的短租收入&lt;/strong&gt;，由Curitiba已巩固确立的活动日历提供有力支撑。">Um studio nessas regiões comprado como investimento tem dois motores de retorno simultâneos: <strong>valorização patrimonial acima da média da cidade</strong> (confirmada pelos dados Loft 2025) e <strong>renda de short stay consistente ao longo de todos os meses do ano</strong>, ancorada no calendário de eventos que Curitiba consolidou.</div>
     </div>
     <div class="divider"></div>
-    <div id="cta-regioes" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(255,107,0,0.06),rgba(255,107,0,0.02));border:0.5px solid rgba(255,107,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <span style="font-size:13.5px;color:#555;line-height:1.5;">Seu imóvel está em uma das regiões mais valorizadas de Curitiba. Tire suas dúvidas com seu corretor.</span>
-      <a id="cta-regioes-btn" href="#" target="_blank" style="background:#FF6B00;color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
+    <div id="cta-regioes" style="margin-top:16px;margin-bottom:32px;padding:16px 20px;background:linear-gradient(135deg,rgba(10,77,140,0.06),rgba(10,77,140,0.02));border:0.5px solid rgba(10,77,140,0.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <span style="font-size:13.5px;color:var(--color-text-secondary);line-height:1.5;">Seu imóvel está em uma das regiões mais valorizadas de Curitiba. Tire suas dúvidas com seu corretor.</span>
+      <a id="cta-regioes-btn" href="#" target="_blank" style="background:var(--color-primary);color:#fff;text-decoration:none;border-radius:8px;padding:9px 18px;font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;">Falar com meu corretor →</a>
     </div>
   </div>
 
@@ -1467,8 +1448,8 @@ img { max-width: 100%; height: auto; }
 
     </div><!-- /news-row2 -->
 
-    <div style="margin-top:12px;padding:14px 16px;background:#f5f5f0;border-radius:10px;border:0.5px solid #e0ddd5;">
-      <p style="font-size:11.5px;color:#aaa;line-height:1.6;">Para adicionar novas notícias: salve o print na pasta do repositório com o nome "Foto N.png" (ex: Foto 8.png), copie um bloco .news-item acima e atualize o link, título e nome da imagem.</p>
+    <div style="margin-top:12px;padding:14px 16px;background:var(--color-bg);border-radius:10px;border:1px solid var(--color-border);">
+      <p style="font-size:11.5px;color:var(--color-text-secondary);line-height:1.6;">Para adicionar novas notícias: salve o print na pasta do repositório com o nome "Foto N.png" (ex: Foto 8.png), copie um bloco .news-item acima e atualize o link, título e nome da imagem.</p>
     </div>
 
   </div><!-- /secao-noticias -->

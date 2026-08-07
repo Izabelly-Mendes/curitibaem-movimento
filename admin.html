@@ -10,32 +10,34 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a1a1a">
 <title>Painel Bicalho — Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:100vh;overflow:hidden}
+body{font-family:var(--font-body);background:var(--color-bg);color:var(--color-text);height:100vh;overflow:hidden}
 
 /* ── AUTH ── */
 #auth-screen{position:fixed;inset:0;background:#1a1a1a;display:flex;align-items:center;justify-content:center;z-index:9999}
 .auth-box{background:#242424;border:0.5px solid rgba(255,255,255,0.1);border-radius:16px;padding:40px;width:360px;text-align:center}
 .auth-box img{height:40px;filter:brightness(0) invert(1);margin-bottom:28px}
-.auth-box h2{font-family:'Syne',sans-serif;color:#fff;font-size:20px;margin-bottom:8px}
+.auth-box h2{font-family:var(--font-heading);color:#fff;font-size:20px;margin-bottom:8px}
 .auth-box p{color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:24px}
-.auth-input{width:100%;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;color:#fff;font-size:14px;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:12px;transition:border-color 0.2s}
-.auth-input:focus{border-color:#FF6B00}
-.auth-btn{width:100%;background:#FF6B00;color:#fff;border:none;border-radius:8px;padding:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s}
-.auth-btn:hover{background:#e05a00}
+.auth-input{width:100%;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;padding:12px 16px;color:#fff;font-size:14px;outline:none;font-family:var(--font-body);margin-bottom:12px;transition:border-color 0.2s}
+.auth-input:focus{border-color:var(--color-primary)}
+.auth-btn{width:100%;background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-btn);padding:12px;font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s}
+.auth-btn:hover{background:var(--color-primary-hover)}
 .auth-err{color:#ff4444;font-size:12px;margin-top:10px;display:none}
 
 /* ── APP LAYOUT ── */
 #app{display:none;height:100vh;flex-direction:column}
 .app-header{background:#1a1a1a;height:52px;display:flex;align-items:center;padding:0 20px;gap:16px;border-bottom:0.5px solid rgba(255,255,255,0.08);flex-shrink:0;z-index:50}
 .app-header img{height:28px;filter:brightness(0) invert(1)}
-.app-header-title{font-family:'Syne',sans-serif;color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;margin-left:4px}
+.app-header-title{font-family:var(--font-heading);color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;margin-left:4px}
 .app-header-spacer{flex:1}
-.tab-btn{background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 14px;color:rgba(255,255,255,0.5);font-size:12.5px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
-.tab-btn.active{background:rgba(255,107,0,0.15);border-color:rgba(255,107,0,0.4);color:#FF6B00}
-.logout-btn{background:none;border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tab-btn{background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 14px;color:rgba(255,255,255,0.5);font-size:12.5px;cursor:pointer;font-family:var(--font-body);transition:all 0.15s}
+.tab-btn.active{background:rgba(10,77,140,0.2);border-color:rgba(10,77,140,0.5);color:#6FA8DC}
+.logout-btn{background:none;border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.4);font-size:12px;cursor:pointer;font-family:var(--font-body)}
 .logout-btn:hover{border-color:rgba(255,68,68,0.4);color:#ff6b6b}
 
 .app-body{display:flex;flex:1;overflow:hidden}
@@ -43,9 +45,9 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 /* ── LEFT PANEL ── */
 .left-panel{width:280px;background:#1a1a1a;display:flex;flex-direction:column;border-right:0.5px solid rgba(255,255,255,0.08);flex-shrink:0;overflow:hidden}
 .left-panel-header{padding:16px;border-bottom:0.5px solid rgba(255,255,255,0.08);flex-shrink:0}
-.left-panel-header h3{font-family:'Syne',sans-serif;color:#fff;font-size:13px;font-weight:700;margin-bottom:10px}
-.add-btn{width:100%;background:#FF6B00;color:#fff;border:none;border-radius:8px;padding:9px;font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.add-btn:hover{background:#e05a00}
+.left-panel-header h3{font-family:var(--font-heading);color:#fff;font-size:13px;font-weight:700;margin-bottom:10px}
+.add-btn{width:100%;background:var(--color-primary);color:#fff;border:none;border-radius:8px;padding:9px;font-family:var(--font-body);font-size:12.5px;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-btn:hover{background:var(--color-primary-hover)}
 .left-panel-body{flex:1;overflow-y:auto;padding:8px}
 .left-panel-body::-webkit-scrollbar{width:3px}
 .left-panel-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px}
@@ -60,8 +62,8 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 .bloco-tipo{font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.05em}
 .bloco-toggle{flex-shrink:0;cursor:pointer;font-size:17px;transition:opacity 0.15s;line-height:1}
 .bloco-toggle.hidden{opacity:0.25}
-.bloco-edit-btn{background:rgba(255,107,0,0.15);border:none;border-radius:5px;width:26px;height:26px;cursor:pointer;color:#FF6B00;font-size:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
-.bloco-edit-btn:hover{background:rgba(255,107,0,0.3)}
+.bloco-edit-btn{background:rgba(10,77,140,0.2);border:none;border-radius:5px;width:26px;height:26px;cursor:pointer;color:#6FA8DC;font-size:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
+.bloco-edit-btn:hover{background:rgba(10,77,140,0.35)}
 .bloco-del-btn{background:rgba(255,68,68,0.1);border:none;border-radius:5px;width:26px;height:26px;cursor:pointer;color:#e74c3c;font-size:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
 .bloco-del-btn:hover{background:rgba(255,68,68,0.2)}
 
@@ -71,7 +73,7 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 .rascunho-titulo{font-size:12px;color:rgba(255,255,255,0.65);margin-bottom:6px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rascunho-date{font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:8px}
 .rascunho-btns{display:flex;gap:5px}
-.rascunho-btns button{flex:1;border:none;border-radius:5px;padding:5px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600}
+.rascunho-btns button{flex:1;border:none;border-radius:5px;padding:5px;font-size:11px;cursor:pointer;font-family:var(--font-body);font-weight:600}
 .btn-aprovar{background:rgba(39,174,96,0.15);color:#27ae60}
 .btn-aprovar:hover{background:rgba(39,174,96,0.25)}
 .btn-rejeitar{background:rgba(239,68,68,0.1);color:#e74c3c}
@@ -79,68 +81,68 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 .badge-pendente{background:rgba(245,158,11,0.2);color:#d97706;border-radius:20px;font-size:10px;padding:1px 7px;font-weight:700;margin-left:6px}
 
 /* ── PREVIEW AREA ── */
-.preview-area{flex:1;overflow:hidden;display:flex;flex-direction:column;background:#f5f5f0}
-.preview-toolbar{background:#fff;border-bottom:0.5px solid #e0ddd5;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
-.preview-toolbar-label{font-size:11.5px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:0.08em}
-.preview-link{font-size:11.5px;color:#FF6B00;text-decoration:none;font-family:monospace}
+.preview-area{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--color-bg)}
+.preview-toolbar{background:var(--color-bg-secondary);border-bottom:1px solid var(--color-border);padding:8px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.preview-toolbar-label{font-size:11.5px;color:var(--color-text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.08em}
+.preview-link{font-size:11.5px;color:var(--color-primary);text-decoration:none;font-family:monospace}
 .preview-link:hover{text-decoration:underline}
 .preview-scroll{flex:1;overflow-y:auto;padding:20px}
 .preview-scroll::-webkit-scrollbar{width:6px}
-.preview-scroll::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px}
+.preview-scroll::-webkit-scrollbar-thumb{background:var(--color-border);border-radius:3px}
 
 /* ── BLOCOS NA PRÉVIA ── */
 .bloco-wrapper{position:relative;margin-bottom:8px}
 .bloco-overlay{position:absolute;inset:-4px;opacity:0;transition:opacity 0.2s;border:2px solid transparent;border-radius:16px;cursor:pointer;z-index:10;pointer-events:all}
-.bloco-wrapper:hover .bloco-overlay{opacity:1;border-color:#FF6B00;background:rgba(255,107,0,0.03)}
+.bloco-wrapper:hover .bloco-overlay{opacity:1;border-color:var(--color-primary);background:rgba(10,77,140,0.04)}
 .bloco-acoes{position:absolute;top:8px;right:8px;display:flex;gap:6px;z-index:11}
-.bloco-btn{width:32px;height:32px;border-radius:8px;background:#1a1a1a;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#FF6B00;font-size:14px;transition:background 0.15s}
+.bloco-btn{width:32px;height:32px;border-radius:8px;background:#1a1a1a;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6FA8DC;font-size:14px;transition:background 0.15s}
 .bloco-btn:hover{background:#333}
 
 /* Preview CSS (same as cliente.html) */
-.preview-cover{background:#1a1a1a;padding:40px;border-radius:12px;margin-bottom:12px;position:relative;overflow:hidden}
-.preview-cover::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,107,0,0.07);pointer-events:none}
-.sec-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#FF6B00;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.sec-label::after{content:'';flex:1;height:0.5px;background:#ddd}
+.preview-cover{background:var(--color-bg);border:1px solid var(--color-border);padding:40px;border-radius:12px;margin-bottom:12px;position:relative;overflow:hidden}
+.preview-cover::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(10,77,140,0.06);pointer-events:none}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--color-primary);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--color-divider)}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
 .kpi2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
 .kpi3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.kpi{background:#fff;border-radius:10px;border:0.5px solid #e0ddd5;padding:14px}
-.kpi.dk{background:#1a1a1a;border-color:#1a1a1a}
-.kpi-num{font-family:'Georgia',serif;font-size:24px;font-weight:700;color:#1a1a1a;line-height:1;margin-bottom:4px}
-.kpi-num span{color:#FF6B00}
-.kpi.dk .kpi-num{color:#FF6B00}
-.kpi-lbl{font-size:11px;color:#888;line-height:1.4}
-.kpi.dk .kpi-lbl{color:rgba(255,255,255,0.5)}
-.kpi-src{font-size:10px;color:#bbb;margin-top:4px}
-.kpi.dk .kpi-src{color:rgba(255,255,255,0.25)}
-.card{background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;padding:18px;margin-bottom:12px}
-.card-h{font-family:'Georgia',serif;font-size:14px;font-weight:bold;margin-bottom:6px}
-.card-b{font-size:13px;color:#555;line-height:1.65}
-.card-b strong{color:#1a1a1a;font-weight:700}
-.hl{color:#FF6B00;font-weight:700}
-.ins{background:rgba(255,107,0,0.06);border-left:3px solid #FF6B00;border-radius:0 8px 8px 0;padding:11px 14px;margin-top:10px;font-size:12.5px;color:#c85200;line-height:1.6}
+.kpi{background:var(--color-card);border-radius:10px;border:1px solid var(--color-border);padding:14px}
+.kpi.dk{background:var(--color-bg);border-color:var(--color-border)}
+.kpi-num{font-family:var(--font-heading);font-size:24px;font-weight:700;color:var(--color-text);line-height:1;margin-bottom:4px}
+.kpi-num span{color:var(--color-primary)}
+.kpi.dk .kpi-num{color:var(--color-primary)}
+.kpi-lbl{font-size:11px;color:var(--color-text-secondary);line-height:1.4}
+.kpi.dk .kpi-lbl{color:var(--color-text-secondary)}
+.kpi-src{font-size:10px;color:var(--color-text-secondary);margin-top:4px}
+.kpi.dk .kpi-src{color:var(--color-text-secondary)}
+.card{background:var(--color-card);border-radius:var(--radius-card);border:1px solid var(--color-border);padding:18px;margin-bottom:12px}
+.card-h{font-family:var(--font-heading);font-size:14px;font-weight:600;margin-bottom:6px}
+.card-b{font-size:13px;color:var(--color-text-secondary);line-height:1.65}
+.card-b strong{color:var(--color-text);font-weight:700}
+.hl{color:var(--color-primary);font-weight:700}
+.ins{background:rgba(10,77,140,0.06);border-left:3px solid var(--color-primary);border-radius:0 8px 8px 0;padding:11px 14px;margin-top:10px;font-size:12.5px;color:var(--color-primary-hover);line-height:1.6}
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.bar-lbl{font-size:11.5px;color:#555;width:80px;flex-shrink:0}
-.bar-track{flex:1;height:5px;background:#f0ede6;border-radius:8px;overflow:hidden}
-.bar-fill{height:100%;border-radius:8px;background:#FF6B00}
-.bar-val{font-size:11.5px;font-weight:700;color:#1a1a1a;width:34px;text-align:right}
-.award{background:#1a1a1a;border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.award-ico{width:38px;height:38px;background:rgba(255,107,0,0.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.award strong{font-family:'Georgia',serif;font-size:13px;font-weight:bold;color:#fff;display:block;margin-bottom:3px}
-.award span{font-size:11.5px;color:rgba(255,255,255,0.4)}
-.divider{height:0.5px;background:#e0ddd5;margin:20px 0}
+.bar-lbl{font-size:11.5px;color:var(--color-text-secondary);width:80px;flex-shrink:0}
+.bar-track{flex:1;height:5px;background:var(--color-divider);border-radius:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:8px;background:var(--color-primary)}
+.bar-val{font-size:11.5px;font-weight:700;color:var(--color-text);width:34px;text-align:right}
+.award{background:var(--color-card);border:1px solid var(--color-border);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.award-ico{width:38px;height:38px;background:rgba(10,77,140,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.award strong{font-family:var(--font-heading);font-size:13px;font-weight:600;color:var(--color-text);display:block;margin-bottom:3px}
+.award span{font-size:11.5px;color:var(--color-text-secondary)}
+.divider{height:1px;background:var(--color-divider);margin:20px 0}
 .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.tag{background:#f5f5f0;border:0.5px solid #ddd;border-radius:5px;padding:3px 9px;font-size:11px;color:#555}
-.tag.o{background:rgba(255,107,0,0.07);border-color:rgba(255,107,0,0.2);color:#c85200}
-.insight-box{background:rgba(255,107,0,0.06);border-left:3px solid #FF6B00;border-radius:0 8px 8px 0;padding:11px 14px;margin-top:10px;font-size:12.5px;color:#c85200;line-height:1.6}
+.tag{background:var(--color-bg);border:1px solid var(--color-border);border-radius:5px;padding:3px 9px;font-size:11px;color:var(--color-text-secondary)}
+.tag.o{background:rgba(10,77,140,0.06);border-color:rgba(10,77,140,0.2);color:var(--color-primary-hover)}
+.insight-box{background:rgba(10,77,140,0.06);border-left:3px solid var(--color-primary);border-radius:0 8px 8px 0;padding:11px 14px;margin-top:10px;font-size:12.5px;color:var(--color-primary-hover);line-height:1.6}
 .insight-box p{margin:0}
 .news-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:5px;margin-bottom:5px}
-.news-item{position:relative;overflow:hidden;border-radius:8px;cursor:pointer;background:#1a1a1a;display:block;text-decoration:none;height:200px}
+.news-item{position:relative;overflow:hidden;border-radius:8px;cursor:pointer;background:var(--color-text);display:block;text-decoration:none;height:200px}
 .news-item.featured{height:auto;min-height:320px}
 .news-item img{width:100%;height:100%;object-fit:cover;display:block}
 .news-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 100%);padding:16px 12px 10px}
-.news-tag{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#FF6B00;margin-bottom:4px;display:block}
-.news-title{font-family:'Georgia',serif;font-size:14px;font-weight:700;color:#fff;line-height:1.2}
+.news-tag{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#6FA8DC;margin-bottom:4px;display:block}
+.news-title{font-family:var(--font-heading);font-size:14px;font-weight:700;color:#fff;line-height:1.2}
 .news-item.featured .news-title{font-size:18px}
 .news-source{font-size:9.5px;color:rgba(255,255,255,0.35);margin-top:4px;display:block}
 .news-item:nth-child(1){grid-column:1;grid-row:1/3}
@@ -151,56 +153,56 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 
 /* ── INLINE EDITING ── */
 .form-group{margin-bottom:14px}
-.form-label{display:block;font-size:11.5px;font-weight:600;color:#666;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em}
-.form-input,.form-select{width:100%;border:0.5px solid #ddd;border-radius:7px;padding:9px 12px;font-size:13.5px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;background:#fafafa}
-.form-input:focus,.form-select:focus{border-color:#FF6B00;background:#fff}
+.form-label{display:block;font-size:11.5px;font-weight:600;color:var(--color-text-secondary);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em}
+.form-input,.form-select{width:100%;border:1px solid var(--color-border);border-radius:7px;padding:9px 12px;font-size:13.5px;font-family:var(--font-body);outline:none;transition:border-color 0.2s;background:#fafafa}
+.form-input:focus,.form-select:focus{border-color:var(--color-primary);background:#fff}
 .toggle-row{display:flex;align-items:center;gap:10px}
 .toggle{position:relative;display:inline-block;width:38px;height:21px;cursor:pointer;flex-shrink:0}
 .toggle input{opacity:0;width:0;height:0}
 .toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:21px;transition:0.2s}
 .toggle-slider:before{content:'';position:absolute;width:15px;height:15px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:0.2s}
-.toggle input:checked+.toggle-slider{background:#FF6B00}
+.toggle input:checked+.toggle-slider{background:var(--color-primary)}
 .toggle input:checked+.toggle-slider:before{transform:translateX(17px)}
 
-.card-editando{border:2px solid #FF6B00 !important;box-shadow:0 4px 24px rgba(255,107,0,0.15) !important;border-radius:14px;padding:20px;background:#fff}
-.format-toolbar{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#f5f5f0;border-radius:8px;margin-bottom:8px;flex-wrap:wrap}
-.fmt-btn{width:28px;height:28px;border:0.5px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
-.fmt-btn:hover{border-color:#FF6B00;color:#FF6B00}
-.font-size-select,.font-family-select{height:28px;border:0.5px solid #ddd;border-radius:6px;background:#fff;font-size:11px;padding:0 6px;cursor:pointer;font-family:'DM Sans',sans-serif}
-.color-picker{width:28px;height:28px;border:0.5px solid #ddd;border-radius:6px;padding:2px;cursor:pointer}
-.edit-field{width:100%;min-height:40px;border:0.5px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:12px;transition:border-color 0.2s;background:#fafafa}
-.edit-field:focus{border-color:#FF6B00;background:#fff}
+.card-editando{border:2px solid var(--color-primary) !important;box-shadow:0 4px 24px rgba(10,77,140,0.15) !important;border-radius:var(--radius-card);padding:20px;background:#fff}
+.format-toolbar{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--color-bg);border-radius:8px;margin-bottom:8px;flex-wrap:wrap}
+.fmt-btn{width:28px;height:28px;border:1px solid var(--color-border);border-radius:6px;background:#fff;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.fmt-btn:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.font-size-select,.font-family-select{height:28px;border:1px solid var(--color-border);border-radius:6px;background:#fff;font-size:11px;padding:0 6px;cursor:pointer;font-family:var(--font-body)}
+.color-picker{width:28px;height:28px;border:1px solid var(--color-border);border-radius:6px;padding:2px;cursor:pointer}
+.edit-field{width:100%;min-height:40px;border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;font-family:var(--font-body);font-size:14px;outline:none;margin-bottom:12px;transition:border-color 0.2s;background:#fafafa}
+.edit-field:focus{border-color:var(--color-primary);background:#fff}
 [contenteditable="true"]{outline:none;min-height:60px}
-.card-link-field{width:100%;height:36px;border:0.5px solid #e0ddd5;border-radius:8px;padding:0 12px;font-size:13px;color:#555;margin-bottom:14px;font-family:'DM Sans',sans-serif;outline:none;background:#fafafa}
-.card-link-field:focus{border-color:#FF6B00}
+.card-link-field{width:100%;height:36px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:13px;color:var(--color-text-secondary);margin-bottom:14px;font-family:var(--font-body);outline:none;background:#fafafa}
+.card-link-field:focus{border-color:var(--color-primary)}
 .card-acoes-edicao{display:flex;gap:8px;justify-content:flex-end}
-.btn-cancelar{padding:8px 18px;border-radius:8px;border:0.5px solid #ddd;background:#f5f5f0;color:#555;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px}
-.btn-salvar{padding:8px 18px;border-radius:8px;border:none;background:#FF6B00;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600}
-.btn-salvar:hover{background:#e05a00}
-.edit-label-small{font-size:11.5px;color:#888;margin-bottom:4px;display:block}
+.btn-cancelar{padding:8px 18px;border-radius:var(--radius-btn);border:1px solid var(--color-border);background:var(--color-bg);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-body);font-size:13px}
+.btn-salvar{padding:8px 18px;border-radius:var(--radius-btn);border:none;background:var(--color-primary);color:#fff;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600}
+.btn-salvar:hover{background:var(--color-primary-hover)}
+.edit-label-small{font-size:11.5px;color:var(--color-text-secondary);margin-bottom:4px;display:block}
 
 /* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:'DM Sans',sans-serif}
-.btn-primary{background:#FF6B00;color:#fff}
-.btn-primary:hover{background:#e05a00}
-.btn-ghost{background:rgba(0,0,0,0.05);color:#555;border:0.5px solid #ddd}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-btn);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.15s;font-family:var(--font-body)}
+.btn-primary{background:var(--color-primary);color:#fff}
+.btn-primary:hover{background:var(--color-primary-hover)}
+.btn-ghost{background:rgba(0,0,0,0.05);color:var(--color-text-secondary);border:1px solid var(--color-border)}
 .btn-ghost:hover{background:#eee}
-.btn-seed{background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25);font-size:12px;padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600}
+.btn-seed{background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25);font-size:12px;padding:7px 14px;border-radius:7px;cursor:pointer;font-family:var(--font-body);font-weight:600}
 .btn-seed:hover{background:rgba(39,174,96,0.2)}
 
 /* ── MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:14px;width:100%;max-width:540px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
-.modal-header{padding:18px 22px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.modal-header h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.modal{background:#fff;border-radius:var(--radius-card);width:100%;max-width:540px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-header{padding:18px 22px;border-bottom:1px solid var(--color-divider);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header h3{font-family:var(--font-heading);font-size:15px;font-weight:700}
 .modal-close{background:none;border:none;font-size:18px;cursor:pointer;color:#999;padding:4px}
 .modal-body{padding:20px 22px;overflow-y:auto;flex:1}
-.modal-footer{padding:14px 22px;border-top:0.5px solid #f0ede6;display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
+.modal-footer{padding:14px 22px;border-top:1px solid var(--color-divider);display:flex;justify-content:flex-end;gap:8px;flex-shrink:0}
 
 /* ── TOAST ── */
 #toast-container{position:fixed;bottom:20px;right:20px;z-index:3000;display:flex;flex-direction:column;gap:8px}
-.toast{background:#1a1a1a;color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;border-left:3px solid #FF6B00;box-shadow:0 4px 16px rgba(0,0,0,0.25);animation:slideIn 0.3s ease;max-width:300px}
+.toast{background:#1a1a1a;color:#fff;padding:11px 16px;border-radius:9px;font-size:13px;border-left:3px solid var(--color-primary);box-shadow:0 4px 16px rgba(0,0,0,0.25);animation:slideIn 0.3s ease;max-width:300px}
 .toast.success{border-left-color:#27ae60}
 .toast.error{border-left-color:#e74c3c}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -237,9 +239,9 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
     <span class="app-header-title">Painel Bicalho</span>
     <div class="app-header-spacer"></div>
     <button class="tab-btn active" onclick="switchTab('editor')" id="tab-editor">✏️ Editor</button>
-    <button class="tab-btn" onclick="switchTab('rascunhos')" id="tab-rascunhos">📊 Dados de Curitiba <span id="badge-rascunhos" style="display:none;background:#FF6B00;color:#fff;border-radius:20px;font-size:10px;padding:1px 6px;margin-left:2px"></span></button>
+    <button class="tab-btn" onclick="switchTab('rascunhos')" id="tab-rascunhos">📊 Dados de Curitiba <span id="badge-rascunhos" style="display:none;background:var(--color-primary);color:#fff;border-radius:20px;font-size:10px;padding:1px 6px;margin-left:2px"></span></button>
     <button class="tab-btn" onclick="switchTab('corretores')" id="tab-corretores">👥 Corretores</button>
-    <a href="cliente.html" target="_blank" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;transition:all 0.15s" onmouseover="this.style.color='#FF6B00'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">↗ Portal</a>
+    <a href="cliente.html" target="_blank" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;transition:all 0.15s" onmouseover="this.style.color='#6FA8DC'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">↗ Portal</a>
     <button class="logout-btn" onclick="logout()">Sair</button>
   </div>
 
@@ -278,10 +280,10 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
           <!-- COVER (simplified) -->
           <div class="preview-cover">
             <div style="display:flex;align-items:center;margin-bottom:24px">
-              <img src="diferencial_logo.png" style="height:28px;filter:brightness(0) invert(1)" alt="">
+              <img src="diferencial_logo.png" style="height:28px" alt="">
             </div>
-            <div style="font-family:'Georgia',serif;font-size:28px;font-weight:bold;color:#fff;line-height:1.1;margin-bottom:8px">Curitiba em <span style="color:#FF6B00">movimento</span></div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.4)">Turismo, eventos e oportunidades de investimento · 2024/2025</div>
+            <div style="font-family:var(--font-heading);font-size:28px;font-weight:700;color:var(--color-text);line-height:1.1;margin-bottom:8px">Curitiba em <span style="color:var(--color-primary)">movimento</span></div>
+            <div style="font-size:12px;color:var(--color-text-secondary)">Turismo, eventos e oportunidades de investimento · 2024/2025</div>
           </div>
           <!-- BLOCOS DINÂMICOS -->
           <div id="preview-blocos"></div>
@@ -291,14 +293,14 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
     </div><!-- /tab-editor -->
 
     <!-- TAB: RASCUNHOS -->
-    <div class="tab-section" id="tab-section-rascunhos" style="background:#f5f5f0;overflow-y:auto;padding:24px;flex-direction:column">
+    <div class="tab-section" id="tab-section-rascunhos" style="background:var(--color-bg);overflow-y:auto;padding:24px;flex-direction:column">
       <div style="max-width:700px;margin:0 auto;width:100%">
-        <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px">Dados de Curitiba</h2>
-        <p style="font-size:13px;color:#888;margin-bottom:24px">Gerado automaticamente toda terça às 09h via RSS · Aprove item a item</p>
+        <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:700;margin-bottom:4px">Dados de Curitiba</h2>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:24px">Gerado automaticamente toda terça às 09h via RSS · Aprove item a item</p>
 
         <!-- Dados publicados -->
         <div class="secao-publicadas" id="secao-publicadas">
-          <h3 class="secao-publicadas-titulo" style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          <h3 class="secao-publicadas-titulo" style="font-family:var(--font-heading);font-size:13px;font-weight:700;color:var(--color-text);margin-bottom:14px;display:flex;align-items:center;gap:8px">
             ✅ Dados publicados
             <span class="badge-publicado" id="badge-publicadas" style="font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:rgba(59,109,17,0.1);color:#3b6d11;border-radius:20px;padding:3px 8px"></span>
           </h3>
@@ -307,41 +309,41 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 
         <!-- Rascunhos pendentes -->
         <div id="rascunhos-container">
-          <div style="text-align:center;padding:40px;color:#bbb"><p>Carregando...</p></div>
+          <div style="text-align:center;padding:40px;color:var(--color-text-secondary)"><p>Carregando...</p></div>
         </div>
       </div>
     </div>
 
     <!-- TAB: CORRETORES -->
-    <div class="tab-section" id="tab-section-corretores" style="background:#f5f5f0;overflow-y:auto;padding:24px;flex-direction:column">
+    <div class="tab-section" id="tab-section-corretores" style="background:var(--color-bg);overflow-y:auto;padding:24px;flex-direction:column">
       <div style="max-width:860px;margin:0 auto;width:100%">
 
         <!-- Sub-nav -->
-        <div style="display:flex;gap:8px;margin-bottom:24px;border-bottom:0.5px solid #ddd;padding-bottom:16px">
-          <button class="cor-sub-btn active" onclick="switchCorSub('lista')" id="corsub-lista" style="background:rgba(255,107,0,0.12);border:0.5px solid rgba(255,107,0,0.3);border-radius:8px;padding:7px 16px;font-size:13px;color:#FF6B00;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600">Lista de corretores</button>
-          <button class="cor-sub-btn" onclick="switchCorSub('historico')" id="corsub-historico" style="background:rgba(0,0,0,0.04);border:0.5px solid #ddd;border-radius:8px;padding:7px 16px;font-size:13px;color:#888;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600">Histórico de acessos</button>
-          <button class="cor-sub-btn" onclick="switchCorSub('online')" id="corsub-online" style="background:rgba(0,0,0,0.04);border:0.5px solid #ddd;border-radius:8px;padding:7px 16px;font-size:13px;color:#888;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600">🟢 Online agora</button>
+        <div style="display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid var(--color-border);padding-bottom:16px">
+          <button class="cor-sub-btn active" onclick="switchCorSub('lista')" id="corsub-lista" style="background:rgba(10,77,140,0.1);border:0.5px solid rgba(10,77,140,0.3);border-radius:8px;padding:7px 16px;font-size:13px;color:var(--color-primary);font-family:var(--font-body);cursor:pointer;font-weight:600">Lista de corretores</button>
+          <button class="cor-sub-btn" onclick="switchCorSub('historico')" id="corsub-historico" style="background:rgba(0,0,0,0.04);border:0.5px solid #ddd;border-radius:8px;padding:7px 16px;font-size:13px;color:var(--color-text-secondary);font-family:var(--font-body);cursor:pointer;font-weight:600">Histórico de acessos</button>
+          <button class="cor-sub-btn" onclick="switchCorSub('online')" id="corsub-online" style="background:rgba(0,0,0,0.04);border:0.5px solid #ddd;border-radius:8px;padding:7px 16px;font-size:13px;color:var(--color-text-secondary);font-family:var(--font-body);cursor:pointer;font-weight:600">🟢 Online agora</button>
         </div>
 
         <!-- SUB A: LISTA -->
         <div id="corsub-section-lista">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-            <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800">Corretores</h2>
-            <button onclick="abrirModalNovoCorretor()" style="background:#FF6B00;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer">＋ Adicionar corretor</button>
+            <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:700">Corretores</h2>
+            <button onclick="abrirModalNovoCorretor()" style="background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-btn);padding:8px 16px;font-family:var(--font-body);font-size:13px;font-weight:700;cursor:pointer">＋ Adicionar corretor</button>
           </div>
-          <div style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;overflow:hidden">
+          <div style="background:var(--color-card);border-radius:var(--radius-card);border:1px solid var(--color-border);overflow:hidden">
             <table style="width:100%;border-collapse:collapse" id="corretores-table">
               <thead>
-                <tr style="background:#f8f7f4;border-bottom:0.5px solid #e0ddd5">
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Nome</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Email</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Status</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Último acesso</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Ações</th>
+                <tr style="background:var(--color-bg);border-bottom:1px solid var(--color-border)">
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Nome</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Email</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Status</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Último acesso</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Ações</th>
                 </tr>
               </thead>
               <tbody id="corretores-tbody">
-                <tr><td colspan="5" style="text-align:center;padding:32px;color:#bbb;font-size:13px">Carregando...</td></tr>
+                <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--color-text-secondary);font-size:13px">Carregando...</td></tr>
               </tbody>
             </table>
           </div>
@@ -350,29 +352,29 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
         <!-- SUB B: HISTÓRICO -->
         <div id="corsub-section-historico" style="display:none">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
-            <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-right:auto">Histórico de acessos</h2>
-            <select id="hist-filtro-corretor" onchange="carregarHistorico()" style="border:0.5px solid #ddd;border-radius:8px;padding:7px 12px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff;color:#555;outline:none">
+            <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:700;margin-right:auto">Histórico de acessos</h2>
+            <select id="hist-filtro-corretor" onchange="carregarHistorico()" style="border:1px solid var(--color-border);border-radius:8px;padding:7px 12px;font-size:13px;font-family:var(--font-body);background:var(--color-card);color:var(--color-text-secondary);outline:none">
               <option value="">Todos os corretores</option>
             </select>
-            <select id="hist-filtro-dias" onchange="carregarHistorico()" style="border:0.5px solid #ddd;border-radius:8px;padding:7px 12px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff;color:#555;outline:none">
+            <select id="hist-filtro-dias" onchange="carregarHistorico()" style="border:1px solid var(--color-border);border-radius:8px;padding:7px 12px;font-size:13px;font-family:var(--font-body);background:var(--color-card);color:var(--color-text-secondary);outline:none">
               <option value="7" selected>Últimos 7 dias</option>
               <option value="30">Últimos 30 dias</option>
               <option value="90">Últimos 90 dias</option>
             </select>
           </div>
           <div id="hist-totais" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px"></div>
-          <div style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;overflow:hidden">
+          <div style="background:var(--color-card);border-radius:var(--radius-card);border:1px solid var(--color-border);overflow:hidden">
             <table style="width:100%;border-collapse:collapse">
               <thead>
-                <tr style="background:#f8f7f4;border-bottom:0.5px solid #e0ddd5">
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Corretor</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Entrou em</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Saiu em</th>
-                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888">Duração</th>
+                <tr style="background:var(--color-bg);border-bottom:1px solid var(--color-border)">
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Corretor</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Entrou em</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Saiu em</th>
+                  <th style="padding:12px 16px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--color-text-secondary)">Duração</th>
                 </tr>
               </thead>
               <tbody id="historico-tbody">
-                <tr><td colspan="4" style="text-align:center;padding:32px;color:#bbb;font-size:13px">Carregando...</td></tr>
+                <tr><td colspan="4" style="text-align:center;padding:32px;color:var(--color-text-secondary);font-size:13px">Carregando...</td></tr>
               </tbody>
             </table>
           </div>
@@ -381,11 +383,11 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
         <!-- SUB C: ONLINE AGORA -->
         <div id="corsub-section-online" style="display:none">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-            <h2 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800">Online agora</h2>
-            <span style="font-size:12px;color:#bbb" id="online-updated"></span>
+            <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:700">Online agora</h2>
+            <span style="font-size:12px;color:var(--color-text-secondary)" id="online-updated"></span>
           </div>
           <div id="online-lista">
-            <div style="text-align:center;padding:40px;color:#bbb;font-size:13px">Carregando...</div>
+            <div style="text-align:center;padding:40px;color:var(--color-text-secondary);font-size:13px">Carregando...</div>
           </div>
         </div>
 
@@ -444,22 +446,22 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
     </div>
     <div class="modal-body">
       <div style="margin-bottom:14px">
-        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Nome</label>
-        <input type="text" id="nc-nome" placeholder="Nome completo" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+        <label style="font-size:12px;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:6px">Nome</label>
+        <input type="text" id="nc-nome" placeholder="Nome completo" style="width:100%;border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:var(--font-body);outline:none">
       </div>
       <div style="margin-bottom:14px">
-        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Email</label>
-        <input type="email" id="nc-email" placeholder="email@corretor.com" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+        <label style="font-size:12px;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:6px">Email</label>
+        <input type="email" id="nc-email" placeholder="email@corretor.com" style="width:100%;border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:var(--font-body);outline:none">
       </div>
       <div style="margin-bottom:14px">
-        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">WhatsApp</label>
-        <input type="tel" id="nc-whatsapp" placeholder="5541999999999 (com DDI e DDD)" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+        <label style="font-size:12px;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:6px">WhatsApp</label>
+        <input type="tel" id="nc-whatsapp" placeholder="5541999999999 (com DDI e DDD)" style="width:100%;border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:var(--font-body);outline:none">
       </div>
       <div style="margin-bottom:6px">
-        <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Senha inicial</label>
-        <input type="text" id="nc-senha" placeholder="mínimo 6 caracteres" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+        <label style="font-size:12px;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:6px">Senha inicial</label>
+        <input type="text" id="nc-senha" placeholder="mínimo 6 caracteres" style="width:100%;border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:var(--font-body);outline:none">
       </div>
-      <p style="font-size:11.5px;color:#bbb;margin-top:6px">O corretor poderá alterar a senha em Meu perfil.</p>
+      <p style="font-size:11.5px;color:var(--color-text-secondary);margin-top:6px">O corretor poderá alterar a senha em Meu perfil.</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-novo-corretor')">Cancelar</button>
@@ -476,9 +478,9 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
       <button class="modal-close" onclick="closeModal('modal-redef-senha')">✕</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:13px;color:#888;margin-bottom:16px">Redefina a senha para: <strong id="redef-nome"></strong></p>
-      <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:6px">Nova senha</label>
-      <input type="text" id="redef-senha" placeholder="Nova senha" style="width:100%;border:1px solid #e0ddd5;border-radius:8px;padding:10px 12px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none">
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:16px">Redefina a senha para: <strong id="redef-nome"></strong></p>
+      <label style="font-size:12px;font-weight:600;color:var(--color-text-secondary);display:block;margin-bottom:6px">Nova senha</label>
+      <input type="text" id="redef-senha" placeholder="Nova senha" style="width:100%;border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:var(--font-body);outline:none">
       <input type="hidden" id="redef-corretor-id">
     </div>
     <div class="modal-footer">
@@ -492,24 +494,24 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1a1a1a;height:10
 
 <!-- MODAL: Editar Corretor -->
 <div id="modal-editar-corretor" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:420px;margin:16px;">
+  <div style="background:var(--color-card);border-radius:var(--radius-card);padding:28px;width:100%;max-width:420px;margin:16px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;">Editar corretor</div>
-      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:#888;">×</button>
+      <div style="font-family:var(--font-heading);font-size:16px;font-weight:700;">Editar corretor</div>
+      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--color-text-secondary);">×</button>
     </div>
-    <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">Nome</label>
-    <input id="edit-corretor-nome" type="text" placeholder="Nome completo" style="width:100%;height:40px;border:0.5px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:'DM Sans',sans-serif;outline:none;">
-    <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">E-mail</label>
-    <input id="edit-corretor-email" type="email" disabled style="width:100%;height:40px;border:0.5px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;background:#f5f5f0;color:#888;box-sizing:border-box;font-family:'DM Sans',sans-serif;">
-    <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">WhatsApp (com DDI e DDD, só dígitos)</label>
-    <input id="edit-corretor-whatsapp" type="text" placeholder="5541999999999" style="width:100%;height:40px;border:0.5px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:'DM Sans',sans-serif;outline:none;">
+    <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">Nome</label>
+    <input id="edit-corretor-nome" type="text" placeholder="Nome completo" style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:var(--font-body);outline:none;">
+    <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">E-mail</label>
+    <input id="edit-corretor-email" type="email" disabled style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;background:var(--color-bg);color:var(--color-text-secondary);box-sizing:border-box;font-family:var(--font-body);">
+    <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">WhatsApp (com DDI e DDD, só dígitos)</label>
+    <input id="edit-corretor-whatsapp" type="text" placeholder="5541999999999" style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:var(--font-body);outline:none;">
     <label style="display:flex;align-items:center;gap:8px;margin-bottom:20px;cursor:pointer;">
-      <input id="edit-corretor-ativo" type="checkbox" checked style="accent-color:#FF6B00;">
-      <span style="font-size:13px;color:#555;">Corretor ativo</span>
+      <input id="edit-corretor-ativo" type="checkbox" checked style="accent-color:var(--color-primary);">
+      <span style="font-size:13px;color:var(--color-text-secondary);">Corretor ativo</span>
     </label>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
-      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="padding:9px 18px;border-radius:8px;border:0.5px solid #ddd;background:#f5f5f0;color:#555;cursor:pointer;font-family:'DM Sans',sans-serif;">Cancelar</button>
-      <button onclick="salvarEdicaoCorretor()" style="padding:9px 18px;border-radius:8px;border:none;background:#FF6B00;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;">Salvar</button>
+      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="padding:9px 18px;border-radius:var(--radius-btn);border:1px solid var(--color-border);background:var(--color-bg);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-body);">Cancelar</button>
+      <button onclick="salvarEdicaoCorretor()" style="padding:9px 18px;border-radius:var(--radius-btn);border:none;background:var(--color-primary);color:#fff;cursor:pointer;font-family:var(--font-body);font-weight:500;">Salvar</button>
     </div>
   </div>
 </div>

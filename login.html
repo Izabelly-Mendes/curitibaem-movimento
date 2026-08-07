@@ -10,31 +10,33 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Curitiba em Movimento">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#1a1a1a">
+<meta name="theme-color" content="#FAFAF8">
 <title>Acesso — Curitiba em Movimento</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="design-system.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#1a1a1a;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;margin:0 auto}
+body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{background:var(--color-card);border:1px solid var(--color-border);box-shadow:var(--shadow-card);border-radius:var(--radius-card);padding:40px 36px;width:100%;max-width:400px;margin:0 auto}
 .logo-wrap{text-align:center;margin-bottom:28px}
 .logo-wrap img{height:44px}
-.login-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:#1a1a1a;text-align:center;margin-bottom:6px}
-.login-sub{font-size:13px;color:#aaa;text-align:center;margin-bottom:28px}
-.field-label{font-size:12px;font-weight:600;color:#555;margin-bottom:6px;display:block}
+.login-title{font-family:var(--font-heading);font-size:20px;font-weight:700;color:var(--color-text);text-align:center;margin-bottom:6px}
+.login-sub{font-size:13px;color:var(--color-text-secondary);text-align:center;margin-bottom:28px}
+.field-label{font-size:12px;font-weight:600;color:var(--color-text-secondary);margin-bottom:6px;display:block}
 .field-wrap{position:relative;margin-bottom:16px}
-.field-input{width:100%;border:1px solid #e0ddd5;border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:#1a1a1a;outline:none;transition:border-color 0.2s;background:#fafafa}
-.field-input:focus{border-color:#FF6B00;background:#fff}
-.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#bbb;font-size:16px;padding:4px;line-height:1}
-.eye-btn:hover{color:#888}
-.btn-entrar{width:100%;background:#FF6B00;color:#fff;border:none;border-radius:10px;padding:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-top:4px}
-.btn-entrar:hover{background:#e05a00}
+.field-input{width:100%;border:1px solid var(--color-border);border-radius:10px;padding:12px 14px;font-family:var(--font-body);font-size:14px;color:var(--color-text);outline:none;transition:border-color 0.2s;background:#fafafa}
+.field-input:focus{border-color:var(--color-primary);background:#fff}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:16px;padding:4px;line-height:1}
+.eye-btn:hover{color:var(--color-text)}
+.btn-entrar{width:100%;background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-btn);height:48px;padding:0 13px;font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-top:4px}
+.btn-entrar:hover{background:var(--color-primary-hover)}
 .btn-entrar:disabled{background:#ccc;cursor:not-allowed}
 .erro-msg{background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:8px;padding:10px 14px;font-size:13px;color:#c0392b;margin-bottom:16px;display:none}
 .forgot-link{text-align:center;margin-top:18px}
-.forgot-link a{font-size:12px;color:#bbb;text-decoration:none;cursor:pointer}
-.forgot-link a:hover{color:#888}
-.forgot-info{font-size:12px;color:#aaa;text-align:center;margin-top:10px;display:none;line-height:1.5}
+.forgot-link a{font-size:12px;color:var(--color-text-secondary);text-decoration:none;cursor:pointer}
+.forgot-link a:hover{color:var(--color-primary)}
+.forgot-info{font-size:12px;color:var(--color-text-secondary);text-align:center;margin-top:10px;display:none;line-height:1.5}
 </style>
 </head>
 <body>
@@ -60,8 +62,8 @@ body{font-family:'DM Sans',sans-serif;background:#1a1a1a;min-height:100vh;displa
     </div>
 
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
-      <input type="checkbox" id="lembrar" style="width:16px;height:16px;accent-color:#FF6B00;cursor:pointer;">
-      <label for="lembrar" style="font-size:13px;color:#888;cursor:pointer;">Lembrar de mim neste computador</label>
+      <input type="checkbox" id="lembrar" style="width:16px;height:16px;accent-color:var(--color-primary);cursor:pointer;">
+      <label for="lembrar" style="font-size:13px;color:var(--color-text-secondary);cursor:pointer;">Lembrar de mim neste computador</label>
     </div>
 
     <div id="erro-login" style="color:#e24b4a;font-size:13px;text-align:center;margin-bottom:10px;min-height:18px;"></div>
