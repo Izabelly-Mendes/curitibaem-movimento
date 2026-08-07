@@ -99,54 +99,55 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
 .secao { display: none; }
 .secao.ativa { display: block; }
 
-/* ── COVER ───────────────────────────────────────────────── */
-.cover {
-  position: relative;
-  overflow: hidden;
-  background-color: var(--color-bg);
-  background-image: url('jardim-botanico.jpg');
-  background-size: cover;
-  background-position: center 30%;
-  min-height: 420px;
+/* ── HEADER (leve, funcional) ───────────────────────────────── */
+.site-header {
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-divider);
+  padding: var(--space-3) var(--space-6);
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: var(--space-6) var(--space-6);
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 10px;
+  gap: var(--space-3);
 }
-.cover::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(250,250,248,0.95) 0%,
-    rgba(250,250,248,0.82) 50%,
-    rgba(250,250,248,0.55) 100%
-  );
-  z-index: 0;
+.site-header .logo-img { height: 34px; margin: 0; display: block; }
+.header-utils { margin-left: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+#widget-clima { background: rgba(22,22,22,0.9); border-radius: 999px; padding: 3px; line-height: 0; flex-shrink: 0; }
+#widget-clima .weather-widget { gap: 6px !important; }
+#widget-clima .weather-main,
+#widget-clima .weather-meta { padding: 5px 10px !important; gap: 5px !important; }
+#widget-clima .weather-icon { font-size: 14px !important; }
+#widget-clima .weather-temp { font-size: 12px !important; }
+#widget-clima .weather-date { font-size: 9px !important; }
+#widget-clima .weather-city { font-size: 9px !important; }
+#widget-clima .weather-condicao { display: none !important; }
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-6);
 }
-.cover > * { position: relative; z-index: 1; }
-.cover-circle1 {
-  position: absolute; top: -80px; right: -80px;
-  width: 320px; height: 320px; border-radius: 50%;
-  background: rgba(10,77,140,0.06);
-  pointer-events: none;
-}
-.cover-circle2 {
-  position: absolute; bottom: -100px; left: 60px;
-  width: 220px; height: 220px; border-radius: 50%;
-  background: rgba(10,77,140,0.04);
-  pointer-events: none;
-}
-.logo-img { height: 48px; margin-bottom: 52px; display: block; }
-.cover-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-2); }
-.cover-title { font-family: var(--font-heading); font-size: var(--text-h1-size); font-weight: var(--text-h1-weight); color: var(--color-text); line-height: var(--text-h1-lh); margin-bottom: var(--space-2); }
-.cover-title span { color: var(--color-primary); }
-.cover-sub { font-size: var(--text-body-size); color: var(--color-text-secondary); font-weight: 400; margin-bottom: var(--space-4); }
+.hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-3); }
+.hero-title { font-family: var(--font-heading); font-size: var(--text-h1-size); font-weight: var(--text-h1-weight); color: var(--color-text); line-height: var(--text-h1-lh); margin: 0 0 var(--space-3); }
+.hero-title span { color: var(--color-primary); }
+.hero-sub { font-size: var(--text-h4-size); color: var(--color-text-secondary); font-weight: 400; line-height: 1.5; margin: 0 0 var(--space-4); max-width: 460px; }
+.hero-cta { margin-bottom: var(--space-6); }
+.hero-cta .btn-arrow { margin-left: 2px; }
 .pills { display: flex; gap: 9px; flex-wrap: wrap; }
 .pill { background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 100px; padding: 6px 14px; font-size: 11.5px; color: var(--color-text-secondary); }
 .pill.o { background: rgba(10,77,140,0.1); border-color: rgba(10,77,140,0.3); color: var(--color-primary); }
 .pill-icon { display: none; }
+
+.hero-media { display: flex; flex-direction: column; gap: var(--space-4); }
+.hero-image { width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center 35%; border-radius: 28px; display: block; }
+.hero-stats { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-4); }
+.hero-stat { flex: 1 1 110px; min-width: 110px; padding-left: var(--space-3); border-left: 1px solid var(--color-divider); }
+.hero-stat:first-child { padding-left: 0; border-left: none; }
+.hero-stat-num { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--color-text); line-height: 1.1; margin-bottom: 4px; }
+.hero-stat-label { font-size: 12px; color: var(--color-text-secondary); line-height: 1.4; }
 
 /* ── BODY ────────────────────────────────────────────────── */
 .body { padding: var(--space-6) var(--space-6) var(--space-8); }
@@ -330,7 +331,7 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
 .footer-src:hover { color: var(--color-primary); border-color: rgba(10,77,140,0.3); }
 
 /* ── MICROINTERAÇÕES ADICIONAIS ─────────────────────────── */
-.cover-title { letter-spacing: -0.02em; }
+.hero-title { letter-spacing: -0.02em; }
 #scroll-progress { position:fixed; top:0; left:0; height:2px; background:var(--color-primary); z-index:9999; pointer-events:none; transition:width 0.1s linear; }
 
 /* ── DESIGN TOKENS ───────────────────────────────────────── */
@@ -417,6 +418,10 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
 @media (max-width: 1024px) {
   .dc-card { grid-template-columns: 1fr; }
   .dc-card-media { aspect-ratio: 16/9; }
+  .hero { gap: var(--space-6); padding: var(--space-8) var(--space-4); }
+  .hero-title { font-size: 56px; }
+  .hero-sub { max-width: none; }
+  .hero-stat-num { font-size: 22px; }
 }
 @media (max-width: 768px) {
   .dc-page-header { align-items: flex-start; }
@@ -459,8 +464,7 @@ button:active { transform: scale(0.97); }
 .sec-label a { transition: all 0.2s ease; }
 .secao.ativa { animation: fadeInUp 0.25s ease; }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.cover-title, .card-h { letter-spacing: -0.02em; }
-.cover.scrolled { backdrop-filter: blur(12px); background: rgba(26,26,26,0.92); }
+.hero-title, .card-h { letter-spacing: -0.02em; }
 
 /* ── SKELETON ────────────────────────────────────────────── */
 @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
@@ -498,13 +502,14 @@ img { max-width: 100%; height: auto; }
   .main-wrapper.collapsed { margin-left: 0 !important; }
 
   #dados-curitiba { padding: 20px 16px 0; }
-  .cover { padding: 32px 20px 28px; }
-  .cover-circle1 { width: 180px; height: 180px; top: -40px; right: -40px; }
-  .cover-circle2 { width: 130px; height: 130px; bottom: -60px; left: 30px; }
-  .logo-img { height: 34px; margin-bottom: 28px; }
-  .cover-tag { font-size: 10px; }
-  .cover-title { font-size: 28px; }
-  .cover-sub { font-size: 13px; margin-bottom: 24px; }
+  .site-header { padding: 14px 20px; }
+  .hero { grid-template-columns: 1fr; padding: var(--space-6) 20px; gap: var(--space-6); }
+  .hero-media { order: 2; }
+  .hero-text { order: 1; }
+  .hero-title { font-size: 34px; }
+  .hero-sub { font-size: 15px; max-width: none; }
+  .hero-image { aspect-ratio: 16/10; border-radius: 20px; }
+  .hero-stat-num { font-size: 22px; }
   .pill { font-size: 10.5px; padding: 5px 11px; }
   .body { padding: 20px 16px 36px; }
   .sec-label { font-size: 9.5px; margin-bottom: 14px; }
@@ -548,7 +553,7 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 480px) {
   .kpi-grid { grid-template-columns: 1fr; }
   .kpi3 { grid-template-columns: 1fr; }
-  .cover-title { font-size: 24px; }
+  .hero-title { font-size: 28px; }
   .kpi-num { font-size: 22px; }
   .news-grid { grid-template-columns: 1fr; }
   .news-item:nth-child(1) { grid-column: 1; grid-row: auto; }
@@ -616,7 +621,6 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 768px) {
   .secao { padding: 20px 20px; }
   #barra-busca-wrapper { padding: 16px 20px 0; }
-  .cover { padding: 24px 20px; min-height: 300px; }
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -624,97 +628,16 @@ img { max-width: 100%; height: auto; }
    Não afeta desktop. Todo seletor abaixo é escopado à media query.
    ════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* — Background: overlay mais escuro, imagem perceptível — */
-  .cover::before {
-    background: linear-gradient(180deg, rgba(0,0,0,.70), rgba(0,0,0,.45)) !important;
-  }
+  /* — Header: utilitários empilham abaixo da logo — */
+  .header-utils { width: 100%; justify-content: space-between; }
 
-  /* — Header: mais compacto, respiro maior — */
-  .cover-header-row { flex-wrap: wrap !important; row-gap: 12px !important; margin-bottom: 20px !important; }
-  #lang-selector { flex-basis: 100% !important; justify-content: flex-end !important; }
-  .corretor-tools { flex-basis: 100% !important; justify-content: flex-end !important; flex-wrap: wrap !important; row-gap: 6px !important; margin-left: 0 !important; }
+  /* — CTA principal: botão de largura total — */
+  .hero-cta { width: 100%; }
+  .hero-cta.btn { width: 100%; }
 
-  /* — Widget de clima: um card único, ~35% da largura — */
-  #widget-clima { flex: 0 0 40% !important; max-width: 170px !important; margin-right: 0 !important; }
-  .weather-widget {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    width: 100% !important;
-    gap: 2px !important;
-    background: rgba(255,255,255,0.10) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border: 0.5px solid rgba(255,255,255,0.18) !important;
-    border-radius: 12px !important;
-    padding: 10px 12px !important;
-  }
-  .weather-widget .weather-main,
-  .weather-widget .weather-meta {
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    display: flex !important;
-  }
-  .weather-widget .weather-main { gap: 6px !important; margin-bottom: 2px !important; }
-  .weather-widget .weather-meta { flex-direction: column !important; }
-  .weather-widget .weather-icon { font-size: 15px !important; }
-  .weather-widget .weather-temp { font-size: 13px !important; }
-  .weather-widget .weather-condicao { display: none !important; }
-  .weather-widget .weather-city { order: -1 !important; font-size: 12px !important; font-weight: 600 !important; color: #fff !important; }
-  .weather-widget .weather-date { font-size: 10px !important; color: rgba(255,255,255,0.55) !important; }
-
-  /* — Hero: mais contraste, espaçamento e destaque para "dados" — */
-  .cover-tag { font-size: 13px; margin-bottom: 12px; }
-  .cover-title { font-size: 42px; line-height: 1.15; margin-bottom: 16px; }
-  .cover-sub { font-size: 18px; line-height: 1.5; margin-bottom: 32px; }
-
-  /* — CTA principal: botão premium sólido — */
-  .cta-premium-wrap { margin-bottom: 24px !important; }
-  .cta-premium {
-    display: flex !important;
-    align-items: center !important;
-    gap: 14px !important;
-    width: 100% !important;
-    background: var(--color-primary) !important;
-    border: none !important;
-    border-radius: 20px !important;
-    height: 72px !important;
-    padding: 0 22px !important;
-    box-shadow: 0 10px 28px rgba(10,77,140,0.35) !important;
-    transition: transform 200ms ease, box-shadow 200ms ease !important;
-  }
-  .cta-premium:active { transform: scale(0.98) !important; }
-  .cta-premium-ico { font-size: 22px !important; color: #fff !important; flex-shrink: 0 !important; }
-  .cta-premium-text { flex: 1 !important; min-width: 0 !important; }
-  .cta-premium-text > div:first-child { color: #fff !important; font-size: 13px !important; }
-  .cta-premium-text > div:last-child { color: rgba(255,255,255,0.85) !important; font-size: 12px !important; }
-  .cta-premium::after {
-    content: '→';
-    color: #fff;
-    font-size: 20px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  /* — Fontes oficiais: cards escuros em grid — */
-  .pills { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-  .pill {
-    background: #1E1E1E !important;
-    border: none !important;
-    border-radius: 16px !important;
-    padding: 14px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 8px !important;
-    min-height: 44px !important;
-    transition: transform 200ms ease !important;
-  }
-  .pill:active { transform: translateY(-2px) !important; }
-  .pill.o { border: 1px solid rgba(10,77,140,0.45) !important; }
-  .pill-icon { display: inline-block !important; font-size: 20px !important; }
-  .pill-label { font-size: 13px !important; font-weight: 600 !important; }
+  /* — Fontes oficiais: badges leves, sem cards escuros — */
+  .pills { gap: 7px; }
+  .pill { font-size: 10.5px; padding: 5px 11px; }
 
   /* — Card de indicadores (barra de KPIs): cards premium empilhados — */
   #barra-kpis { padding: 0 20px !important; background: transparent !important; border-bottom: none !important; }
@@ -778,37 +701,52 @@ img { max-width: 100%; height: auto; }
 <!-- MAIN WRAPPER -->
 <div class="main-wrapper" id="main-wrapper">
 
-<div class="cover secao ativa" id="secao-geral">
-  <div class="cover-circle1"></div>
-  <div class="cover-circle2"></div>
-  <!-- Header row: logo + seletor de idiomas -->
-  <div class="cover-header-row" style="display:flex;align-items:center;margin-bottom:48px;">
-    <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis" style="margin-bottom:0;flex-shrink:0;">
-    <div id="widget-clima" style="margin-left:auto;margin-right:12px;"></div>
-    <div id="lang-selector" style="display:flex;align-items:center;gap:8px;position:relative;z-index:9999;pointer-events:auto;">
-      <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(10,77,140,0.08);border:1.5px solid var(--color-primary);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
-      <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
-      <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
-    </div>
-  </div>
-  <div class="cover-tag" data-pt="Para investidores Bicalho" data-en="For Bicalho investors" data-zh="面向Bicalho投资者">Para investidores Bicalho</div>
-  <div class="cover-title" data-pt="Curitiba em&lt;br&gt;&lt;span&gt;dados&lt;/span&gt;" data-en="Curitiba&lt;br&gt;&lt;span&gt;in Data&lt;/span&gt;" data-zh="库里提巴&lt;br&gt;&lt;span&gt;数据洞察&lt;/span&gt;">Curitiba em<br><span>dados</span></div>
-  <div class="cover-sub" data-pt="Turismo, economia e potencial de valorização · 2024/2025" data-en="Tourism, economy and appreciation potential · 2024/2025" data-zh="旅游、经济与增值潜力 · 2024/2025">Turismo, economia e potencial de valorização · 2024/2025</div>
-  <div class="cta-premium-wrap" style="margin-bottom:28px;">
-    <a href="https://diferencialinvest.com.br" target="_blank" class="cta-premium" style="display:inline-flex;align-items:center;gap:10px;background:rgba(10,77,140,0.12);border:0.5px solid rgba(10,77,140,0.35);border-radius:12px;padding:12px 18px;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(10,77,140,0.2)'" onmouseout="this.style.background='rgba(10,77,140,0.12)'">
-      <span class="cta-premium-ico" style="font-size:20px;">🏢</span>
-      <div class="cta-premium-text">
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-primary);" data-pt="Acompanhe sua unidade" data-en="Track your unit" data-zh="跟踪您的单元">Acompanhe sua unidade</div>
-        <div style="font-size:12px;color:var(--color-text-secondary);" data-pt="Portal do investidor Diferencial" data-en="Diferencial investor portal" data-zh="Diferencial投资者门户">Portal do investidor Diferencial →</div>
+<div class="secao ativa" id="secao-geral">
+  <!-- HEADER -->
+  <header class="site-header">
+    <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis">
+    <div class="header-utils">
+      <div id="widget-clima"></div>
+      <div id="lang-selector" style="display:flex;align-items:center;gap:8px;position:relative;z-index:9999;pointer-events:auto;">
+        <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(10,77,140,0.08);border:1.5px solid var(--color-primary);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
+        <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
+        <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
       </div>
-    </a>
-  </div>
-  <div class="pills">
-    <div class="pill o"><span class="pill-icon">✅</span><span class="pill-label" data-pt="Dados oficiais" data-en="Official Data" data-zh="官方数据">Dados oficiais</span></div>
-    <div class="pill"><span class="pill-icon">📊</span><span class="pill-label">IMT</span></div>
-    <div class="pill"><span class="pill-icon">🏨</span><span class="pill-label">SEHA</span></div>
-    <div class="pill"><span class="pill-icon">🌎</span><span class="pill-label">Embratur</span></div>
-    <div class="pill"><span class="pill-icon">🏛️</span><span class="pill-label" data-pt="Prefeitura de Curitiba" data-en="City of Curitiba" data-zh="库里提巴市政府">Prefeitura de Curitiba</span></div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow" data-pt="Para investidores Bicalho" data-en="For Bicalho investors" data-zh="面向Bicalho投资者">Para investidores Bicalho</div>
+      <h1 class="hero-title" data-pt="Curitiba em&lt;br&gt;&lt;span&gt;dados&lt;/span&gt;" data-en="Curitiba&lt;br&gt;&lt;span&gt;in Data&lt;/span&gt;" data-zh="库里提巴&lt;br&gt;&lt;span&gt;数据洞察&lt;/span&gt;">Curitiba em<br><span>dados</span></h1>
+      <p class="hero-sub" data-pt="Turismo, economia e potencial de valorização" data-en="Tourism, economy and appreciation potential" data-zh="旅游、经济与增值潜力">Turismo, economia e potencial de valorização</p>
+      <a href="https://diferencialinvest.com.br" target="_blank" class="btn btn-primary hero-cta" data-pt="Acompanhe sua unidade →" data-en="Track your unit →" data-zh="跟踪您的单元 →">Acompanhe sua unidade →</a>
+      <div class="pills">
+        <div class="pill o"><span class="pill-icon">✅</span><span class="pill-label" data-pt="Dados oficiais" data-en="Official Data" data-zh="官方数据">Dados oficiais</span></div>
+        <div class="pill"><span class="pill-icon">📊</span><span class="pill-label">IMT</span></div>
+        <div class="pill"><span class="pill-icon">🏨</span><span class="pill-label">SEHA</span></div>
+        <div class="pill"><span class="pill-icon">🌎</span><span class="pill-label">Embratur</span></div>
+        <div class="pill"><span class="pill-icon">🏛️</span><span class="pill-label" data-pt="Prefeitura de Curitiba" data-en="City of Curitiba" data-zh="库里提巴市政府">Prefeitura de Curitiba</span></div>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="jardim-botanico.jpg" alt="Curitiba" class="hero-image">
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">10M</div>
+          <div class="hero-stat-label" data-pt="Visitantes em 2024" data-en="Visitors in 2024" data-zh="2024年访客量">Visitantes em 2024</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">+17,86%</div>
+          <div class="hero-stat-label" data-pt="Valorização imobiliária" data-en="Real estate appreciation" data-zh="房地产增值">Valorização imobiliária</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">78%</div>
+          <div class="hero-stat-label" data-pt="Wellness influencia a decisão de compra" data-en="Wellness influences the purchase decision" data-zh="健康生活方式影响购房决策">Wellness influencia a decisão de compra</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1564,9 +1502,9 @@ function trocarIdioma(lang) {
   document.querySelectorAll('.lang-btn').forEach(function(btn) {
     var ativo = btn.getAttribute('data-lang') === lang;
     btn.style.opacity = ativo ? '1' : '0.45';
-    btn.style.borderColor = ativo ? '#FF6B00' : 'rgba(255,255,255,0.2)';
+    btn.style.borderColor = ativo ? '#0A4D8C' : '#E9E9E9';
     btn.style.borderWidth = ativo ? '1.5px' : '1px';
-    btn.style.background = ativo ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)';
+    btn.style.background = ativo ? 'rgba(10,77,140,0.08)' : '#FFFFFF';
     btn.classList.toggle('lang-btn-active', ativo);
   });
   document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang === 'en' ? 'en' : 'zh-CN';
