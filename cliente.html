@@ -167,13 +167,14 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
 .kpi { background: none; border: none; border-radius: 0; padding: 0 0 0 var(--space-3); border-left: 1px solid var(--color-divider); }
 .kpi:first-child { padding-left: 0; border-left: none; }
 .kpi.dk { background: none; border: none; }
-.kpi-num { font-family: var(--font-heading); font-size: 34px; font-weight: 700; color: var(--color-text); line-height: 1; margin-bottom: 6px; letter-spacing: -0.02em; }
+.kpi-num { font-family: var(--font-heading); font-size: var(--text-data-secondary); font-weight: 700; color: var(--color-text); line-height: 1; margin-bottom: 6px; letter-spacing: -0.02em; }
 .kpi-num span { color: var(--color-primary); }
-.kpi.dk .kpi-num { color: var(--color-primary); }
+.kpi.dk .kpi-num { color: var(--color-primary); font-size: var(--text-data-hero); }
 .kpi-lbl { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
 .kpi.dk .kpi-lbl { color: var(--color-text-secondary); }
 .kpi-src { font-size: 10px; color: var(--color-text-secondary); margin-top: 6px; opacity: .8; }
 .kpi.dk .kpi-src { color: var(--color-text-secondary); }
+.kpi-src.trend { color: var(--color-primary); font-weight: 600; font-size: 12px; opacity: 1; }
 
 
 .card { background: var(--color-card); border-radius: var(--radius-card); border: 1px solid var(--color-border); padding: var(--space-4); margin-bottom: var(--space-3); }
@@ -185,11 +186,41 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
 .ins { border-left: 2px solid var(--color-primary); background: none; border-radius: 0; padding: 2px 0 2px 16px; margin-top: var(--space-3); font-size: 13.5px; font-style: italic; color: var(--color-text-secondary); line-height: 1.65; max-width: 680px; }
 .ins strong { color: var(--color-text); font-style: normal; }
 
-.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.bar-lbl { font-size: 12px; color: var(--color-text-secondary); width: 90px; flex-shrink: 0; }
-.bar-track { flex: 1; height: 4px; background: var(--color-divider); border-radius: 10px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 10px; background: var(--color-primary); }
-.bar-val { font-size: 12px; font-weight: 700; color: var(--color-text); width: 36px; text-align: right; }
+.bar-row { display: flex; align-items: center; gap: 14px; margin-bottom: var(--space-2); }
+.bar-lbl { font-size: 13px; color: var(--color-text-secondary); width: 90px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 8px; background: var(--color-divider); border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 10px; background: var(--color-primary); transition: width var(--transition-base); }
+.bar-val { font-family: var(--font-heading); font-size: 15px; font-weight: 700; color: var(--color-text); width: 44px; text-align: right; }
+
+/* ── GRÁFICO DE LINHA (SVG nativo, evolução temporal) ───────── */
+.line-chart { margin: var(--space-3) 0; }
+.line-chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.line-chart-line { fill: none; stroke: var(--color-primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.line-chart-dot { fill: var(--color-bg-secondary); stroke: var(--color-primary); stroke-width: 2; }
+.line-chart-dot.last { fill: var(--color-primary); stroke: none; }
+.line-chart-val { font-family: var(--font-heading); font-size: 15px; font-weight: 600; fill: var(--color-text-secondary); }
+.line-chart-val.strong { font-size: 19px; font-weight: 700; fill: var(--color-primary); }
+.line-chart-label { font-family: var(--font-body); font-size: 11px; fill: var(--color-text-secondary); }
+
+/* ── BARRAS DE COMPARAÇÃO (short stay x locação tradicional) ── */
+.compare-bars { margin: var(--space-3) 0; max-width: 560px; }
+.compare-bar-row { margin-bottom: var(--space-3); }
+.compare-bar-row:last-child { margin-bottom: 0; }
+.compare-bar-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; gap: 12px; }
+.compare-bar-lbl { font-size: 13px; color: var(--color-text-secondary); }
+.compare-bar-val { font-family: var(--font-heading); font-size: 20px; font-weight: 700; color: var(--color-text); white-space: nowrap; }
+.compare-bar-track { height: 10px; background: var(--color-divider); border-radius: 10px; overflow: hidden; }
+.compare-bar-fill { height: 100%; border-radius: 10px; background: var(--color-border); }
+.compare-bar-fill.primary { background: var(--color-primary); }
+.compare-bar-diff { margin-top: var(--space-2); font-size: 13px; color: var(--color-primary); font-weight: 600; }
+
+/* ── BLOCO DE DADOS PREMIUM (protagonista + secundários) ─────── */
+.data-block { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-6); margin: var(--space-4) 0; }
+.data-hero { flex-shrink: 0; }
+.data-hero .kpi-num { font-size: var(--text-data-hero); }
+.data-secondary-row { display: flex; flex-wrap: wrap; gap: var(--space-4); flex: 1; min-width: 260px; }
+.data-secondary-row .kpi { flex: 1 1 100px; min-width: 100px; }
+.data-secondary-row .kpi-num { font-size: 22px; }
 
 .award { background: none; border: none; border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider); border-radius: 0; padding: var(--space-3) 0; display: flex; align-items: center; gap: 18px; margin-bottom: var(--space-3); }
 .award-ico { font-size: 26px; flex-shrink: 0; line-height: 1; }
@@ -523,8 +554,17 @@ img { max-width: 100%; height: auto; }
   .kpi2 { grid-template-columns: 1fr 1fr; gap: 16px 14px; margin: 16px 0; }
   .kpi3 { grid-template-columns: 1fr 1fr; gap: 16px 14px; margin: 16px 0; }
   .kpi-num { font-size: 24px; }
+  .kpi.dk .kpi-num { font-size: 34px; }
   .kpi-lbl { font-size: 11.5px; }
   .kpi-src { font-size: 9.5px; }
+  .data-block { flex-direction: column; align-items: flex-start; gap: var(--space-3); margin: 16px 0; }
+  .data-secondary-row { gap: 16px 14px; min-width: 0; width: 100%; }
+  .data-secondary-row .kpi { flex: 1 1 40%; }
+  .data-secondary-row .kpi-num { font-size: 20px; }
+  .line-chart-val { font-size: 12px; }
+  .line-chart-val.strong { font-size: 15px; }
+  .line-chart-label { font-size: 9px; }
+  .compare-bar-val { font-size: 16px; }
   .card { padding: 16px 16px; margin-bottom: 10px; }
   .card-h { font-size: 18px; }
   .card-b { font-size: 13px; line-height: 1.68; }
@@ -563,6 +603,8 @@ img { max-width: 100%; height: auto; }
   .kpi3 { grid-template-columns: 1fr; }
   .hero-title { font-size: 28px; }
   .kpi-num { font-size: 22px; }
+  .kpi.dk .kpi-num { font-size: 30px; }
+  .data-secondary-row .kpi { flex: 1 1 100%; }
   .news-grid { grid-template-columns: 1fr; }
   .news-item:nth-child(1) { grid-column: 1; grid-row: auto; }
   .news-item:nth-child(2) { grid-column: 1; grid-row: auto; }
@@ -633,24 +675,20 @@ img { max-width: 100%; height: auto; }
   .pills { gap: 7px; }
   .pill { font-size: 10.5px; padding: 5px 11px; }
 
-  /* — Card de indicadores (barra de KPIs): cards premium empilhados — */
-  #barra-kpis { padding: 0 20px !important; background: transparent !important; border-bottom: none !important; }
-  .kpi-bar { display: flex !important; flex-direction: column !important; gap: 16px !important; padding: 20px 0 !important; }
+  /* — Barra de indicadores: empilhada, mesmo sistema visual claro — */
+  #barra-kpis { padding: 0 20px !important; }
+  .kpi-bar { display: flex !important; flex-direction: column !important; gap: 0 !important; padding: 8px 0 !important; }
   .kpi-bar-item {
     border-right: none !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
-    background: #1E1E1E !important;
-    border-radius: 24px !important;
-    padding: 24px !important;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.28) !important;
-    transition: transform 200ms ease !important;
+    border-bottom: 1px solid var(--color-divider) !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 14px 0 !important;
   }
-  .kpi-bar-item:active { transform: translateY(-2px) !important; }
-  .kpi-bar-icon { font-size: 26px !important; opacity: 1 !important; }
-  .kpi-bar-value { font-size: 34px !important; }
-  .kpi-bar-label { font-size: 14px !important; color: rgba(255,255,255,0.6) !important; margin-top: 4px !important; }
+  .kpi-bar-item:last-child { border-bottom: none !important; }
+  .kpi-bar-icon { font-size: 20px !important; opacity: 0.55 !important; }
+  .kpi-bar-value { font-size: 22px !important; }
+  .kpi-bar-label { font-size: 12px !important; color: var(--color-text-secondary) !important; margin-top: 2px !important; }
 
   /* — WhatsApp flutuante: ~20% menor, sombra mais evidente — */
   #whats-float { bottom: 20px !important; right: 16px !important; }
@@ -744,7 +782,7 @@ img { max-width: 100%; height: auto; }
   </div>
 </div>
 
-<div id="barra-kpis" style="background:#1a1a1a;border-bottom:0.5px solid rgba(255,255,255,0.08);padding:0 48px;overflow:hidden;"></div>
+<div id="barra-kpis" style="background:var(--color-bg-secondary);border-bottom:1px solid var(--color-divider);padding:0 48px;overflow:hidden;"></div>
 
 <div style="padding:20px 48px 0;background:var(--color-bg);" id="barra-busca-wrapper">
   <div style="position:relative;max-width:600px;">
@@ -982,17 +1020,17 @@ img { max-width: 100%; height: auto; }
       <div class="kpi">
         <div class="kpi-num">3,09<span>M</span></div>
         <div class="kpi-lbl" data-pt="espectadores totais" data-en="total spectators" data-zh="观众总人数">espectadores totais</div>
-        <div class="kpi-src" data-pt="+35% em relação a 2024" data-en="+35% vs. 2024" data-zh="较2024年增长35%">+35% em relação a 2024</div>
+        <div class="kpi-src trend" data-pt="+35% em relação a 2024" data-en="+35% vs. 2024" data-zh="较2024年增长35%">+35% em relação a 2024</div>
       </div>
       <div class="kpi dk">
         <div class="kpi-num"><span>R$</span>722<span>M</span></div>
         <div class="kpi-lbl" data-pt="impacto econômico estimado" data-en="estimated economic impact" data-zh="预计经济影响">impacto econômico estimado</div>
-        <div class="kpi-src" data-pt="+80% em relação a 2024" data-en="+80% vs. 2024" data-zh="较2024年增长80%">+80% em relação a 2024</div>
+        <div class="kpi-src trend" data-pt="+80% em relação a 2024" data-en="+80% vs. 2024" data-zh="较2024年增长80%">+80% em relação a 2024</div>
       </div>
       <div class="kpi">
         <div class="kpi-num">469<span>mil</span></div>
         <div class="kpi-lbl" data-pt="turistas no período natalino" data-en="tourists during the Christmas season" data-zh="圣诞季游客人数">turistas no período natalino</div>
-        <div class="kpi-src" data-pt="+60% em relação a 2024 · IMT" data-en="+60% vs. 2024 · IMT" data-zh="较2024年增长60% · IMT">+60% em relação a 2024 · IMT</div>
+        <div class="kpi-src trend" data-pt="+60% em relação a 2024 · IMT" data-en="+60% vs. 2024 · IMT" data-zh="较2024年增长60% · IMT">+60% em relação a 2024 · IMT</div>
       </div>
     </div>
     <div class="card">
@@ -1026,25 +1064,22 @@ img { max-width: 100%; height: auto; }
     <div class="card">
       <div class="card-h" data-pt="Evolução da ocupação hoteleira anual" data-en="Annual hotel occupancy rate evolution" data-zh="年度酒店入住率变化">Evolução da ocupação hoteleira anual</div>
       <div class="card-b" style="margin-bottom:14px" data-pt="Taxa média anual, base: hotéis filiados ao SEHA:" data-en="Annual average occupancy rate, based on SEHA-affiliated hotels:" data-zh="年度平均入住率（基于SEHA成员酒店）：">Taxa média anual, base: hotéis filiados ao SEHA:</div>
-      <div class="bar-row">
-        <div class="bar-lbl">2022</div>
-        <div class="bar-track"><div class="bar-fill" style="width:48%;background:#ccc"></div></div>
-        <div class="bar-val">48%</div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-lbl">2023</div>
-        <div class="bar-track"><div class="bar-fill" style="width:53%;background:#bbb"></div></div>
-        <div class="bar-val">53%</div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-lbl">2024</div>
-        <div class="bar-track"><div class="bar-fill" style="width:63%;background:#888"></div></div>
-        <div class="bar-val">63%</div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-lbl" data-pt="Out/2025" data-en="Oct/2025" data-zh="2025年10月">Out/2025</div>
-        <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
-        <div class="bar-val">90%</div>
+      <div class="line-chart">
+        <svg viewBox="0 0 600 190" class="line-chart-svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Evolução da ocupação hoteleira: 2022, 48%; 2023, 53%; 2024, 63%; outubro de 2025, 90%">
+          <polyline points="60,141 220,129 380,106 540,42" class="line-chart-line"></polyline>
+          <circle cx="60" cy="141" r="4" class="line-chart-dot"></circle>
+          <circle cx="220" cy="129" r="4" class="line-chart-dot"></circle>
+          <circle cx="380" cy="106" r="4" class="line-chart-dot"></circle>
+          <circle cx="540" cy="42" r="5" class="line-chart-dot last"></circle>
+          <text x="60" y="127" class="line-chart-val" text-anchor="middle">48%</text>
+          <text x="220" y="115" class="line-chart-val" text-anchor="middle">53%</text>
+          <text x="380" y="92" class="line-chart-val" text-anchor="middle">63%</text>
+          <text x="540" y="26" class="line-chart-val strong" text-anchor="middle">90%</text>
+          <text x="60" y="172" class="line-chart-label" text-anchor="middle">2022</text>
+          <text x="220" y="172" class="line-chart-label" text-anchor="middle">2023</text>
+          <text x="380" y="172" class="line-chart-label" text-anchor="middle">2024</text>
+          <text x="540" y="172" class="line-chart-label" text-anchor="middle" data-pt="Out/2025" data-en="Oct/2025" data-zh="2025年10月">Out/2025</text>
+        </svg>
       </div>
       <div class="ins" data-pt="Nos feriados de 2025, a média de ocupação ficou consistentemente em &lt;strong&gt;90%&lt;/strong&gt;, incluindo Carnaval, Páscoa, Tiradentes, Dia do Trabalhador e Consciência Negra." data-en="During the 2025 holidays, the average occupancy rate consistently held at &lt;strong&gt;90%&lt;/strong&gt;, including Carnival, Easter, Tiradentes Day, Labor Day, and Black Consciousness Day." data-zh="2025年各节假日期间，平均入住率始终维持在&lt;strong&gt;90%&lt;/strong&gt;，涵盖狂欢节、复活节、Tiradentes节、劳动节和黑人意识日。">Nos feriados de 2025, a média de ocupação ficou consistentemente em <strong>90%</strong>, incluindo Carnaval, Páscoa, Tiradentes, Dia do Trabalhador e Consciência Negra.</div>
     </div>
@@ -1057,10 +1092,10 @@ img { max-width: 100%; height: auto; }
   <div class="secao ativa" id="secao-aeroporto">
     <div class="sec-label"><span data-pt="Aeroporto e conectividade" data-en="Airport and connectivity" data-zh="机场与连通性">Aeroporto e conectividade</span> <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" style="font-size:12px;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">Ver matéria completa →</a></div>
     <div class="kpi2">
-      <div class="kpi">
+      <div class="kpi dk">
         <div class="kpi-num">6,08<span>M</span></div>
         <div class="kpi-lbl" data-pt="passageiros no Aeroporto Afonso Pena em 2025" data-en="passengers at Afonso Pena Airport in 2025" data-zh="2025年阿丰索·佩纳机场旅客吞吐量">passageiros no Aeroporto Afonso Pena em 2025</div>
-        <div class="kpi-src" data-pt="+56% desde 2022 (3,9M) · Gerência do Afonso Pena" data-en="+56% since 2022 (3.9M) · Afonso Pena Airport Management" data-zh="自2022年增长56%（2022年为390万）· 阿丰索·佩纳机场管理处">+56% desde 2022 (3,9M) · Gerência do Afonso Pena</div>
+        <div class="kpi-src trend" data-pt="+56% desde 2022 (3,9M) · Gerência do Afonso Pena" data-en="+56% since 2022 (3.9M) · Afonso Pena Airport Management" data-zh="自2022年增长56%（2022年为390万）· 阿丰索·佩纳机场管理处">+56% desde 2022 (3,9M) · Gerência do Afonso Pena</div>
       </div>
       <div class="kpi">
         <div class="kpi-num">160</div>
@@ -1096,7 +1131,7 @@ img { max-width: 100%; height: auto; }
   </div>
 
   <div class="kpi-grid" style="margin-top:14px;">
-    <div class="kpi">
+    <div class="kpi dk">
       <div class="kpi-num">14 <span>mil</span></div>
       <div class="kpi-lbl" data-pt="cruzeiristas esperados na temporada 2026/2027" data-en="cruise passengers expected in the 2026/2027 season" data-zh="2026/2027季度预计游轮乘客人数">cruzeiristas esperados na temporada 2026/2027</div>
       <div class="kpi-src">Portos do Paraná / Governo do Paraná</div>
@@ -1219,37 +1254,54 @@ img { max-width: 100%; height: auto; }
   <!-- ════════════════════════════════════════ -->
   <div class="secao ativa" id="secao-airbnb">
     <div class="sec-label"><span data-pt="Airbnb em Curitiba: o mercado de short stay" data-en="Airbnb in Curitiba: the short-stay market" data-zh="库里提巴Airbnb：短租市场">Airbnb em Curitiba: o mercado de short stay</span> <a href="https://airbtics.com/annual-airbnb-revenue-in-curitiba-brasil/" target="_blank" style="font-size:12px;font-weight:600;color:var(--color-primary);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">Ver dados do Airbnb →</a></div>
-    <div class="kpi3">
-      <div class="kpi dk">
+    <div class="data-block">
+      <div class="kpi dk data-hero">
         <div class="kpi-num"><span>5.190</span></div>
         <div class="kpi-lbl" data-pt="anúncios ativos no Airbnb em Curitiba (jan/2026)" data-en="active Airbnb listings in Curitiba (Jan/2026)" data-zh="Curitiba Airbnb在线房源数量（2026年1月）">anúncios ativos no Airbnb em Curitiba (jan/2026)</div>
         <div class="kpi-src" data-pt="Airbtics, +36,8% em 1 ano / +120,5% em 3 anos" data-en="Airbtics, +36.8% in 1 year / +120.5% in 3 years" data-zh="Airbtics，1年增长36.8% / 3年增长120.5%">Airbtics, +36,8% em 1 ano / +120,5% em 3 anos</div>
       </div>
-      <div class="kpi">
-        <div class="kpi-num"><span>64%</span></div>
-        <div class="kpi-lbl" data-pt="taxa média de ocupação 2024/2025, acima da média nacional" data-en="average occupancy rate 2024/2025, above the national average" data-zh="2024/2025年平均入住率，高于全国平均水平">taxa média de ocupação 2024/2025, acima da média nacional</div>
-        <div class="kpi-src">Airbtics / HostnJoy</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-num">234<span>noites</span></div>
-        <div class="kpi-lbl" data-pt="média de noites reservadas por anúncio ativo ao ano" data-en="average nights booked per active listing per year" data-zh="每个在线房源年均预订晚次">média de noites reservadas por anúncio ativo ao ano</div>
-        <div class="kpi-src">Airbtics 2024/2025</div>
-      </div>
-    </div>
-    <div class="kpi2" style="margin-bottom:14px">
-      <div class="kpi">
-        <div class="kpi-num">R$<span>199</span></div>
-        <div class="kpi-lbl" data-pt="diária média em Curitiba, alta de 34,5% em 1 ano" data-en="average daily rate in Curitiba, up 34.5% in 1 year" data-zh="Curitiba平均日租价格，1年涨幅34.5%">diária média em Curitiba, alta de 34,5% em 1 ano</div>
-        <div class="kpi-src">Airbtics, jan/2026</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-num">R$<span>49K</span></div>
-        <div class="kpi-lbl" data-pt="receita anual média por anúncio ativo, alta de 31,7% em 1 ano" data-en="average annual revenue per active listing, up 31.7% in 1 year" data-zh="每个在线房源年均收入，1年涨幅31.7%">receita anual média por anúncio ativo, alta de 31,7% em 1 ano</div>
-        <div class="kpi-src">Airbtics, fev/2025 a jan/2026</div>
+      <div class="data-secondary-row">
+        <div class="kpi">
+          <div class="kpi-num"><span>64%</span></div>
+          <div class="kpi-lbl" data-pt="taxa média de ocupação 2024/2025, acima da média nacional" data-en="average occupancy rate 2024/2025, above the national average" data-zh="2024/2025年平均入住率，高于全国平均水平">taxa média de ocupação 2024/2025, acima da média nacional</div>
+          <div class="kpi-src">Airbtics / HostnJoy</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">234<span>noites</span></div>
+          <div class="kpi-lbl" data-pt="média de noites reservadas por anúncio ativo ao ano" data-en="average nights booked per active listing per year" data-zh="每个在线房源年均预订晚次">média de noites reservadas por anúncio ativo ao ano</div>
+          <div class="kpi-src">Airbtics 2024/2025</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">R$<span>199</span></div>
+          <div class="kpi-lbl" data-pt="diária média em Curitiba, alta de 34,5% em 1 ano" data-en="average daily rate in Curitiba, up 34.5% in 1 year" data-zh="Curitiba平均日租价格，1年涨幅34.5%">diária média em Curitiba, alta de 34,5% em 1 ano</div>
+          <div class="kpi-src">Airbtics, jan/2026</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-num">R$<span>49K</span></div>
+          <div class="kpi-lbl" data-pt="receita anual média por anúncio ativo, alta de 31,7% em 1 ano" data-en="average annual revenue per active listing, up 31.7% in 1 year" data-zh="每个在线房源年均收入，1年涨幅31.7%">receita anual média por anúncio ativo, alta de 31,7% em 1 ano</div>
+          <div class="kpi-src">Airbtics, fev/2025 a jan/2026</div>
+        </div>
       </div>
     </div>
     <div class="card">
       <div class="card-h" data-pt="Locação curta vs. locação tradicional" data-en="Short-stay vs. traditional rental" data-zh="短租 vs. 传统租赁">Locação curta vs. locação tradicional</div>
+      <div class="compare-bars">
+        <div class="compare-bar-row">
+          <div class="compare-bar-head">
+            <span class="compare-bar-lbl" data-pt="Short stay, mensal bruto" data-en="Short stay, gross monthly" data-zh="短租，月毛收入">Short stay, mensal bruto</span>
+            <span class="compare-bar-val">R$ 3.900–4.600</span>
+          </div>
+          <div class="compare-bar-track"><div class="compare-bar-fill primary" style="width:100%"></div></div>
+        </div>
+        <div class="compare-bar-row">
+          <div class="compare-bar-head">
+            <span class="compare-bar-lbl" data-pt="Locação tradicional, mensal" data-en="Traditional rental, monthly" data-zh="传统租赁，月租">Locação tradicional, mensal</span>
+            <span class="compare-bar-val">R$ 1.800–2.400</span>
+          </div>
+          <div class="compare-bar-track"><div class="compare-bar-fill" style="width:49%"></div></div>
+        </div>
+        <div class="compare-bar-diff" data-pt="Diferença de mais de 80% na renda gerada" data-en="Over 80% difference in income generated" data-zh="收入差距超过80%">Diferença de mais de 80% na renda gerada</div>
+      </div>
       <div class="card-b" data-pt="Com 234 noites reservadas por ano e diária média de R$ 199, um studio bem posicionado pode gerar em torno de &lt;strong&gt;R$ 3.900 a R$ 4.600 mensais brutos&lt;/strong&gt; em short stay, contra &lt;strong&gt;R$ 1.800 a R$ 2.400 mensais&lt;/strong&gt; em locação tradicional para a mesma tipologia. A diferença pode chegar a &lt;strong&gt;mais de 80%&lt;/strong&gt; na renda gerada, com valorização patrimonial do imóvel por cima.&lt;br&gt;&lt;br&gt;Das mais de 5 mil unidades anunciadas no Airbnb em Curitiba, cerca de 4 mil estão concentradas em bairros como Centro, Água Verde e Batel, exatamente as regiões em destaque. Entre os bairros mais procurados pelos hóspedes estão Batel (polo gastronômico e de entretenimento, ideal para curtas estadias), Água Verde (mistura residencial e comercial com fácil acesso a vários pontos da cidade) e Centro (boa mobilidade e alta rotatividade)." data-en="With 234 nights booked per year and an average daily rate of R$199, a well-positioned studio can generate approximately &lt;strong&gt;R$3,900–R$4,600 in gross monthly revenue&lt;/strong&gt; through short-term rental, versus &lt;strong&gt;R$1,800–R$2,400 per month&lt;/strong&gt; under a traditional long-term lease for the same unit type. The income difference can reach &lt;strong&gt;over 80%&lt;/strong&gt;, on top of underlying property appreciation.&lt;br&gt;&lt;br&gt;Of the more than 5,000 units listed on Airbnb in Curitiba, approximately 4,000 are concentrated in neighborhoods such as Centro, Água Verde, and Batel — exactly the areas where Bicalho operates. The most sought-after neighborhoods among guests include Batel (a dining and entertainment hub, ideal for short stays), Água Verde (a mixed residential and commercial area with easy access across the city), and Centro (excellent mobility and high turnover)." data-zh="以每年234晚预订量和199雷亚尔的平均日租价计算，一套位置优越的公寓通过短租每月可创造约&lt;strong&gt;3,900至4,600雷亚尔的毛收入&lt;/strong&gt;，而同类型房产传统长租每月收入仅为&lt;strong&gt;1,800至2,400雷亚尔&lt;/strong&gt;。收入差距可高达&lt;strong&gt;80%以上&lt;/strong&gt;，房产本身的资本增值还额外叠加其上。&lt;br&gt;&lt;br&gt;Curitiba Airbnb上超过5,000套在线房源中，约4,000套集中在Centro、Água Verde和Batel等社区，正是Bicalho深耕运营的区域。房客最青睐的社区包括Batel（美食餐饮与娱乐中心，极适合短期住宿）、Água Verde（住商混合、通达城市各处）以及Centro（交通便利、换租率高）。">Com 234 noites reservadas por ano e diária média de R$ 199, um studio bem posicionado pode gerar em torno de <strong>R$ 3.900 a R$ 4.600 mensais brutos</strong> em short stay, contra <strong>R$ 1.800 a R$ 2.400 mensais</strong> em locação tradicional para a mesma tipologia. A diferença pode chegar a <strong>mais de 80%</strong> na renda gerada, com valorização patrimonial do imóvel por cima.<br><br>Das mais de 5 mil unidades anunciadas no Airbnb em Curitiba, cerca de 4 mil estão concentradas em bairros como Centro, Água Verde e Batel, exatamente as regiões em destaque. Entre os bairros mais procurados pelos hóspedes estão Batel (polo gastronômico e de entretenimento, ideal para curtas estadias), Água Verde (mistura residencial e comercial com fácil acesso a vários pontos da cidade) e Centro (boa mobilidade e alta rotatividade).</div>
       <div class="ins" data-pt="O mercado de short stay em Curitiba cresceu &lt;strong&gt;+120% em anúncios ativos nos últimos 3 anos&lt;/strong&gt;. Mesmo com mais oferta, a ocupação se manteve estável em 64% e a diária subiu 34,5%, sinal de demanda crescendo mais rápido que a oferta." data-en="Curitiba's short-term rental market has grown &lt;strong&gt;+120% in active listings over the past 3 years&lt;/strong&gt;. Despite the increased supply, occupancy has remained stable at 64% and the average daily rate has risen 34.5% — a clear sign that demand is growing faster than supply." data-zh="Curitiba短租市场&lt;strong&gt;过去3年在线房源增长了120%&lt;/strong&gt;。尽管供应大幅增加，入住率依然稳定在64%，平均日租价格上涨34.5%，印证了需求增速超过供给增速的市场格局。">O mercado de short stay em Curitiba cresceu <strong>+120% em anúncios ativos nos últimos 3 anos</strong>. Mesmo com mais oferta, a ocupação se manteve estável em 64% e a diária subiu 34,5%, sinal de demanda crescendo mais rápido que a oferta.</div>
     </div>
@@ -1747,11 +1799,11 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
       container.innerHTML = `
         <div class="kpi-bar" style="display:flex;align-items:stretch;">
           ${data.map((item, i) => `
-            <div class="kpi-bar-item" style="flex:1;padding:16px 24px;${i < data.length - 1 ? 'border-right:0.5px solid rgba(255,255,255,0.08);' : ''}display:flex;align-items:center;gap:12px;">
-              <span class="kpi-bar-icon" style="font-size:20px;opacity:0.7;">${temaIcones[item.tema] || '📌'}</span>
+            <div class="kpi-bar-item" style="flex:1;padding:16px 24px;${i < data.length - 1 ? 'border-right:1px solid var(--color-divider);' : ''}display:flex;align-items:center;gap:12px;">
+              <span class="kpi-bar-icon" style="font-size:18px;opacity:0.55;">${temaIcones[item.tema] || '📌'}</span>
               <div>
-                <div class="kpi-bar-value" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#FF6B00;line-height:1.1;">${item.kpi_valor}</div>
-                <div class="kpi-bar-label" style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px;line-height:1.3;">${item.kpi_label || item.titulo.substring(0, 50)}</div>
+                <div class="kpi-bar-value" style="font-family:var(--font-heading);font-size:18px;font-weight:700;color:var(--color-primary);line-height:1.1;">${item.kpi_valor}</div>
+                <div class="kpi-bar-label" style="font-size:10px;color:var(--color-text-secondary);margin-top:2px;line-height:1.3;">${item.kpi_label || item.titulo.substring(0, 50)}</div>
               </div>
             </div>
           `).join('')}

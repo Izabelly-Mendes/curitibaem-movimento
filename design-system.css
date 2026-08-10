@@ -29,6 +29,13 @@
   --text-body-size: 17px; --text-body-weight: 400; --text-body-lh: 1.6;
   --text-small-size: 14px;
 
+  /* ── Escala de dados (KPIs, gráficos) ──────────────────────────
+     Hierarquia de 3 níveis para números: dado protagonista, dado
+     secundário, dado complementar (este último usa --text-small-size
+     ou o corpo de texto já existente). */
+  --text-data-hero: 48px;
+  --text-data-secondary: 34px;
+
   /* ── Espaçamento (múltiplos de 8) ───────────────────────────── */
   --space-1: 8px;
   --space-2: 16px;
