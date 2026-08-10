@@ -112,15 +112,29 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
 }
 .site-header .logo-img { height: 34px; margin: 0; display: block; }
 .header-utils { margin-left: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
-#widget-clima { background: rgba(22,22,22,0.9); border-radius: 999px; padding: 3px; line-height: 0; flex-shrink: 0; }
-#widget-clima .weather-widget { gap: 6px !important; }
-#widget-clima .weather-main,
-#widget-clima .weather-meta { padding: 5px 10px !important; gap: 5px !important; }
-#widget-clima .weather-icon { font-size: 14px !important; }
-#widget-clima .weather-temp { font-size: 12px !important; }
-#widget-clima .weather-date { font-size: 9px !important; }
-#widget-clima .weather-city { font-size: 9px !important; }
-#widget-clima .weather-condicao { display: none !important; }
+
+/* Widget de clima — apresentação-base (portada do inline style antigo,
+   idêntica visualmente); o cabeçalho compacto abaixo só se aplica quando
+   o widget está dentro do .site-header. Dentro do bottom sheet mobile
+   (.sidebar-meta), uma apresentação própria e espaçosa é usada (Fase 7). */
+.weather-widget { display: flex; align-items: center; gap: 10px; }
+.weather-main { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 14px; display: flex; align-items: center; gap: 8px; }
+.weather-icon { font-size: 18px; }
+.weather-temp { font-family: var(--font-body); font-size: 14px; font-weight: 700; color: #fff; }
+.weather-condicao { font-size: 10px; color: rgba(255,255,255,0.5); }
+.weather-meta { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 14px; }
+.weather-date { font-size: 11px; font-weight: 600; color: #fff; }
+.weather-city { font-size: 10px; color: rgba(255,255,255,0.5); }
+
+.site-header #widget-clima { background: rgba(22,22,22,0.9); border-radius: 999px; padding: 3px; line-height: 0; flex-shrink: 0; }
+.site-header #widget-clima .weather-widget { gap: 6px !important; }
+.site-header #widget-clima .weather-main,
+.site-header #widget-clima .weather-meta { padding: 5px 10px !important; gap: 5px !important; }
+.site-header #widget-clima .weather-icon { font-size: 14px !important; }
+.site-header #widget-clima .weather-temp { font-size: 12px !important; }
+.site-header #widget-clima .weather-date { font-size: 9px !important; }
+.site-header #widget-clima .weather-city { font-size: 9px !important; }
+.site-header #widget-clima .weather-condicao { display: none !important; }
 
 /* ── HERO ────────────────────────────────────────────────── */
 .hero {
@@ -484,7 +498,10 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   .sidebar { transform: translateX(-100%); }
   .sidebar.collapsed { width: 220px; transform: translateX(-100%); }
   .sidebar .label, .sidebar.collapsed .label { opacity: 1 !important; pointer-events: auto !important; }
-  #sidebar-mobile-btn { display: flex !important; }
+  /* No tablet o botão continua flutuando no canto (comportamento da Fase 6,
+     inalterado); no celular (≤768px, regra mais abaixo) ele passa a viver
+     dentro do próprio header, junto da logo — Fase 7 */
+  #sidebar-mobile-btn { display: flex !important; position: fixed; top: 14px; left: 14px; z-index: 1100; }
   .main-wrapper, .main-wrapper.collapsed { margin-left: 0 !important; }
   .hero { grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-8) var(--space-6); }
   .hero-media { order: 2; }
@@ -502,10 +519,26 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   .reveal-section { transform: translateY(10px); }
   .hero-text, .hero-media { animation-duration: 450ms; }
   .card:hover, .dc-card:hover { transform: none; }
-}
-@media (max-width: 480px) {
-  .dc-stat-row { width: 100%; }
-  .dc-stat-chip { flex: 1; }
+
+  /* "2 indicadores · atualizado em 05 de ago." em uma linha editorial,
+     sem os dois cards/chips com caixa (Fase 7) */
+  .dc-stat-row { display: flex; align-items: baseline; gap: 5px; flex-shrink: 0; width: auto; }
+  .dc-stat-chip {
+    background: none; border: none; padding: 0; min-width: 0; text-align: left;
+    display: inline-flex; align-items: baseline; gap: 4px;
+  }
+  .dc-stat-chip b { font-size: 13px; font-weight: 700; color: var(--color-text); }
+  .dc-stat-chip span { font-size: 12.5px; color: var(--color-text-secondary); text-transform: none; letter-spacing: normal; }
+  .dc-stat-row .dc-stat-chip:first-child::after { content: '·'; margin-left: 5px; color: var(--color-text-secondary); }
+  .dc-stat-row .dc-stat-chip:last-child { flex-direction: row-reverse; }
+
+  /* Emoji decorativo do badge de categoria: mantém o texto, remove o ícone */
+  .dc-badge-ico { display: none; }
+
+  /* "Ler matéria completa →" cortado pela lateral do card: o footer não
+     tinha permissão para quebrar linha quando data + link não cabem juntos
+     (Fase 7, correção da causa real do corte) */
+  .dc-footer { flex-wrap: wrap; row-gap: 4px; }
 }
 
 /* ── MICROINTERAÇÕES (discretas) ────────────────────────────── */
@@ -544,32 +577,105 @@ button:active { transform: scale(0.97); }
 img { max-width: 100%; height: auto; }
 
 @media (max-width: 768px) {
+  /* ── MENU MOBILE COMO BOTTOM SHEET (Fase 7) ──────────────────
+     Mesmo elemento .sidebar do tablet (Fase 6), só que a apresentação
+     muda de gaveta lateral (translateX) para folha inferior (translateY),
+     com cantos superiores arredondados e mais espaço interno. */
   .sidebar {
-    width: 220px;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    height: auto;
+    max-height: 82vh;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -12px 40px rgba(0,0,0,0.14);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    transform: translateY(100%);
+    transition: transform var(--duration-normal) var(--ease-standard);
+    display: flex;
+    flex-direction: column;
   }
   .sidebar.collapsed {
-    width: 220px;
-    transform: translateX(-100%);
+    width: 100%;
+    transform: translateY(100%);
   }
-  .sidebar.mobile-open { transform: translateX(0); }
+  .sidebar.mobile-open { transform: translateY(0); }
+  .sidebar-toggle { display: none; }
+  .mobile-sheet-handle {
+    width: 36px; height: 4px; border-radius: 4px; background: var(--color-border);
+    margin: 12px auto 4px; flex-shrink: 0;
+  }
+  .mobile-sheet-close {
+    position: absolute; top: 8px; right: 8px; width: 44px; height: 44px;
+    border-radius: 50%; border: none; background: transparent;
+    color: var(--color-text-secondary); font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sidebar-nav { padding: 4px 8px 20px; }
   /* Labels sempre visíveis quando o menu mobile está aberto */
   .sidebar .label,
   .sidebar.collapsed .label { opacity: 1 !important; pointer-events: auto !important; }
-  #sidebar-mobile-btn { display: flex !important; }
+  #sidebar-mobile-btn { display: flex !important; position: static; }
   .main-wrapper { margin-left: 0 !important; }
   .main-wrapper.collapsed { margin-left: 0 !important; }
 
+  /* ── Clima, data e idiomas dentro do bottom sheet (Fase 7) ────
+     Apresentação editorial e espaçosa — nada de pill escuro/widget
+     comprimido. O mesmo #widget-clima/#lang-selector do header, só que
+     reposicionados via JS (sincronizarHeaderMobile). */
+  .sidebar-meta { padding: 40px 24px 20px; border-bottom: 1px solid var(--color-divider); margin-bottom: 8px; }
+  .sidebar-meta:empty { display: none; }
+  .sidebar-meta .weather-widget { display: block; }
+  .sidebar-meta .weather-main { background: none; border: none; padding: 0; display: flex; align-items: baseline; gap: 10px; }
+  .sidebar-meta .weather-icon { font-size: 22px; }
+  .sidebar-meta .weather-temp { font-family: var(--font-heading); font-size: 32px; font-weight: 700; color: var(--color-text); line-height: 1; }
+  .sidebar-meta .weather-condicao { display: block; font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+  .sidebar-meta .weather-meta { background: none; border: none; padding: 0; margin-top: 14px; }
+  .sidebar-meta .weather-date { font-size: 14px; font-weight: 600; color: var(--color-text); }
+  .sidebar-meta .weather-city { font-size: 12.5px; color: var(--color-text-secondary); margin-top: 2px; }
+  .sidebar-meta #lang-selector { margin-top: 20px; gap: 10px !important; }
+
   #dados-curitiba { padding: 20px 16px 0; }
   .site-header { padding: 14px 20px; }
-  .hero { grid-template-columns: 1fr; padding: var(--space-6) 20px; gap: var(--space-6); }
+
+  /* ── Ticker de indicadores logo abaixo do Hero: no mobile ele repete
+     dados que já aparecem no Hero (ex.: valorização, wellness). Some só
+     no mobile — desktop/tablet continuam mostrando normalmente (Fase 7) */
+  #barra-kpis { display: none !important; }
+  #barra-busca-wrapper { padding-top: 20px !important; }
+
+  /* ── HERO: hierarquia e respiro editorial (Fase 7) ────────────── */
+  .hero { grid-template-columns: 1fr; padding: var(--space-8) 20px var(--space-6); gap: var(--space-8); }
   .hero-media { order: 2; }
   .hero-text { order: 1; }
-  .hero-sub { font-size: 15px; max-width: none; }
+  .hero-eyebrow { margin-bottom: 14px; }
+  .hero-title { margin-bottom: 16px; }
+  .hero-sub { font-size: 16px; max-width: none; margin-bottom: var(--space-6); }
+  .hero-cta { margin-bottom: var(--space-6); }
   .hero-image { aspect-ratio: 16/10; border-radius: 20px; }
-  .hero-stat-num { font-size: 22px; }
-  .pill { font-size: 10.5px; padding: 5px 11px; }
+
+  /* Fontes/"dados oficiais": de pills/badges para linha editorial discreta */
+  .pills { display: block; margin-top: 4px; }
+  .pill.o {
+    display: block; background: none; border: none; padding: 0; border-radius: 0;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--color-primary); margin-bottom: 7px;
+  }
+  .pill:not(.o) {
+    display: inline; background: none; border: none; padding: 0; border-radius: 0;
+    font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.6;
+  }
+  .pill:not(.o):not(:last-child)::after { content: ' · '; color: var(--color-text-secondary); }
+
+  /* Indicadores do Hero: número protagonista + descrição + divisor
+     discreto, sem cards/sombras/emojis — Fase 7 */
+  .hero-stats { flex-direction: column; gap: var(--space-4); }
+  .hero-stat { flex: none; min-width: 0; width: 100%; border-left: none; padding-left: 0; border-top: 1px solid var(--color-divider); padding-top: var(--space-4); }
+  .hero-stat:first-child { border-top: none; padding-top: 0; }
+  .hero-stat-num { font-size: 30px; }
+
   .body { padding: 0 16px 36px; }
   .body > .secao { padding: var(--space-4) 0; }
   .sec-label { font-size: 11px; margin-bottom: 10px; }
@@ -619,8 +725,11 @@ img { max-width: 100%; height: auto; }
   .news-grid .news-item:nth-child(3) { grid-column: 2; grid-row: 2; }
   .news-grid .news-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
   .news-row2 { grid-template-columns: 1fr; height: auto; }
-  .news-title { font-size: 12px; }
-  .news-item.featured .news-title { font-size: 14px; }
+  .news-title { font-size: 12.5px; }
+  .news-item.featured .news-title { font-size: 15px; }
+  /* "↗ Ler notícia" depende de :hover, que não existe em toque — mostra
+     sempre no mobile (Fase 7) */
+  .news-item::after { opacity: 1; transform: translateX(0); }
   table { display: block; overflow-x: auto; }
 }
 
@@ -644,7 +753,7 @@ img { max-width: 100%; height: auto; }
 /* ── SCROLL REVEAL (por seção, não por elemento individual) ──── */
 .reveal-section {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(12px);
   transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
 }
 .reveal-section.is-visible {
@@ -660,6 +769,7 @@ img { max-width: 100%; height: auto; }
   .news-item:hover img, .news-item::after, .region-item:hover {
     transform: none !important;
   }
+  .sidebar, #sidebar-overlay { transition: none !important; }
 }
 
 /* ── FOCUS-VISIBLE (navegação por teclado) ──────────────────── */
@@ -743,7 +853,7 @@ input:focus-visible {
   .kpi-bar-label { font-size: 12px !important; color: var(--color-text-secondary) !important; margin-top: 2px !important; }
 
   /* — WhatsApp flutuante: ~20% menor, sombra mais evidente — */
-  #whats-float { bottom: 20px !important; right: 16px !important; }
+  #whats-float { bottom: calc(20px + env(safe-area-inset-bottom, 0px)) !important; right: 16px !important; }
   #whats-btn { width: 45px !important; height: 45px !important; box-shadow: 0 8px 22px rgba(0,0,0,0.35), 0 4px 14px rgba(37,211,102,0.4) !important; }
   #whats-btn svg { width: 22px !important; height: 22px !important; }
   #whats-btn:active { transform: scale(0.94) !important; }
@@ -752,15 +862,15 @@ input:focus-visible {
 </head>
 <body>
 
-<!-- SIDEBAR MOBILE BUTTON -->
-<button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" style="display:none;position:fixed;top:14px;left:14px;z-index:1100;background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--color-primary);line-height:1;">☰</button>
-
 <!-- SIDEBAR OVERLAY -->
-<div id="sidebar-overlay" onclick="toggleMobileSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;"></div>
+<div id="sidebar-overlay" onclick="toggleMobileSidebar(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;opacity:0;transition:opacity var(--duration-normal) var(--ease-standard);"></div>
 
 <!-- SIDEBAR -->
-<nav class="sidebar" id="sidebar">
+<nav class="sidebar" id="sidebar" aria-label="Menu">
   <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+  <div class="mobile-sheet-handle" aria-hidden="true"></div>
+  <button id="mobile-sheet-close" class="mobile-sheet-close" onclick="toggleMobileSidebar(false)" aria-label="Fechar menu">✕</button>
+  <div class="sidebar-meta" id="sidebar-meta"></div>
   <div class="sidebar-nav">
     <a href="javascript:void(0)" onclick="navegarSecao('geral', this)" class="sidebar-item menu-ativo" data-tooltip="Geral" data-tip-pt="Geral" data-tip-en="Overview" data-tip-zh="总览"><span class="label" data-pt="Geral" data-en="Overview" data-zh="总览">Geral</span></a>
     <a href="javascript:void(0)" onclick="navegarSecao('secao-reconhecimento', this)" class="sidebar-item" data-tooltip="Reconhecimento" data-tip-pt="Reconhecimento" data-tip-en="Recognition" data-tip-zh="国际认可"><span class="label" data-pt="Reconhecimento" data-en="Recognition" data-zh="国际认可">Reconhecimento</span></a>
@@ -789,23 +899,24 @@ input:focus-visible {
   <!-- HEADER -->
   <header class="site-header">
     <img src="diferencial_logo.png" class="logo-img" alt="Diferencial Imóveis">
-    <div class="header-utils">
+    <div class="header-utils" id="header-utils">
       <div id="widget-clima"></div>
       <div id="lang-selector" style="display:flex;align-items:center;gap:8px;position:relative;z-index:9999;pointer-events:auto;">
         <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(10,77,140,0.08);border:1.5px solid var(--color-primary);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
         <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
         <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
       </div>
+      <button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" aria-expanded="false" aria-controls="sidebar" aria-label="Abrir menu" style="display:none;background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--color-primary);line-height:1;flex-shrink:0;">☰</button>
     </div>
   </header>
 
   <!-- HERO -->
   <div class="hero">
     <div class="hero-text">
-      <div class="hero-eyebrow" data-pt="Para investidores Bicalho" data-en="For Bicalho investors" data-zh="面向Bicalho投资者">Para investidores Bicalho</div>
+      <div class="hero-eyebrow" data-pt="Investidores" data-en="Investors" data-zh="投资者">Investidores</div>
       <h1 class="hero-title" data-pt="Curitiba em&lt;br&gt;&lt;span&gt;dados&lt;/span&gt;" data-en="Curitiba&lt;br&gt;&lt;span&gt;in Data&lt;/span&gt;" data-zh="库里提巴&lt;br&gt;&lt;span&gt;数据洞察&lt;/span&gt;">Curitiba em<br><span>dados</span></h1>
       <p class="hero-sub" data-pt="Turismo, economia e potencial de valorização" data-en="Tourism, economy and appreciation potential" data-zh="旅游、经济与增值潜力">Turismo, economia e potencial de valorização</p>
-      <a href="https://diferencialinvest.com.br" target="_blank" class="btn btn-primary hero-cta" data-pt="Acompanhe sua unidade →" data-en="Track your unit →" data-zh="跟踪您的单元 →">Acompanhe sua unidade →</a>
+      <a href="https://diferencialinvest.com.br" target="_blank" class="btn btn-primary hero-cta" data-pt="Acompanhe sua unidade da Bicalho Empreendimentos →" data-en="Track your Bicalho Empreendimentos unit →" data-zh="跟踪您在Bicalho Empreendimentos的单元 →">Acompanhe sua unidade da Bicalho Empreendimentos →</a>
       <div class="pills">
         <div class="pill o"><span class="pill-icon">✅</span><span class="pill-label" data-pt="Dados oficiais" data-en="Official Data" data-zh="官方数据">Dados oficiais</span></div>
         <div class="pill"><span class="pill-icon">📊</span><span class="pill-label">IMT</span></div>
@@ -856,7 +967,7 @@ input:focus-visible {
       </div>
       <div class="dc-stat-row">
         <div class="dc-stat-chip"><b id="dc-stat-count">—</b><span data-pt="indicadores" data-en="indicators" data-zh="指标">indicadores</span></div>
-        <div class="dc-stat-chip"><b id="dc-stat-updated">—</b><span data-pt="atualizado" data-en="updated" data-zh="更新时间">atualizado</span></div>
+        <div class="dc-stat-chip"><b id="dc-stat-updated">—</b><span data-pt="atualizado em" data-en="updated on" data-zh="更新时间">atualizado em</span></div>
       </div>
     </div>
   </div>
@@ -1538,16 +1649,50 @@ function toggleSidebar() {
 }
 
 // ── SIDEBAR TOGGLE (mobile) ───────────────────────────────
-function toggleMobileSidebar() {
+// Menu mobile: no tablet (769–1024px) é uma gaveta lateral (Fase 6,
+// inalterada); em telas de celular (≤768px) o MESMO elemento .sidebar vira
+// um bottom sheet só via CSS (translateY em vez de translateX) — a lógica
+// de abrir/fechar abaixo é única para os dois casos.
+function toggleMobileSidebar(forceState) {
   var sidebar = document.getElementById('sidebar');
   var overlay = document.getElementById('sidebar-overlay');
+  var btn = document.getElementById('sidebar-mobile-btn');
   var isOpen = sidebar.classList.contains('mobile-open');
-  if (isOpen) {
-    sidebar.classList.remove('mobile-open');
-    overlay.style.display = 'none';
-  } else {
-    sidebar.classList.add('mobile-open');
+  var abrir = (typeof forceState === 'boolean') ? forceState : !isOpen;
+
+  var whats = document.getElementById('whats-float');
+
+  if (abrir) {
     overlay.style.display = 'block';
+    void overlay.offsetHeight; // força reflow síncrono antes de animar a opacidade
+    overlay.style.opacity = '1';
+    sidebar.classList.add('mobile-open');
+    document.body.style.overflow = 'hidden';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    if (whats) whats.style.visibility = 'hidden';
+    _sidebarUltimoFoco = document.activeElement;
+    var fechar = document.getElementById('mobile-sheet-close');
+    if (fechar) fechar.focus();
+    document.addEventListener('keydown', _fecharSidebarNoEscape);
+  } else {
+    sidebar.classList.remove('mobile-open');
+    overlay.style.opacity = '0';
+    setTimeout(function() { overlay.style.display = 'none'; }, 260);
+    document.body.style.overflow = '';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (whats) whats.style.visibility = '';
+    document.removeEventListener('keydown', _fecharSidebarNoEscape);
+    if (_sidebarUltimoFoco && typeof _sidebarUltimoFoco.focus === 'function') {
+      _sidebarUltimoFoco.focus();
+    } else if (btn) {
+      btn.focus();
+    }
+  }
+}
+var _sidebarUltimoFoco = null;
+function _fecharSidebarNoEscape(e) {
+  if (e.key === 'Escape' || e.key === 'Esc') {
+    toggleMobileSidebar(false);
   }
 }
 
@@ -1563,11 +1708,8 @@ function navegarSecao(id, el) {
   }
   if (el) el.classList.add('menu-ativo');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (window.innerWidth <= 768) {
-    var sidebar = document.getElementById('sidebar');
-    var overlay = document.getElementById('sidebar-overlay');
-    if (sidebar) sidebar.classList.remove('mobile-open');
-    if (overlay) overlay.style.display = 'none';
+  if (window.innerWidth <= 768 && document.getElementById('sidebar').classList.contains('mobile-open')) {
+    toggleMobileSidebar(false);
   }
 }
 
@@ -1641,17 +1783,17 @@ async function carregarClima() {
     const widget = document.getElementById('widget-clima');
     if (widget) {
       widget.innerHTML = `
-        <div class="weather-widget" style="display:flex;align-items:center;gap:10px;">
-          <div class="weather-main" style="background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;">
-            <span class="weather-icon" style="font-size:18px;">${icone}</span>
+        <div class="weather-widget">
+          <div class="weather-main">
+            <span class="weather-icon">${icone}</span>
             <div>
-              <div class="weather-temp" style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;">${temp}°C</div>
-              <div class="weather-condicao" style="font-size:10px;color:rgba(255,255,255,0.5);">${condicao}</div>
+              <div class="weather-temp">${temp}°C</div>
+              <div class="weather-condicao">${condicao}</div>
             </div>
           </div>
-          <div class="weather-meta" style="background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;padding:8px 14px;">
-            <div class="weather-date" style="font-size:11px;font-weight:600;color:#fff;">${dataFormatada}</div>
-            <div class="weather-city" style="font-size:10px;color:rgba(255,255,255,0.5);">Curitiba, PR</div>
+          <div class="weather-meta">
+            <div class="weather-date">${dataFormatada}</div>
+            <div class="weather-city">Curitiba, PR</div>
           </div>
         </div>
       `;
@@ -1674,19 +1816,38 @@ document.getElementById('busca-secoes')?.addEventListener('input', function() {
   });
 });
 
+// ── HEADER MOBILE: clima e idiomas migram para dentro do menu ──────
+// (Fase 7) Em telas de celular (≤768px), o header fica só [logo][menu];
+// clima e seletor de idioma passam a viver dentro do bottom sheet, sem
+// duplicar elementos nem lógica — o MESMO #widget-clima/#lang-selector é
+// reposicionado no DOM. Sem JS (ou acima de 768px) eles permanecem no
+// header, exatamente como antes desta fase.
+function sincronizarHeaderMobile() {
+  var meta = document.getElementById('sidebar-meta');
+  var headerUtils = document.getElementById('header-utils');
+  var clima = document.getElementById('widget-clima');
+  var langs = document.getElementById('lang-selector');
+  var sidebarBtn = document.getElementById('sidebar-mobile-btn');
+  if (!meta || !headerUtils || !clima || !langs) return;
+  var deveEstarNoMenu = window.innerWidth <= 768;
+  var estaNoMenu = clima.parentElement === meta;
+  if (deveEstarNoMenu && !estaNoMenu) {
+    meta.appendChild(clima);
+    meta.appendChild(langs);
+  } else if (!deveEstarNoMenu && estaNoMenu) {
+    // Volta para o header (ex.: rotação de tablet ou redimensionamento).
+    headerUtils.insertBefore(clima, sidebarBtn);
+    headerUtils.insertBefore(langs, sidebarBtn);
+  }
+}
+
 // ── INICIALIZAÇÃO ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   var salvo = localStorage.getItem('idioma') || 'pt';
   trocarIdioma(salvo);
   carregarClima();
-  if (window.innerWidth <= 768) {
-    // Mobile: mostra o botão hambúrguer.
-    // NÃO adicionar 'collapsed' — no mobile a sidebar se esconde via
-    // CSS transform: translateX(-100%), não via width. Collapsed ocultaria
-    // os labels quando o menu abre.
-    var btn = document.getElementById('sidebar-mobile-btn');
-    if (btn) btn.style.display = 'flex';
-  }
+  sincronizarHeaderMobile();
+  window.addEventListener('resize', sincronizarHeaderMobile);
 });
 </script>
 
@@ -2020,22 +2181,53 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
     carregarBarraKPIs();
     inicializarPortal();
 
-    // Scroll reveal (Fase 5): anima o CONTAINER de cada seção, não cada
-    // card/kpi individualmente. Números e gráficos aparecem imediatamente,
-    // sem contador animado. Não roda nada se o usuário pedir menos movimento.
+    // Scroll reveal (Fase 5, corrigido na Fase 7): anima o CONTAINER de cada
+    // seção, não cada card/kpi individualmente. Números e gráficos aparecem
+    // imediatamente, sem contador animado. Não roda nada se o usuário pedir
+    // menos movimento — nesse caso o conteúdo já nasce visível.
+    //
+    // Causa raiz do "espaço em branco" mobile (Fase 7): com threshold:0.1,
+    // a razão de interseção máxima possível de uma seção é (altura da
+    // viewport / altura total da seção). No mobile, seções empilhadas em
+    // coluna única ficam muito mais altas proporcionalmente à viewport do
+    // que no desktop (colunas lado a lado) — em alguns casos essa razão
+    // máxima chega perto de 0.1, tornando o disparo do IntersectionObserver
+    // frágil e, em scroll rápido por gesto (fling), fácil de nunca cruzar o
+    // limiar. O resultado: a seção nunca recebe .is-visible e permanece com
+    // opacity:0 para sempre, mas continua ocupando sua altura total no
+    // layout (opacity não remove do fluxo) — daí o grande vazio ao rolar.
+    // threshold:0 dispara assim que 1px já está visível, eliminando esse
+    // problema estruturalmente, com o mesmo resultado visual de antes.
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduceMotion) {
-      var revealAlvos = document.querySelectorAll('.body > .secao, #secao-dados-curitiba');
-      revealAlvos.forEach(function(el) { el.classList.add('reveal-section'); });
-      var sectionObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            sectionObserver.unobserve(entry.target);
-          }
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      try {
+        var revealAlvos = document.querySelectorAll('.body > .secao, #secao-dados-curitiba');
+        revealAlvos.forEach(function(el) { el.classList.add('reveal-section'); });
+        var sectionObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              sectionObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+        revealAlvos.forEach(function(el) { sectionObserver.observe(el); });
+
+        // Rede de segurança (progressive enhancement): garante que nenhuma
+        // seção fique invisível para sempre caso o Observer, por qualquer
+        // motivo, não dispare. Generoso o bastante (6s) para não atropelar
+        // o reveal natural ao rolar, mas suficiente para nunca deixar um
+        // "buraco" permanente.
+        setTimeout(function() {
+          document.querySelectorAll('.reveal-section:not(.is-visible)').forEach(function(el) {
+            el.classList.add('is-visible');
+          });
+        }, 6000);
+      } catch (e) {
+        document.querySelectorAll('.body > .secao, #secao-dados-curitiba').forEach(function(el) {
+          el.classList.add('is-visible');
         });
-      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-      revealAlvos.forEach(function(el) { sectionObserver.observe(el); });
+      }
     }
   });
 })();
