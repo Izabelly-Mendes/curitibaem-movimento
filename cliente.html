@@ -137,7 +137,7 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   to { opacity: 1; transform: translateY(0); }
 }
 .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-3); }
-.hero-title { font-family: var(--font-heading); font-size: var(--text-h1-size); font-weight: var(--text-h1-weight); color: var(--color-text); line-height: var(--text-h1-lh); margin: 0 0 var(--space-3); }
+.hero-title { font-family: var(--font-heading); font-size: clamp(40px, 5vw + 20px, 72px); font-weight: var(--text-h1-weight); color: var(--color-text); line-height: var(--text-h1-lh); margin: 0 0 var(--space-3); }
 .hero-title span { color: var(--color-primary); }
 .hero-sub { font-size: var(--text-h4-size); color: var(--color-text-secondary); font-weight: 400; line-height: 1.5; margin: 0 0 var(--space-4); max-width: 460px; }
 .hero-cta { margin-bottom: var(--space-6); }
@@ -337,10 +337,10 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   margin-top: 4px;
   display: block;
 }
-.news-item:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
-.news-item:nth-child(2) { grid-column: 2; grid-row: 1; }
-.news-item:nth-child(3) { grid-column: 3; grid-row: 1; }
-.news-item:nth-child(4) { grid-column: 2 / 4; grid-row: 2; }
+.news-grid .news-item:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
+.news-grid .news-item:nth-child(2) { grid-column: 2; grid-row: 1; }
+.news-grid .news-item:nth-child(3) { grid-column: 3; grid-row: 1; }
+.news-grid .news-item:nth-child(4) { grid-column: 2 / 4; grid-row: 2; }
 .news-item::after {
   content: '↗ Ler notícia';
   position: absolute;
@@ -479,8 +479,16 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
 @media (max-width: 1024px) {
   .dc-card { grid-template-columns: 1fr; }
   .dc-card-media { aspect-ratio: 16/9; }
-  .hero { gap: var(--space-6); padding: var(--space-8) var(--space-4); }
-  .hero-title { font-size: 56px; }
+  /* Sidebar recolhe e vira menu hambúrguer já no tablet, evitando que os
+     220px fixos espremam o hero em duas colunas estreitas (Fase 6) */
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.collapsed { width: 220px; transform: translateX(-100%); }
+  .sidebar .label, .sidebar.collapsed .label { opacity: 1 !important; pointer-events: auto !important; }
+  #sidebar-mobile-btn { display: flex !important; }
+  .main-wrapper, .main-wrapper.collapsed { margin-left: 0 !important; }
+  .hero { grid-template-columns: 1fr; gap: var(--space-6); padding: var(--space-8) var(--space-6); }
+  .hero-media { order: 2; }
+  .hero-text { order: 1; }
   .hero-sub { max-width: none; }
   .hero-stat-num { font-size: 22px; }
 }
@@ -558,7 +566,6 @@ img { max-width: 100%; height: auto; }
   .hero { grid-template-columns: 1fr; padding: var(--space-6) 20px; gap: var(--space-6); }
   .hero-media { order: 2; }
   .hero-text { order: 1; }
-  .hero-title { font-size: 34px; }
   .hero-sub { font-size: 15px; max-width: none; }
   .hero-image { aspect-ratio: 16/10; border-radius: 20px; }
   .hero-stat-num { font-size: 22px; }
@@ -577,13 +584,16 @@ img { max-width: 100%; height: auto; }
   .data-secondary-row { gap: 16px 14px; min-width: 0; width: 100%; }
   .data-secondary-row .kpi { flex: 1 1 40%; }
   .data-secondary-row .kpi-num { font-size: 20px; }
-  .line-chart-val { font-size: 12px; }
-  .line-chart-val.strong { font-size: 15px; }
-  .line-chart-label { font-size: 9px; }
+  /* Texto do SVG escala junto com o viewBox — valores maiores aqui
+     compensam a redução, mantendo os rótulos legíveis em telas pequenas
+     (Fase 6, achado de auditoria) */
+  .line-chart-val { font-size: 22px; }
+  .line-chart-val.strong { font-size: 26px; }
+  .line-chart-label { font-size: 17px; }
   .compare-bar-val { font-size: 16px; }
   .card { padding: 16px 16px; margin-bottom: 10px; }
   .card-h { font-size: 18px; }
-  .card-b { font-size: 13px; line-height: 1.68; }
+  .card-b { font-size: 15.5px; line-height: 1.7; }
   .ins, .insight-box { font-size: 12.5px; }
   .bar-lbl { font-size: 11.5px; width: 72px; }
   .bar-val { font-size: 11.5px; width: 34px; }
@@ -604,10 +614,10 @@ img { max-width: 100%; height: auto; }
   .news-grid { grid-template-columns: 1fr 1fr; height: auto; }
   .news-item { height: 180px; }
   .news-item.featured { height: 220px; }
-  .news-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
-  .news-item:nth-child(2) { grid-column: 1; grid-row: 2; }
-  .news-item:nth-child(3) { grid-column: 2; grid-row: 2; }
-  .news-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
+  .news-grid .news-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  .news-grid .news-item:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .news-grid .news-item:nth-child(3) { grid-column: 2; grid-row: 2; }
+  .news-grid .news-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
   .news-row2 { grid-template-columns: 1fr; height: auto; }
   .news-title { font-size: 12px; }
   .news-item.featured .news-title { font-size: 14px; }
@@ -617,15 +627,18 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 480px) {
   .kpi-grid { grid-template-columns: 1fr; }
   .kpi3 { grid-template-columns: 1fr; }
-  .hero-title { font-size: 28px; }
   .kpi-num { font-size: 22px; }
   .kpi.dk .kpi-num { font-size: 30px; }
-  .data-secondary-row .kpi { flex: 1 1 100%; }
+  /* Mantém o grid 2x2 herdado de 768px (não 1 coluna) para não empilhar
+     4 caixas gigantes — Fase 6 */
+  .line-chart-label { font-size: 22px; }
+  .line-chart-val { font-size: 29px; }
+  .line-chart-val.strong { font-size: 35px; }
   .news-grid { grid-template-columns: 1fr; }
-  .news-item:nth-child(1) { grid-column: 1; grid-row: auto; }
-  .news-item:nth-child(2) { grid-column: 1; grid-row: auto; }
-  .news-item:nth-child(3) { grid-column: 1; grid-row: auto; }
-  .news-item:nth-child(4) { grid-column: 1; grid-row: auto; }
+  .news-grid .news-item:nth-child(1) { grid-column: 1; grid-row: auto; }
+  .news-grid .news-item:nth-child(2) { grid-column: 1; grid-row: auto; }
+  .news-grid .news-item:nth-child(3) { grid-column: 1; grid-row: auto; }
+  .news-grid .news-item:nth-child(4) { grid-column: 1; grid-row: auto; }
   .news-row2 { grid-template-columns: 1fr; }
 }
 /* ── SCROLL REVEAL (por seção, não por elemento individual) ──── */
@@ -703,6 +716,9 @@ input:focus-visible {
   /* — Header: utilitários empilham abaixo da logo — */
   .header-utils { width: 100%; justify-content: space-between; }
 
+  /* — Menu mobile: área de toque confortável (~44px) — Fase 6 — */
+  .sidebar-item { padding: 14px 20px; }
+
   /* — CTA principal: botão de largura total — */
   .hero-cta { width: 100%; }
   .hero-cta.btn { width: 100%; }
@@ -737,7 +753,7 @@ input:focus-visible {
 <body>
 
 <!-- SIDEBAR MOBILE BUTTON -->
-<button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" style="display:none;position:fixed;top:14px;left:14px;z-index:1100;background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;width:40px;height:40px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--color-primary);line-height:1;">☰</button>
+<button id="sidebar-mobile-btn" onclick="toggleMobileSidebar()" style="display:none;position:fixed;top:14px;left:14px;z-index:1100;background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--color-primary);line-height:1;">☰</button>
 
 <!-- SIDEBAR OVERLAY -->
 <div id="sidebar-overlay" onclick="toggleMobileSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;"></div>
@@ -776,9 +792,9 @@ input:focus-visible {
     <div class="header-utils">
       <div id="widget-clima"></div>
       <div id="lang-selector" style="display:flex;align-items:center;gap:8px;position:relative;z-index:9999;pointer-events:auto;">
-        <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(10,77,140,0.08);border:1.5px solid var(--color-primary);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
-        <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
-        <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
+        <button class="lang-btn" data-lang="pt" onclick="trocarIdioma('pt')" style="background:rgba(10,77,140,0.08);border:1.5px solid var(--color-primary);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:1;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇧🇷</button>
+        <button class="lang-btn" data-lang="en" onclick="trocarIdioma('en')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇺🇸</button>
+        <button class="lang-btn" data-lang="zh" onclick="trocarIdioma('zh')" style="background:var(--color-bg-secondary);border:1px solid var(--color-border);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:22px;line-height:1;opacity:0.6;pointer-events:auto;-webkit-tap-highlight-color:transparent;">🇨🇳</button>
       </div>
     </div>
   </header>
@@ -822,8 +838,8 @@ input:focus-visible {
 
 <div style="padding:20px 48px 0;background:var(--color-bg);" id="barra-busca-wrapper">
   <div style="position:relative;max-width:600px;">
-    <input type="text" id="busca-secoes" placeholder="Buscar informações, eventos, notícias..."
-      style="width:100%;height:44px;border:1px solid var(--color-border);border-radius:10px;padding:0 44px 0 16px;font-family:var(--font-body);font-size:14px;color:var(--color-text-secondary);background:var(--color-bg-secondary);outline:none;box-sizing:border-box;"
+    <input type="text" id="busca-secoes" placeholder="Buscar informações, eventos, notícias..." aria-label="Buscar informações, eventos, notícias"
+      style="width:100%;height:44px;border:1px solid var(--color-border);border-radius:10px;padding:0 44px 0 16px;font-family:var(--font-body);font-size:16px;color:var(--color-text-secondary);background:var(--color-bg-secondary);outline:none;box-sizing:border-box;"
       onfocus="this.style.borderColor='#0A4D8C'"
       onblur="this.style.borderColor='#E9E9E9'">
     <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--color-text-secondary);font-size:16px;">🔍</span>
@@ -1394,7 +1410,7 @@ input:focus-visible {
 
       <!-- NOTÍCIA 1 — destaque principal -->
       <a href="https://www.bemparana.com.br/noticias/parana/com-perfil-cada-vez-mais-familia-curitiba-recebe-mais-de-10-milhoes-de-visitantes-por-ano/" target="_blank" class="news-item featured">
-        <img src="Foto 1.png" alt="10 milhões de visitantes" onerror="this.style.display='none'">
+        <img src="Foto 1.png" alt="10 milhões de visitantes" loading="lazy" decoding="async" onerror="this.style.display='none'">
         <div class="news-overlay">
           <span class="news-tag" data-pt="Turismo · Bem Paraná" data-en="Tourism · Bem Paraná" data-zh="旅游 · Bem Paraná">Turismo · Bem Paraná</span>
           <div class="news-title" data-pt="Curitiba recebe mais de 10 milhões de visitantes por ano" data-en="Curitiba Attracts Over 10 Million Visitors a Year" data-zh="Curitiba年接待游客逾1,000万人次">Curitiba recebe mais de 10 milhões de visitantes por ano</div>
@@ -1405,7 +1421,7 @@ input:focus-visible {
 
       <!-- NOTÍCIA 2 -->
       <a href="https://www.parquetangua.com/viagens-de-lazer-ultrapassam-as-de-negocios-e-impulsionam-turismo-em-curitiba/" target="_blank" class="news-item">
-        <img src="Foto 2.png" alt="Lazer supera negócios" onerror="this.style.display='none'">
+        <img src="Foto 2.png" alt="Lazer supera negócios" loading="lazy" decoding="async" onerror="this.style.display='none'">
         <div class="news-overlay">
           <span class="news-tag" data-pt="Turismo · Parque Tanguá" data-en="Tourism · Parque Tanguá" data-zh="旅游 · Parque Tanguá">Turismo · Parque Tanguá</span>
           <div class="news-title" data-pt="Viagens de lazer ultrapassam as de negócios em Curitiba" data-en="Leisure Travel Surpasses Business Travel in Curitiba" data-zh="Curitiba休闲旅游超越商务旅游">Viagens de lazer ultrapassam as de negócios em Curitiba</div>
@@ -1415,7 +1431,7 @@ input:focus-visible {
 
       <!-- NOTÍCIA 3 -->
       <a href="https://www.curitiba.pr.gov.br/noticias/curitiba-lidera-indicacoes-em-premio-internacional-de-turismo-inteligente-e-disputa-titulo-de-dti-do-ano/82697" target="_blank" class="news-item">
-        <img src="Foto 5.png" alt="Prêmio turismo inteligente" onerror="this.style.display='none'">
+        <img src="Foto 5.png" alt="Prêmio turismo inteligente" loading="lazy" decoding="async" onerror="this.style.display='none'">
         <div class="news-overlay">
           <span class="news-tag" data-pt="Reconhecimento · Prefeitura" data-en="Recognition · City Hall" data-zh="国际认可 · 市政府">Reconhecimento · Prefeitura</span>
           <div class="news-title" data-pt="Curitiba lidera indicações em prêmio internacional de turismo inteligente" data-en="Curitiba Leads Nominations at International Smart Tourism Award" data-zh="Curitiba在国际智慧旅游大奖提名中领先">Curitiba lidera indicações em prêmio internacional de turismo inteligente</div>
@@ -1425,7 +1441,7 @@ input:focus-visible {
 
       <!-- NOTÍCIA 4 — faixa larga -->
       <a href="https://turismo.curitiba.pr.gov.br/noticias/curitiba-amplia-vitrine-internacional-e-aposta-em-novas-rotas-e-experiencias-na-wtm-latin-america/82622" target="_blank" class="news-item">
-        <img src="Foto 3.png" alt="WTM Latin America" onerror="this.style.display='none'">
+        <img src="Foto 3.png" alt="WTM Latin America" loading="lazy" decoding="async" onerror="this.style.display='none'">
         <div class="news-overlay">
           <span class="news-tag" data-pt="Internacional · IMT" data-en="International · IMT" data-zh="国际 · IMT">Internacional · IMT</span>
           <div class="news-title" data-pt="Curitiba amplia vitrine internacional na WTM Latin America com foco em novas rotas e experiências" data-en="Curitiba Expands Its International Showcase at WTM Latin America, Focusing on New Routes and Experiences" data-zh="Curitiba亮相WTM拉丁美洲，重点推介新航线与旅游体验">Curitiba amplia vitrine internacional na WTM Latin America com foco em novas rotas e experiências</div>
@@ -1440,7 +1456,7 @@ input:focus-visible {
 
       <!-- NOTÍCIA 5 -->
       <a href="https://www.curitiba.pr.gov.br/noticias/prefeitura-lanca-movimento-para-fortalecer-gastronomia-e-turismo-em-curitiba/83285" target="_blank" class="news-item">
-        <img src="Foto 4.png" alt="Gastronomia Curitiba" onerror="this.style.display='none'">
+        <img src="Foto 4.png" alt="Gastronomia Curitiba" loading="lazy" decoding="async" onerror="this.style.display='none'">
         <div class="news-overlay">
           <span class="news-tag" data-pt="Gastronomia · Prefeitura" data-en="Gastronomy · City Hall" data-zh="美食 · 市政府">Gastronomia · Prefeitura</span>
           <div class="news-title" data-pt="Prefeitura lança movimento para fortalecer gastronomia e turismo" data-en="City Hall Launches Initiative to Strengthen Gastronomy and Tourism" data-zh="市政府启动计划推动餐饮与旅游业发展">Prefeitura lança movimento para fortalecer gastronomia e turismo</div>
@@ -1450,7 +1466,7 @@ input:focus-visible {
 
       <!-- NOTÍCIA 6 -->
       <a href="https://diariodoturismo.com.br/aeroporto-afonso-pena-supera-6-milhoes-de-passageiros-em-2025-e-cresce-56-em-tres-anos/" target="_blank" class="news-item">
-        <img src="Foto 6.png" alt="Aeroporto Afonso Pena" onerror="this.style.display='none'">
+        <img src="Foto 6.png" alt="Aeroporto Afonso Pena" loading="lazy" decoding="async" onerror="this.style.display='none'">
         <div class="news-overlay">
           <span class="news-tag" data-pt="Aeroporto · Diário do Turismo" data-en="Airport · Diário do Turismo" data-zh="机场 · Diário do Turismo">Aeroporto · Diário do Turismo</span>
           <div class="news-title" data-pt="Aeroporto Afonso Pena supera 6 milhões de passageiros e cresce 56% em três anos" data-en="Afonso Pena Airport Surpasses 6 Million Passengers, Up 56% in Three Years" data-zh="阿丰索·佩纳机场旅客量突破600万人次，三年增长56%">Aeroporto Afonso Pena supera 6 milhões de passageiros e cresce 56% em três anos</div>
@@ -1460,7 +1476,7 @@ input:focus-visible {
 
       <!-- NOTÍCIA 7 -->
       <a href="https://cbncuritiba.com.br/materias/aeroporto-afonso-pena-fecha-primeiro-trimestre-com-mais-de-14-milhao-de-passageiros/" target="_blank" class="news-item">
-        <img src="Foto 7.png" alt="Aeroporto 1º trimestre 2026" onerror="this.style.display='none'">
+        <img src="Foto 7.png" alt="Aeroporto 1º trimestre 2026" loading="lazy" decoding="async" onerror="this.style.display='none'">
         <div class="news-overlay">
           <span class="news-tag" data-pt="Aeroporto · CBN Curitiba" data-en="Airport · CBN Curitiba" data-zh="机场 · CBN Curitiba">Aeroporto · CBN Curitiba</span>
           <div class="news-title" data-pt="Afonso Pena fecha 1º trimestre de 2026 com mais de 1,4 milhão de passageiros" data-en="Afonso Pena Closes Q1 2026 With Over 1.4 Million Passengers" data-zh="阿丰索·佩纳机场2026年一季度旅客量超140万人次">Afonso Pena fecha 1º trimestre de 2026 com mais de 1,4 milhão de passageiros</div>
@@ -1505,9 +1521,9 @@ input:focus-visible {
       </div>
     </div>
   </div>
-  <img src="bicalho_logo.png" class="footer-logo footer-logo--bicalho" alt="Bicalho Empreendimentos">
+  <img src="bicalho_logo.png" class="footer-logo footer-logo--bicalho" alt="Bicalho Empreendimentos" loading="lazy" decoding="async">
   <div class="footer-txt" data-pt="Curitiba em Movimento · Bicalho Imóveis × Diferencial" data-en="Curitiba in Motion · Bicalho Properties × Diferencial" data-zh="库里提巴动态 · Bicalho 房产 × Diferencial">Curitiba em Movimento · Bicalho Imóveis × Diferencial</div>
-  <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial Imóveis">
+  <img src="diferencial_logo.png" class="footer-logo" alt="Diferencial Imóveis" loading="lazy" decoding="async">
 </div>
 
 </div><!-- /main-wrapper -->
@@ -1912,13 +1928,13 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
             <div>
               <a href="https://awards.atrincarealestate.com.br/?utm_source=Instagram&utm_medium=ATRE&mcp_token=eyJwaWQiOjQxNzE2NjEsInNpZCI6ODQzMTg4MzgzLCJheCI6IjFlNmEwNjVkNDFlZmRkMzAxYWE3ZTNjMWM0NDRkOWY2IiwidHMiOjE3ODMzODQzOTIsImV4cCI6MTc4NTgwMzU5Mn0.jkdld_IbBRNhQxQEftHtNiPWSFhebY0TqvIsdpZJjJM#/categoria/incorporadora-revelacao/candidato/47b1a019-1ff7-4f78-86e1-7389cd9f427f" target="_blank" style="display:block;text-decoration:none;">
-                <img src="awards_bicalho.png.png" alt="Votar Bicalho" style="width:100%;border-radius:10px;display:block;" onerror="this.style.display='none'">
+                <img src="awards_bicalho.png.png" alt="Votar Bicalho" loading="lazy" decoding="async" style="width:100%;border-radius:10px;display:block;" onerror="this.style.display='none'">
                 <div style="text-align:center;margin-top:8px;font-size:11px;color:#c9a84c;font-weight:600;letter-spacing:0.05em;">👆 Clique aqui para votar</div>
               </a>
             </div>
             <div>
               <a href="https://awards.atrincarealestate.com.br/?utm_source=Instagram&utm_medium=ATRE&mcp_token=eyJwaWQiOjQxNzE2NjEsInNpZCI6ODQzMTg4MzgzLCJheCI6IjFlNmEwNjVkNDFlZmRkMzAxYWE3ZTNjMWM0NDRkOWY2IiwidHMiOjE3ODMzODQzOTIsImV4cCI6MTc4NTgwMzU5Mn0.jkdld_IbBRNhQxQEftHtNiPWSFhebY0TqvIsdpZJjJM#/categoria/imobiliaria-destaque-sul/candidato/bddfdae3-2258-491e-aeeb-56d14b6ffeb6" target="_blank" style="display:block;text-decoration:none;">
-                <img src="awards_diferencial.png.png" alt="Votar Diferencial" style="width:100%;border-radius:10px;display:block;" onerror="this.style.display='none'">
+                <img src="awards_diferencial.png.png" alt="Votar Diferencial" loading="lazy" decoding="async" style="width:100%;border-radius:10px;display:block;" onerror="this.style.display='none'">
                 <div style="text-align:center;margin-top:8px;font-size:11px;color:#c9a84c;font-weight:600;letter-spacing:0.05em;">👆 Clique aqui para votar</div>
               </a>
             </div>
