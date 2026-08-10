@@ -130,12 +130,21 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   gap: var(--space-8);
   padding: var(--space-12) var(--space-6);
 }
+/* Entrada única e sutil ao carregar a página (não é scroll-reveal) */
+.hero-text, .hero-media { animation: heroIn 600ms var(--ease-out) both; }
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-3); }
 .hero-title { font-family: var(--font-heading); font-size: var(--text-h1-size); font-weight: var(--text-h1-weight); color: var(--color-text); line-height: var(--text-h1-lh); margin: 0 0 var(--space-3); }
 .hero-title span { color: var(--color-primary); }
 .hero-sub { font-size: var(--text-h4-size); color: var(--color-text-secondary); font-weight: 400; line-height: 1.5; margin: 0 0 var(--space-4); max-width: 460px; }
 .hero-cta { margin-bottom: var(--space-6); }
 .hero-cta .btn-arrow { margin-left: 2px; }
+.btn { transition: background var(--transition-base), color var(--transition-base), border-color var(--transition-base), transform var(--duration-fast) var(--ease-standard); }
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
 .pills { display: flex; gap: 9px; flex-wrap: wrap; }
 .pill { background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 100px; padding: 6px 14px; font-size: 11.5px; color: var(--color-text-secondary); }
 .pill.o { background: rgba(10,77,140,0.1); border-color: rgba(10,77,140,0.3); color: var(--color-primary); }
@@ -285,9 +294,9 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   object-fit: cover;
   object-position: center top;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform var(--transition-base);
 }
-.news-item:hover img { transform: scale(1.04); }
+.news-item:hover img { transform: scale(1.03); }
 .news-overlay {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -311,7 +320,9 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   color: #fff;
   line-height: 1.3;
   margin-bottom: 4px;
+  transition: color var(--transition-base);
 }
+.news-item:hover .news-title { color: #6FA8DC; }
 .news-item.featured .news-title { font-size: 17px; }
 .news-desc {
   font-size: 11px;
@@ -341,10 +352,11 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   padding: 4px 8px;
   border-radius: 20px;
   opacity: 0;
-  transition: opacity 0.2s;
+  transform: translateX(-3px);
+  transition: opacity var(--transition-base), transform var(--transition-base);
   pointer-events: none;
 }
-.news-item:hover::after { opacity: 1; }
+.news-item:hover::after { opacity: 1; transform: translateX(0); }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
 .footer { background: var(--color-bg-secondary); border-top: 1px solid var(--color-border); padding: var(--space-3) var(--space-6); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
@@ -415,7 +427,7 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   overflow: hidden; margin-bottom: 16px; box-shadow: var(--shadow-card); cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
-.dc-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
+.dc-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card-hover); }
 .dc-card--no-image { grid-template-columns: 1fr; }
 .dc-card--no-image .dc-card-media { display: none; }
 
@@ -478,6 +490,10 @@ body { font-family: var(--font-body); background: var(--color-bg); color: var(--
   .dc-kpi-hero { font-size: 32px; }
   .dc-title { font-size: 16px; }
   .dc-card-body { padding: 18px 18px; }
+  /* Movimento ainda mais sutil no mobile (Fase 5) */
+  .reveal-section { transform: translateY(10px); }
+  .hero-text, .hero-media { animation-duration: 450ms; }
+  .card:hover, .dc-card:hover { transform: none; }
 }
 @media (max-width: 480px) {
   .dc-stat-row { width: 100%; }
@@ -612,14 +628,34 @@ img { max-width: 100%; height: auto; }
   .news-item:nth-child(4) { grid-column: 1; grid-row: auto; }
   .news-row2 { grid-template-columns: 1fr; }
 }
-.card, .kpi, .result-box, .insight-box, .award {
+/* ── SCROLL REVEAL (por seção, não por elemento individual) ──── */
+.reveal-section {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(14px);
+  transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
 }
-.card.visivel, .kpi.visivel, .result-box.visivel, .insight-box.visivel, .award.visivel {
+.reveal-section.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── ACESSIBILIDADE: movimento reduzido ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-text, .hero-media { animation: none; }
+  .reveal-section { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .card:hover, .dc-card:hover, .btn:hover, .btn:active,
+  .news-item:hover img, .news-item::after, .region-item:hover {
+    transform: none !important;
+  }
+}
+
+/* ── FOCUS-VISIBLE (navegação por teclado) ──────────────────── */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* ── REFINAMENTOS VISUAIS (redesign) ─────────────────────── */
@@ -1956,101 +1992,35 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
     } catch(e) { /* silencioso */ }
   }
 
-  function animarContadores() {
-    const kpiNums = document.querySelectorAll('.kpi-num, .result-val');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        if (el.dataset.animado) return;
-        el.dataset.animado = 'true';
-        const texto = el.textContent.trim();
-        const match = texto.match(/[\d,.]+/);
-        if (!match) return;
-        const numStr = match[0].replace(',', '.');
-        const num = parseFloat(numStr);
-        if (isNaN(num) || num === 0) return;
-        const prefix = texto.substring(0, texto.indexOf(match[0]));
-        const suffix = texto.substring(texto.indexOf(match[0]) + match[0].length);
-        const duracao = 1800;
-        const inicio = performance.now();
-        function atualizar(agora) {
-          const progresso = Math.min((agora - inicio) / duracao, 1);
-          const ease = 1 - Math.pow(1 - progresso, 3);
-          const atual = num * ease;
-          let formatado;
-          if (match[0].includes(',') || (num < 100 && match[0].length > 3)) {
-            formatado = atual.toFixed(1).replace('.', ',');
-          } else {
-            formatado = Math.round(atual).toString();
-          }
-          el.textContent = prefix + formatado + suffix;
-          if (progresso < 1) { requestAnimationFrame(atualizar); } else { el.textContent = texto; }
-        }
-        requestAnimationFrame(atualizar);
-        observer.unobserve(el);
-      });
-    }, { threshold: 0.3 });
-    kpiNums.forEach(el => observer.observe(el));
-  }
-
   // Realtime
   sb.channel('cliente-live')
     .on('postgres_changes',{event:'*',schema:'public',table:'blocos_conteudo'}, aplicarVisibilidade)
     .on('postgres_changes',{event:'*',schema:'public',table:'rascunhos_curadoria'}, carregarDadosCuritiba)
     .subscribe();
 
-  function animarKPI(el) {
-    if (el.dataset.animado) return;
-    el.dataset.animado = 'true';
-    var htmlOriginal = el.innerHTML;
-    var textoCompleto = el.textContent.trim();
-    var match = textoCompleto.match(/(\d+[.,]?\d*)/);
-    if (!match) return;
-    var numStr = match[1].replace(',', '.');
-    var num = parseFloat(numStr);
-    if (isNaN(num) || num === 0) return;
-    var temDecimal = match[1].indexOf(',') > -1;
-    var duracao = 1800;
-    var inicio = null;
-    function tick(ts) {
-      if (!inicio) inicio = ts;
-      var p = Math.min((ts - inicio) / duracao, 1);
-      var ease = 1 - Math.pow(1 - p, 3);
-      var atual = num * ease;
-      var formatado = temDecimal ? atual.toFixed(1).replace('.', ',') : Math.round(atual).toString();
-      el.innerHTML = htmlOriginal.replace(match[1], formatado);
-      if (p < 1) { requestAnimationFrame(tick); } else { el.innerHTML = htmlOriginal; }
-    }
-    requestAnimationFrame(tick);
-  }
-  function iniciarContadores() {
-    var obs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) { animarKPI(entry.target); obs.unobserve(entry.target); }
-      });
-    }, { threshold: 0.4 });
-    document.querySelectorAll('.kpi-num').forEach(function(el) { obs.observe(el); });
-  }
-
   document.addEventListener('DOMContentLoaded', function() {
     aplicarVisibilidade();
     carregarDadosCuritiba();
     carregarBarraKPIs();
     inicializarPortal();
-    setTimeout(animarContadores, 800);
-    setTimeout(iniciarContadores, 1000);
-    var scrollObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visivel');
-          scrollObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.card, .kpi, .result-box, .insight-box, .award').forEach(function(el) {
-      scrollObserver.observe(el);
-    });
+
+    // Scroll reveal (Fase 5): anima o CONTAINER de cada seção, não cada
+    // card/kpi individualmente. Números e gráficos aparecem imediatamente,
+    // sem contador animado. Não roda nada se o usuário pedir menos movimento.
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+      var revealAlvos = document.querySelectorAll('.body > .secao, #secao-dados-curitiba');
+      revealAlvos.forEach(function(el) { el.classList.add('reveal-section'); });
+      var sectionObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            sectionObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+      revealAlvos.forEach(function(el) { sectionObserver.observe(el); });
+    }
   });
 })();
 </script>

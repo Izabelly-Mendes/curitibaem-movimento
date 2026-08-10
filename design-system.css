@@ -55,8 +55,17 @@
   --shadow-card: 0 2px 10px rgba(0,0,0,.04);
   --shadow-card-hover: 0 8px 24px rgba(0,0,0,.08);
 
-  /* ── Transição ───────────────────────────────────────────────── */
-  --transition-base: 250ms cubic-bezier(.4,0,.2,1);
+  /* ── Movimento (motion tokens) ──────────────────────────────────
+     --transition-base já era o padrão do projeto (250ms + curva
+     .4,0,.2,1) — agora composto a partir dos tokens abaixo, mesmo
+     valor computado de sempre, sem mudança visual. --ease-out é novo,
+     para entradas/reveals (desaceleração ao chegar). */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 500ms;
+  --ease-standard: cubic-bezier(.4,0,.2,1);
+  --ease-out: cubic-bezier(0,0,.2,1);
+  --transition-base: var(--duration-normal) var(--ease-standard);
 
   /* ── Aliases de compatibilidade (nomes já usados no projeto) ──── */
   --primary: var(--color-primary);
