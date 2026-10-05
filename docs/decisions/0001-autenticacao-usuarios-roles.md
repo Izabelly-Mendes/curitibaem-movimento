@@ -6,6 +6,20 @@
   estado do sistema antes desta decisão)
 - **Decisores:** Izabelly (produto) · Claude (arquitetura/implementação)
 
+> **Adendo (2026-10-05, antes do Bloco A):** reforçando a seção 6, o gatilho
+> de auto-criação de perfil (`criar_perfil_no_signup`, criado no Bloco A)
+> **nunca lê `role` nem `ativo` de `raw_user_meta_data`, payload de signup,
+> ou qualquer outro dado controlado pelo usuário.** Esses dois campos são
+> sempre hardcoded como `'corretor'`/`true` no corpo da função, sem exceção,
+> independente de qual cliente (frontend, Admin API, chamada direta)
+> insira a linha em `auth.users`. A criação de um `gestor` é sempre uma
+> ação administrativa separada e privilegiada (`UPDATE perfis SET
+> role='gestor'` por outro gestor já existente, ou o bootstrap do primeiro
+> gestor — ver Bloco D), nunca um resultado possível do fluxo comum de
+> criação de conta. Esta garantia é estrutural (não existe no código um
+> caminho que leia metadata para decidir role/ativo), não apenas uma
+> convenção documentada.
+
 ---
 
 ## 1. Problema original
