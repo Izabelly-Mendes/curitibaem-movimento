@@ -61,11 +61,6 @@ body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;di
       <button class="eye-btn" type="button" onclick="toggleSenha()" id="eye-btn" title="Mostrar/ocultar senha">👁</button>
     </div>
 
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
-      <input type="checkbox" id="lembrar" style="width:16px;height:16px;accent-color:var(--color-primary);cursor:pointer;">
-      <label for="lembrar" style="font-size:13px;color:var(--color-text-secondary);cursor:pointer;">Lembrar de mim neste computador</label>
-    </div>
-
     <div id="erro-login" style="color:#e24b4a;font-size:13px;text-align:center;margin-bottom:10px;min-height:18px;"></div>
     <button class="btn-entrar" id="btn-entrar" onclick="fazerLogin()">Entrar</button>
   </div>
@@ -74,29 +69,26 @@ body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;di
     <a onclick="toggleEsqueci()">Esqueci minha senha</a>
   </div>
   <div class="forgot-info" id="forgot-info">
-    Entre em contato com a administração para redefinir sua senha.
+    <label class="field-label" for="email-recuperar" style="margin-top:10px;display:block">Informe seu e-mail para receber o link de redefinição</label>
+    <div class="field-wrap" style="margin-top:6px">
+      <input type="email" id="email-recuperar" class="field-input" placeholder="seu@email.com">
+    </div>
+    <button class="btn-entrar" style="margin-top:4px" onclick="recuperarSenha()">Enviar link de redefinição</button>
+    <div id="msg-recuperar" style="font-size:12px;text-align:center;margin-top:10px;min-height:16px"></div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./auth.js"></script>
 <script>
 const { createClient } = supabase;
-const supabaseClient = createClient(
-  'https://uocnikcoynoflxgcknii.supabase.co',
-  'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2'
-);
-
-async function hashSenha(senha) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(senha);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
+// Login único (Fase 1 / ADR 0001 / Bloco C) — Supabase Auth via auth.js
+// Serve tanto corretor quanto gestor: a role é lida de `perfis` depois
+// da autenticação, não existe mais fluxo separado de login admin.
 
 function mostrarErro(msg) {
   const el = document.getElementById('erro-login');
   if (el) el.textContent = msg;
-  // mantém compatibilidade com o elemento legado
   const el2 = document.getElementById('erro-msg');
   if (el2) { el2.textContent = msg; el2.style.display = 'block'; }
 }
@@ -104,37 +96,53 @@ function mostrarErro(msg) {
 function toggleSenha() {
   const input = document.getElementById('senha');
   const btn = document.getElementById('eye-btn');
-  if (input.type === 'password') {
-    input.type = 'text';
-    btn.textContent = '🙈';
-  } else {
-    input.type = 'password';
-    btn.textContent = '👁';
-  }
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+  else { input.type = 'password'; btn.textContent = '👁'; }
 }
 
 function toggleEsqueci() {
   const el = document.getElementById('forgot-info');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  el.style.display = el.style.display === 'none' || !el.style.display ? 'block' : 'none';
+}
+
+async function recuperarSenha() {
+  const email = document.getElementById('email-recuperar').value.trim().toLowerCase();
+  const msgEl = document.getElementById('msg-recuperar');
+  if (!email) { msgEl.textContent = 'Informe um e-mail.'; msgEl.style.color = '#e24b4a'; return; }
+  msgEl.style.color = 'var(--color-text-secondary)';
+  msgEl.textContent = 'Enviando...';
+  const { error } = await authClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/perfil.html'
+  });
+  if (error) { msgEl.textContent = 'Erro: ' + error.message; msgEl.style.color = '#e24b4a'; return; }
+  msgEl.textContent = 'Se o e-mail existir, um link de redefinição foi enviado.';
+  msgEl.style.color = '#3b6d11';
+}
+
+async function direcionarPorRole(perfil) {
+  // Registra o acesso (nova trilha: perfil_id, nao corretor_id). acesso_id
+  // e entrou_em ficam em sessionStorage so como dado AUXILIAR de UX
+  // (calcular duracao ao sair) - nunca como prova de autenticacao, que
+  // continua sendo inteiramente a sessao do Supabase Auth.
+  const entrouEm = new Date().toISOString();
+  const { data } = await authClient.from('acessos_corretores')
+    .insert({ perfil_id: perfil.id, entrou_em: entrouEm, user_agent: navigator.userAgent.substring(0, 200) })
+    .select('id').single();
+  if (data) {
+    sessionStorage.setItem('acesso_id', data.id);
+    sessionStorage.setItem('acesso_entrou_em', entrouEm);
+  }
+
+  window.location.href = perfil.role === 'gestor' ? './admin.html' : './index.html';
 }
 
 async function fazerLogin() {
-  console.log('fazerLogin chamada');
-
   const emailEl = document.getElementById('email');
   const senhaEl = document.getElementById('senha');
-  const lembrarEl = document.getElementById('lembrar');
   const erroEl = document.getElementById('erro-login');
-
-  if (!emailEl || !senhaEl) {
-    alert('Erro: campos não encontrados.');
-    return;
-  }
 
   const email = emailEl.value.trim().toLowerCase();
   const senha = senhaEl.value;
-  const lembrar = lembrarEl ? lembrarEl.checked : false;
-
   if (erroEl) erroEl.textContent = '';
 
   if (!email || !senha) {
@@ -146,60 +154,32 @@ async function fazerLogin() {
   if (btn) { btn.textContent = 'Entrando...'; btn.disabled = true; }
 
   try {
-    const hash = await hashSenha(senha);
-
-    const { data, error } = await supabaseClient
-      .from('corretores')
-      .select('id, nome, email, ativo')
-      .eq('email', email)
-      .eq('senha_hash', hash)
-      .eq('ativo', true)
-      .maybeSingle();
+    const { data, error } = await authClient.auth.signInWithPassword({ email, password: senha });
 
     if (error) {
-      console.error('Erro Supabase:', error);
-      if (erroEl) erroEl.textContent = 'Erro de conexão. Tente novamente.';
-      if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
-      return;
-    }
-
-    if (!data) {
       if (erroEl) erroEl.textContent = 'Email ou senha incorretos.';
       if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
       return;
     }
 
-    const expiraEm = lembrar
-      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-      : new Date(Date.now() + 60 * 60 * 1000).toISOString();
+    const { data: perfil, error: erroPerfil } = await authClient
+      .from('perfis').select('*').eq('id', data.user.id).maybeSingle();
 
-    const sessao = {
-      corretor_id: data.id,
-      nome: data.nome,
-      email: data.email,
-      entrou_em: new Date().toISOString(),
-      expira_em: expiraEm,
-      lembrar: lembrar
-    };
-
-    sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
-
-    if (lembrar) {
-      localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
-      localStorage.setItem('corretor_email_salvo', email);
-    } else {
-      localStorage.removeItem('sessao_corretor_salva');
-      localStorage.removeItem('corretor_email_salvo');
+    if (erroPerfil || !perfil) {
+      await authClient.auth.signOut();
+      if (erroEl) erroEl.textContent = 'Perfil não encontrado. Fale com a administração.';
+      if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
+      return;
     }
 
-    // Registrar acesso
-    await supabaseClient.from('acessos_corretores').insert({
-      corretor_id: data.id,
-      entrou_em: sessao.entrou_em,
-      user_agent: navigator.userAgent.substring(0, 200)
-    });
+    if (!perfil.ativo) {
+      await authClient.auth.signOut();
+      if (erroEl) erroEl.textContent = 'Este acesso está desativado. Fale com a administração.';
+      if (btn) { btn.textContent = 'Entrar'; btn.disabled = false; }
+      return;
+    }
 
-    window.location.href = './index.html';
+    await direcionarPorRole(perfil);
 
   } catch(e) {
     console.error('Erro inesperado:', e);
@@ -209,36 +189,17 @@ async function fazerLogin() {
 }
 
 window.addEventListener('DOMContentLoaded', async function() {
-  const sessaoSalva = localStorage.getItem('sessao_corretor_salva');
-  if (sessaoSalva) {
-    try {
-      const sessao = JSON.parse(sessaoSalva);
-      if (new Date() < new Date(sessao.expira_em)) {
-        sessao.expira_em = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-        localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
-        sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
-        const { data } = await supabaseClient.from('acessos_corretores')
-          .insert({ corretor_id: sessao.corretor_id, entrou_em: new Date().toISOString(), user_agent: navigator.userAgent.substring(0, 200) })
-          .select('id').single();
-        if (data) sessionStorage.setItem('acesso_id', data.id);
-        window.location.href = './index.html';
-        return;
-      } else {
-        localStorage.removeItem('sessao_corretor_salva');
-      }
-    } catch(e) {
-      localStorage.removeItem('sessao_corretor_salva');
-    }
+  // Ja logado (sessao persistida automaticamente pelo Supabase Auth)?
+  const perfil = await getPerfilAtual();
+  if (perfil && perfil.ativo) {
+    window.location.href = perfil.role === 'gestor' ? './admin.html' : './index.html';
+    return;
   }
-  const emailSalvo = localStorage.getItem('corretor_email_salvo');
-  if (emailSalvo) {
-    document.getElementById('email').value = emailSalvo;
-    document.getElementById('lembrar').checked = true;
-  }
+
   const params = new URLSearchParams(window.location.search);
-  if (params.get('expirado')) {
-    mostrarErro('Sua sessão expirou. Faça login novamente.');
-  }
+  if (params.get('expirado')) mostrarErro('Sua sessão expirou. Faça login novamente.');
+  if (params.get('inativo')) mostrarErro('Este acesso está desativado. Fale com a administração.');
+  if (params.get('erro') === 'perfil_nao_encontrado') mostrarErro('Perfil não encontrado. Fale com a administração.');
 });
 </script>
 </body>

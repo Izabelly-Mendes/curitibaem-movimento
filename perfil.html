@@ -11,7 +11,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{background:var(--color-card);border:1px solid var(--color-border);box-shadow:var(--shadow-card);border-radius:var(--radius-card);padding:40px 36px;width:100%;max-width:400px;margin:0 auto}
+.card{background:var(--color-card);border:1px solid var(--color-border);box-shadow:var(--shadow-card);border-radius:var(--radius-card);padding:40px 36px;width:100%;max-width:420px;margin:0 auto}
 .logo-wrap{text-align:center;margin-bottom:24px}
 .logo-wrap img{height:40px}
 .nome-corretor{font-family:var(--font-heading);font-size:18px;font-weight:700;color:var(--color-text);text-align:center;margin-bottom:4px}
@@ -20,6 +20,7 @@ body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;di
 .field-wrap{position:relative;margin-bottom:16px}
 .field-input{width:100%;border:1px solid var(--color-border);border-radius:10px;padding:12px 14px;padding-right:42px;font-family:var(--font-body);font-size:14px;color:var(--color-text);outline:none;transition:border-color 0.2s;background:#fafafa}
 .field-input:focus{border-color:var(--color-primary);background:#fff}
+.field-input:disabled{color:var(--color-text-secondary);cursor:not-allowed}
 .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:16px;padding:4px;line-height:1}
 .eye-btn:hover{color:var(--color-text)}
 .btn-salvar{width:100%;background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-btn);height:48px;padding:0 13px;font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s;margin-top:4px}
@@ -28,8 +29,11 @@ body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;di
 .erro-msg{background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.2);border-radius:8px;padding:10px 14px;font-size:13px;color:#c0392b;margin-bottom:16px;display:none}
 .ok-msg{background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.25);border-radius:8px;padding:10px 14px;font-size:13px;color:#219a52;margin-bottom:16px;display:none}
 .back-link{text-align:center;margin-top:18px}
-.back-link a{font-size:12px;color:var(--color-text-secondary);text-decoration:none}
+.back-link a{font-size:12px;color:var(--color-text-secondary);text-decoration:none;cursor:pointer}
 .back-link a:hover{color:var(--color-primary)}
+.secao-titulo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-secondary);margin:20px 0 12px}
+.secao-titulo:first-of-type{margin-top:0}
+.divider{height:1px;background:var(--color-divider);margin:20px 0}
 </style>
 </head>
 <body>
@@ -38,17 +42,28 @@ body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;di
     <img src="diferencial_logo.png" alt="Diferencial Imóveis">
   </div>
   <div class="nome-corretor" id="nome-corretor">—</div>
-  <div class="sub">Alterar senha de acesso</div>
+  <div class="sub" id="role-label">Meu perfil</div>
 
-  <div class="erro-msg" id="erro-msg"></div>
-  <div class="ok-msg" id="ok-msg"></div>
-
-  <label class="field-label" for="senha-atual">Senha atual</label>
+  <div class="secao-titulo">Meus dados</div>
+  <label class="field-label" for="campo-nome">Nome</label>
   <div class="field-wrap">
-    <input type="password" id="senha-atual" class="field-input" placeholder="••••••••" autocomplete="current-password">
-    <button class="eye-btn" type="button" onclick="toggleVer('senha-atual',this)">👁</button>
+    <input type="text" id="campo-nome" class="field-input" style="padding-right:14px">
   </div>
+  <label class="field-label" for="campo-email">E-mail (login)</label>
+  <div class="field-wrap">
+    <input type="email" id="campo-email" class="field-input" style="padding-right:14px" disabled>
+  </div>
+  <label class="field-label" for="campo-whatsapp">WhatsApp</label>
+  <div class="field-wrap">
+    <input type="text" id="campo-whatsapp" class="field-input" style="padding-right:14px" placeholder="5541999999999">
+  </div>
+  <div id="erro-dados" style="color:#e24b4a;font-size:13px;text-align:center;margin-bottom:10px;min-height:18px;"></div>
+  <div id="sucesso-dados" style="color:#3b6d11;font-size:13px;text-align:center;margin-bottom:10px;min-height:18px;"></div>
+  <button class="btn-salvar" onclick="salvarDados()">Salvar dados</button>
 
+  <div class="divider"></div>
+
+  <div class="secao-titulo">Alterar senha</div>
   <label class="field-label" for="senha-nova">Nova senha</label>
   <div class="field-wrap">
     <input type="password" id="senha-nova" class="field-input" placeholder="mínimo 6 caracteres" autocomplete="new-password">
@@ -66,117 +81,84 @@ body{font-family:var(--font-body);background:var(--color-bg);min-height:100vh;di
   <button class="btn-salvar" onclick="trocarSenha()">Salvar nova senha</button>
 
   <div class="back-link">
-    <a href="./index.html">← Voltar ao material</a>
+    <a id="link-voltar" href="./index.html">← Voltar</a> &nbsp;·&nbsp; <a onclick="fazerLogout()">Sair</a>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./auth.js"></script>
 <script>
-const { createClient } = supabase;
-const supabaseClient = createClient(
-  'https://uocnikcoynoflxgcknii.supabase.co',
-  'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2'
-);
-
-async function hashSenha(senha) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(senha);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
+let perfilAtual = null;
 
 function toggleVer(id, btn) {
   const input = document.getElementById(id);
-  if (input.type === 'password') {
-    input.type = 'text';
-    btn.textContent = '🙈';
-  } else {
-    input.type = 'password';
-    btn.textContent = '👁';
-  }
+  if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+  else { input.type = 'password'; btn.textContent = '👁'; }
+}
+
+async function salvarDados() {
+  const erroEl = document.getElementById('erro-dados');
+  const sucessoEl = document.getElementById('sucesso-dados');
+  erroEl.textContent = ''; sucessoEl.textContent = '';
+
+  const nome = document.getElementById('campo-nome').value.trim();
+  const whatsapp = document.getElementById('campo-whatsapp').value.replace(/\D/g, '');
+
+  if (!nome) { erroEl.textContent = 'Nome não pode ficar em branco.'; return; }
+
+  const { error } = await authClient.from('perfis')
+    .update({ nome, whatsapp: whatsapp || null, atualizado_em: new Date().toISOString() })
+    .eq('id', perfilAtual.id);
+
+  if (error) { erroEl.textContent = 'Erro ao salvar: ' + error.message; return; }
+  sucessoEl.textContent = 'Dados salvos com sucesso!';
+  document.getElementById('nome-corretor').textContent = nome;
 }
 
 async function trocarSenha() {
-  const senhaAtual = document.getElementById('senha-atual').value;
   const senhaNova = document.getElementById('senha-nova').value;
   const senhaConfirm = document.getElementById('senha-confirm').value;
   const erroEl = document.getElementById('erro-perfil');
   const sucessoEl = document.getElementById('sucesso-perfil');
+  erroEl.textContent = ''; sucessoEl.textContent = '';
 
-  if (erroEl) erroEl.textContent = '';
-  if (sucessoEl) sucessoEl.textContent = '';
-
-  if (!senhaAtual || !senhaNova || !senhaConfirm) {
-    if (erroEl) erroEl.textContent = 'Preencha todos os campos.';
-    return;
-  }
-
-  if (senhaNova !== senhaConfirm) {
-    if (erroEl) erroEl.textContent = 'As senhas novas não coincidem.';
-    return;
-  }
-
-  if (senhaNova.length < 6) {
-    if (erroEl) erroEl.textContent = 'A nova senha deve ter pelo menos 6 caracteres.';
-    return;
-  }
+  if (!senhaNova || !senhaConfirm) { erroEl.textContent = 'Preencha os dois campos.'; return; }
+  if (senhaNova !== senhaConfirm) { erroEl.textContent = 'As senhas novas não coincidem.'; return; }
+  if (senhaNova.length < 6) { erroEl.textContent = 'A nova senha deve ter pelo menos 6 caracteres.'; return; }
 
   const btn = document.querySelector('button[onclick="trocarSenha()"]');
   if (btn) { btn.textContent = 'Salvando...'; btn.disabled = true; }
 
   try {
-    const sessaoStr = sessionStorage.getItem('sessao_corretor');
-    if (!sessaoStr) { window.location.href = './login.html'; return; }
-    const sessao = JSON.parse(sessaoStr);
-
-    const hashAtual = await hashSenha(senhaAtual);
-
-    const { data, error } = await supabaseClient
-      .from('corretores')
-      .select('id')
-      .eq('id', sessao.corretor_id)
-      .eq('senha_hash', hashAtual)
-      .maybeSingle();
-
-    if (error || !data) {
-      if (erroEl) erroEl.textContent = 'Senha atual incorreta.';
+    const { error } = await authClient.auth.updateUser({ password: senhaNova });
+    if (error) {
+      erroEl.textContent = 'Erro: ' + error.message;
       if (btn) { btn.textContent = 'Salvar nova senha'; btn.disabled = false; }
       return;
     }
-
-    const hashNova = await hashSenha(senhaNova);
-
-    await supabaseClient
-      .from('corretores')
-      .update({ senha_hash: hashNova, atualizado_em: new Date().toISOString() })
-      .eq('id', sessao.corretor_id);
-
-    if (sucessoEl) sucessoEl.textContent = 'Senha alterada com sucesso!';
-    if (btn) { btn.textContent = 'Salvar nova senha'; btn.disabled = false; }
-
-    document.getElementById('senha-atual').value = '';
+    sucessoEl.textContent = 'Senha alterada com sucesso!';
     document.getElementById('senha-nova').value = '';
     document.getElementById('senha-confirm').value = '';
-
   } catch(e) {
-    console.error('Erro:', e);
-    if (erroEl) erroEl.textContent = 'Erro inesperado. Tente novamente.';
+    erroEl.textContent = 'Erro inesperado. Tente novamente.';
+  } finally {
     if (btn) { btn.textContent = 'Salvar nova senha'; btn.disabled = false; }
   }
 }
 
-window.addEventListener('DOMContentLoaded', function() {
-  const isAdmin = sessionStorage.getItem('admin_logado');
-  const sessao = JSON.parse(sessionStorage.getItem('sessao_corretor') || '{}');
-  if (!isAdmin && !sessao.corretor_id) {
-    window.location.href = './login.html';
-    return;
-  }
-  if (sessao.nome) {
-    document.getElementById('nome-corretor').textContent = sessao.nome;
-  } else if (isAdmin) {
-    document.getElementById('nome-corretor').textContent = 'Administrador';
-  }
+window.addEventListener('DOMContentLoaded', async function() {
+  const perfil = await protegerPagina();
+  if (!perfil) return; // ja redirecionado
+
+  perfilAtual = perfil;
+  const { data: { session } } = await authClient.auth.getSession();
+
+  document.getElementById('nome-corretor').textContent = perfil.nome || '—';
+  document.getElementById('role-label').textContent = perfil.role === 'gestor' ? 'Gestor' : 'Corretor';
+  document.getElementById('campo-nome').value = perfil.nome || '';
+  document.getElementById('campo-email').value = session.user.email || '';
+  document.getElementById('campo-whatsapp').value = perfil.whatsapp || '';
+  document.getElementById('link-voltar').href = perfil.role === 'gestor' ? './admin.html' : './index.html';
 });
 </script>
 </body>

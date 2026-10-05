@@ -242,6 +242,7 @@ body{font-family:var(--font-body);background:var(--color-bg);color:var(--color-t
     <button class="tab-btn" onclick="switchTab('rascunhos')" id="tab-rascunhos">📊 Dados de Curitiba <span id="badge-rascunhos" style="display:none;background:var(--color-primary);color:#fff;border-radius:20px;font-size:10px;padding:1px 6px;margin-left:2px"></span></button>
     <button class="tab-btn" onclick="switchTab('corretores')" id="tab-corretores">👥 Corretores</button>
     <a href="cliente.html" target="_blank" style="background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:7px;padding:6px 12px;color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;transition:all 0.15s" onmouseover="this.style.color='#6FA8DC'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">↗ Portal</a>
+    <a href="perfil.html" style="color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;margin-right:4px" title="So funciona logado via login unico, nao pela senha antiga">Meu perfil</a>
     <button class="logout-btn" onclick="logout()">Sair</button>
   </div>
 
@@ -529,7 +530,15 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let allBlocos = [];
 let editingBlocoId = null;
 
-// ── AUTH ──
+// ── AUTH (Fase 1 / ADR 0001 / Bloco C) ──
+// Caminho ANTIGO (senha fixa) permanece 100% intacto e funcional — so
+// sera desligado no Bloco D, depois do gestor real criado e validado
+// (regra explicita: nao podemos chegar a um estado em que ninguem
+// consiga administrar o sistema).
+// Caminho NOVO (adicional): se ja existe uma sessao Supabase Auth
+// valida com role='gestor' e ativo=true, pula a tela de senha. Usa o
+// cliente 'sb' ja existente nesta pagina (evita ter 2 instancias de
+// GoTrueClient no navegador ao mesmo tempo).
 function checkAuth() {
   if (document.getElementById('auth-pass').value === 'Bicalho@2025') {
     sessionStorage.setItem('admin-auth', '1');
@@ -540,7 +549,13 @@ function checkAuth() {
   }
 }
 document.getElementById('auth-pass').addEventListener('keydown', e => { if (e.key === 'Enter') checkAuth(); });
-function logout() { sessionStorage.removeItem('admin-auth'); location.reload(); }
+
+async function logout() {
+  sessionStorage.removeItem('admin-auth');
+  sessionStorage.removeItem('admin_logado');
+  try { await sb.auth.signOut(); } catch(e) {}
+  location.reload();
+}
 
 function showApp() {
   document.getElementById('auth-screen').style.display = 'none';
@@ -550,7 +565,19 @@ function showApp() {
   init();
 }
 
-if (sessionStorage.getItem('admin-auth') === '1') showApp();
+async function verificarSessaoGestor() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return false;
+    const { data: perfil } = await sb.from('perfis').select('role, ativo').eq('id', session.user.id).maybeSingle();
+    return !!(perfil && perfil.ativo && perfil.role === 'gestor');
+  } catch (e) { return false; }
+}
+
+(async function initAuth() {
+  if (sessionStorage.getItem('admin-auth') === '1') { showApp(); return; }
+  if (await verificarSessaoGestor()) { showApp(); return; }
+})();
 
 // ── INIT ──
 async function init() {

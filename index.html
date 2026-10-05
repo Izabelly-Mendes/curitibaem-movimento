@@ -685,64 +685,18 @@ img { max-width: 100%; height: auto; }
 </head>
 <body>
 
-<script>
-(function() {
-  // Verifica se é acesso do admin (vindo do admin.html)
-  var adminLogado = sessionStorage.getItem('admin_logado');
-  if (adminLogado === 'true') return; // admin passa direto
-
-  // Verifica sessão do corretor no sessionStorage
-  var sessaoStr = sessionStorage.getItem('sessao_corretor');
-
-  // Se não tem no sessionStorage, verifica localStorage (lembrar de mim)
-  if (!sessaoStr) {
-    sessaoStr = localStorage.getItem('sessao_corretor_salva');
-    if (sessaoStr) {
-      // Transfere para sessionStorage
-      sessionStorage.setItem('sessao_corretor', sessaoStr);
-    }
-  }
-
-  if (!sessaoStr) {
-    window.location.replace('./login.html');
-    return;
-  }
-
-  try {
-    var sessao = JSON.parse(sessaoStr);
-    var agora = new Date();
-    var expira = new Date(sessao.expira_em);
-
-    if (agora > expira) {
-      // Sessão expirada
-      sessionStorage.removeItem('sessao_corretor');
-      localStorage.removeItem('sessao_corretor_salva');
-      window.location.replace('./login.html?expirado=true');
-      return;
-    }
-
-    // Renovar sessão por mais 1 hora (ou 30 dias se lembrar)
-    var novaExpiracao = sessao.lembrar
-      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-      : new Date(Date.now() + 60 * 60 * 1000).toISOString();
-    sessao.expira_em = novaExpiracao;
-    sessionStorage.setItem('sessao_corretor', JSON.stringify(sessao));
-    if (sessao.lembrar) {
-      localStorage.setItem('sessao_corretor_salva', JSON.stringify(sessao));
-    }
-
-  } catch(e) {
-    sessionStorage.removeItem('sessao_corretor');
-    window.location.replace('./login.html');
-  }
-})();
-</script>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="./auth.js"></script>
 <script>
-const _SB_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
-const _SB_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
-const db = window.supabase.createClient(_SB_URL, _SB_KEY);
+// Protecao de pagina (Fase 1 / ADR 0001 / Bloco C) — Supabase Auth via
+// auth.js. Substitui a antiga checagem manual de sessionStorage/
+// localStorage. Autorizacao real continua garantida pela RLS no banco;
+// isto so cuida de redirecionar quem nao deveria estar aqui.
+let perfilAtual = null;
+const _paginaProtegida = protegerPagina().then(function(perfil) {
+  perfilAtual = perfil; // null se ja redirecionado
+  return perfil;
+});
 
 const temaIcones = {
   'eventos': '🎪', 'aeroporto': '✈️', 'hotelaria': '🏨',
@@ -806,7 +760,7 @@ async function carregarBarraKPIs() {
   if (!container) return;
 
   try {
-    const { data } = await db
+    const { data } = await authClient
       .from('rascunhos_curadoria')
       .select('titulo, kpi_valor, kpi_label, tema')
       .eq('status', 'aprovado')
@@ -944,7 +898,7 @@ async function carregarDadosCuritibaInterno() {
   if (!container) return;
 
   try {
-    const { data, error } = await db
+    const { data, error } = await authClient
       .from('rascunhos_curadoria')
       .select('*')
       .eq('status', 'aprovado')
@@ -977,12 +931,14 @@ async function carregarDadosCuritibaInterno() {
   }
 }
 
+// Registra entrou_em/acesso_id como dado AUXILIAR de UX (duracao de
+// sessao), nunca como prova de autenticacao/autorizacao - isso e sempre
+// o Supabase Auth + RLS (ver auth.js).
 function registrarSaida() {
   const acessoId = sessionStorage.getItem('acesso_id');
-  const sessaoStr = sessionStorage.getItem('sessao_corretor');
-  if (!acessoId || !sessaoStr) return;
-  const sessao = JSON.parse(sessaoStr);
-  const duracao = Math.round((new Date() - new Date(sessao.entrou_em)) / 60000);
+  const entrouEm = sessionStorage.getItem('acesso_entrou_em');
+  if (!acessoId || !entrouEm) return;
+  const duracao = Math.round((new Date() - new Date(entrouEm)) / 60000);
   const payload = JSON.stringify({ saiu_em: new Date().toISOString(), duracao_minutos: duracao });
   fetch(`https://uocnikcoynoflxgcknii.supabase.co/rest/v1/acessos_corretores?id=eq.${acessoId}`, {
     method: 'PATCH',
@@ -993,11 +949,9 @@ function registrarSaida() {
 
 async function logout() {
   registrarSaida();
-  sessionStorage.removeItem('sessao_corretor');
   sessionStorage.removeItem('acesso_id');
-  localStorage.removeItem('sessao_corretor_salva');
-  localStorage.removeItem('corretor_email_salvo');
-  window.location.href = './login.html';
+  sessionStorage.removeItem('acesso_entrou_em');
+  await fazerLogout(); // auth.js: signOut() + redireciona para login.html
 }
 
 window.addEventListener('beforeunload', registrarSaida);
@@ -1008,17 +962,15 @@ async function copiarMeuLink() {
   if (btn) { btn.textContent = '⏳ Gerando...'; btn.disabled = true; }
 
   try {
-    const sessaoStr = sessionStorage.getItem('sessao_corretor');
-    if (!sessaoStr) { alert('Sessão não encontrada. Faça login novamente.'); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
-    const sessao = JSON.parse(sessaoStr);
+    await _paginaProtegida;
+    if (!perfilAtual) { alert('Sessão não encontrada. Faça login novamente.'); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
 
-    const { data, error } = await db.from('corretores').select('portal_token').eq('id', sessao.corretor_id).single();
-    if (error) { alert('Erro: ' + error.message); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
-
-    let token = data?.portal_token;
+    let token = perfilAtual.portal_token;
     if (!token) {
       token = Math.random().toString(36).substring(2,10) + Math.random().toString(36).substring(2,10);
-      await db.from('corretores').update({ portal_token: token }).eq('id', sessao.corretor_id);
+      const { error } = await authClient.from('perfis').update({ portal_token: token }).eq('id', perfilAtual.id);
+      if (error) { alert('Erro: ' + error.message); if (btn) { btn.textContent = '🔗 Meu link'; btn.disabled = false; } return; }
+      perfilAtual.portal_token = token;
     }
 
     const url = `https://curitibaem-movimento.vercel.app/cliente.html?c=${token}`;
