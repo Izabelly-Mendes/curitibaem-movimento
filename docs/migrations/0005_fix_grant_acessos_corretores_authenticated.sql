@@ -1,0 +1,29 @@
+-- ═══════════════════════════════════════════════════════════
+-- Fase 1 / ADR 0001 — Correção encontrada na rodada concentrada
+-- de validação do Bloco D (2026-10-08)
+--
+-- FALHA: login real do primeiro gestor funcionou, mas o registro de
+-- acesso (acessos_corretores) nao era gravado — silenciosamente,
+-- sem erro visivel para o usuario.
+--
+-- CAUSA: a tabela acessos_corretores nunca recebeu GRANT de INSERT/
+-- SELECT/UPDATE para o papel 'authenticated' (so 'anon' tinha, de
+-- scripts antigos). O caminho de login antigo sempre operava como
+-- anon (mesmo quando "logado"); o caminho novo (Supabase Auth real)
+-- opera como authenticated, que nao tinha essa permissao — mesma
+-- lacuna ja corrigida para a tabela perfis no Bloco A, que ficou de
+-- fora aqui porque o Bloco B so adicionou a coluna perfil_id, nao
+-- revisou GRANTs desta tabela.
+--
+-- CORRECAO: concede a authenticated exatamente o mesmo nivel de
+-- acesso que anon ja tinha (RLS desta tabela continua a antiga,
+-- 'allow_all_acessos' USING(true) — nao foi alterada; isso nao abre
+-- nada novo, so restaura paridade).
+--
+-- TESTE APOS CORRECAO: novo login real do gestor gerou corretamente
+-- uma linha em acessos_corretores com perfil_id preenchido —
+-- confirmado por consulta direta (ver docs/testes/
+-- bloco-d-rodada-concentrada.md).
+-- ═══════════════════════════════════════════════════════════
+
+grant select, insert, update on acessos_corretores to authenticated;
