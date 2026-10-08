@@ -76,3 +76,26 @@ async function fazerLogout() {
   try { await authClient.auth.signOut(); } catch (e) { console.error('[auth.js] erro no logout:', e); }
   window.location.href = './login.html';
 }
+
+// ── Fase 2 (ADR 0002) / Bloco 1 ──────────────────────────────────────
+// Versão NÃO BLOQUEANTE de protegerPagina(): nunca redireciona. Usada
+// pelo futuro portal único (cliente.html), que precisa funcionar para
+// visitante sem sessão — só decide o que mostrar A MAIS quando há
+// sessão. Preparada agora; ainda não é chamada por nenhuma página
+// (isso é trabalho do Bloco 2).
+//
+// Retorna sempre um objeto: { tipo, perfil }
+//   tipo = 'visitante' | 'corretor' | 'gestor'
+//   perfil = a linha de `perfis`, ou null para visitante
+// Um perfil inativo é tratado como visitante (sem deslogar à força —
+// diferente de protegerPagina, aqui não há "página exclusiva" para
+// expulsar o usuário de).
+async function obterContextoVisitante() {
+  const session = await getSessaoAtual();
+  if (!session) return { tipo: 'visitante', perfil: null };
+
+  const perfil = await getPerfilAtual();
+  if (!perfil || !perfil.ativo) return { tipo: 'visitante', perfil: null };
+
+  return { tipo: perfil.role === 'gestor' ? 'gestor' : 'corretor', perfil };
+}
