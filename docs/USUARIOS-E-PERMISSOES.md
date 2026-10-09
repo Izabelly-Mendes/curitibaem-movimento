@@ -1,8 +1,27 @@
 # Usuários e Permissões — Curitiba em Movimento
 
-> Reflete o estado **implementado e validado** em 2026-10-08. Ver
-> [ADR 0001](decisions/0001-autenticacao-usuarios-roles.md) para a decisão
-> completa.
+> Reflete o estado **implementado e validado** em 2026-10-09. Ver
+> [ADR 0001](decisions/0001-autenticacao-usuarios-roles.md) (autenticação)
+> e [ADR 0002](decisions/0002-portal-unico.md) (portal único, Fase 2, em
+> implementação) para as decisões completas.
+
+## Portal único — separação de contextos (ADR 0002)
+
+A partir da Fase 2, cliente/corretor/gestor compartilham a mesma base de
+portal (`cliente.html`). Dois mecanismos **independentes** decidem coisas
+diferentes, e não se misturam:
+
+| Mecanismo | Fonte | Decide |
+|---|---|---|
+| Sessão autenticada (`obterContextoVisitante()` em `auth.js`) | Supabase Auth + `perfis.role` | **O que o usuário pode fazer** — quais ferramentas/permissões aparecem (Meu link, Meu perfil, Sair, Administração) |
+| Parâmetro `?c=<portal_token>` na URL | Tabela `corretores` (e, após migração, `perfis`) | **Qual contato é mostrado ao visitante** — WhatsApp/nome nos CTAs públicos |
+
+**Regra explícita:** o parâmetro `?c=` nunca concede nem retira permissão
+— só personaliza a vitrine pública. Um corretor autenticado que abra um
+link com `?c=` de outro corretor continua vendo suas **próprias**
+ferramentas (da sessão), nunca as de quem o token identifica. Os dois
+mecanismos podem coexistir na mesma página sem conflito porque respondem
+perguntas diferentes.
 
 ## Papéis
 
