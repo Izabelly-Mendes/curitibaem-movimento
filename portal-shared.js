@@ -92,6 +92,55 @@ function mostrarToast(mensagem, tipo = 'sucesso') {
   setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(80px)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
 }
 
+// Escapa texto simples para uso seguro dentro de HTML (diferente de
+// sanitizarHtml: aqui o resultado NUNCA deve conter tags — use para
+// títulos e outros campos que são sempre texto puro).
+function esc(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ── Sanitização de HTML (Fase 3 / ADR 0003 / Bloco 1) ───────────────
+// Protege tanto o admin (preview/edição) quanto o portal público contra
+// HTML malicioso vindo de blocos_conteudo/rascunhos_curadoria. Lista de
+// permissões levantada a partir do conteúdo real existente (seed do
+// admin.html): div, p, span, strong/b/i/u/em (toolbar de formatação),
+// a, br, img — nada além disso é necessário hoje.
+//
+// Atributos 'on*' (ex.: onerror) NUNCA são permitidos — é exatamente o
+// mecanismo de um ataque XSS, sem exceção possível. O conteúdo existente
+// usava onerror="this.style.display='none'" em <img> para esconder
+// imagem quebrada; ver inicializarTratamentoImagensQuebradas() abaixo,
+// que reproduz o mesmo resultado visual sem handler inline.
+//
+// Requer DOMPurify (carregado via <script> antes deste arquivo em cada
+// página). Não altera nada já salvo no banco — só filtra na leitura/
+// gravação, no código.
+function sanitizarHtml(html) {
+  if (typeof DOMPurify === 'undefined') {
+    console.error('[portal-shared] DOMPurify não carregado — bloqueando conteúdo por segurança.');
+    return '';
+  }
+  return DOMPurify.sanitize(html || '', {
+    ALLOWED_TAGS: ['div', 'p', 'span', 'strong', 'b', 'i', 'u', 'em', 'a', 'br', 'img'],
+    ALLOWED_ATTR: ['style', 'class', 'href', 'target', 'src', 'alt', 'data-pt', 'data-en', 'data-zh'],
+    ALLOW_DATA_ATTR: false
+  });
+}
+
+// Substitui o onerror inline (removido pela sanitização) por um listener
+// delegado único: mesma experiência (imagem quebrada some), sem handler
+// inline. Chamar uma vez por página, em qualquer container que recebe
+// conteúdo sanitizado (ex.: a prévia do admin, as seções do portal).
+function inicializarTratamentoImagensQuebradas(containerSeletor) {
+  document.querySelectorAll(containerSeletor).forEach(function (container) {
+    container.addEventListener('error', function (e) {
+      if (e.target && e.target.tagName === 'IMG') {
+        e.target.style.display = 'none';
+      }
+    }, true); // captura, já que 'error' em <img> não faz bubble
+  });
+}
+
 // ── Dados de clima (só a busca/mapeamento — cada pagina continua
 // desenhando o widget com seu proprio HTML/CSS ate o Bloco 2 unificar
 // a marcacao visual tambem) ──────────────────────────────────────

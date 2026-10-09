@@ -1696,6 +1696,7 @@ input:focus-visible {
 
 </div><!-- /main-wrapper -->
 
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 <script src="./portal-shared.js"></script>
 <script>
 // ── SIDEBAR TOGGLE (desktop) ──────────────────────────────
@@ -2149,8 +2150,8 @@ async function copiarMeuLinkPortal() {
         <div class="dc-card-body">
           <span class="dc-badge"><span class="dc-badge-ico">${temaIcones[item.tema] || '📌'}</span>${temaFormatado}</span>
           ${item.kpi_valor ? `<div class="dc-kpi-hero">${item.kpi_valor}</div>` : ''}
-          <div class="dc-title">${item.titulo || ''}</div>
-          <div class="dc-summary">${item.conteudo || ''}</div>
+          <div class="dc-title">${esc(item.titulo || '')}</div>
+          <div class="dc-summary">${sanitizarHtml(item.conteudo || '')}</div>
           <div class="dc-footer">
             <span class="dc-date">${dataFmt}</span>
             ${item.link_fonte ? `<a href="${item.link_fonte}" target="_blank" rel="noopener" class="dc-link" onclick="event.stopPropagation()">${btnTexto}</a>` : '<span></span>'}
@@ -2200,6 +2201,8 @@ async function copiarMeuLinkPortal() {
     carregarBarraKPIs();
     inicializarPortal();
     inicializarFerramentasInternas();
+    // Fase 3 / ADR 0003: substitui onerror inline por listener delegado.
+    inicializarTratamentoImagensQuebradas('#dados-curitiba');
 
     // Scroll reveal (Fase 5, corrigido na Fase 7): anima o CONTAINER de cada
     // seção, não cada card/kpi individualmente. Números e gráficos aparecem

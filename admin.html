@@ -493,32 +493,39 @@ body{font-family:var(--font-body);background:var(--color-bg);color:var(--color-t
 
 <div id="toast-container"></div>
 
-<!-- MODAL: Editar Corretor -->
-<div id="modal-editar-corretor" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;align-items:center;justify-content:center;">
-  <div style="background:var(--color-card);border-radius:var(--radius-card);padding:28px;width:100%;max-width:420px;margin:16px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <div style="font-family:var(--font-heading);font-size:16px;font-weight:700;">Editar corretor</div>
-      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--color-text-secondary);">×</button>
+<!-- MODAL: Editar Corretor (Fase 3 / ADR 0003: padronizado para o
+     mesmo padrão .modal-overlay/openModal/closeModal dos demais modais
+     — antes era um <div style="display:none"> isolado, com seu próprio
+     mecanismo de abrir/fechar). -->
+<div class="modal-overlay" id="modal-editar-corretor">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <h3>Editar corretor</h3>
+      <button class="modal-close" onclick="closeModal('modal-editar-corretor')">✕</button>
     </div>
-    <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">Nome</label>
-    <input id="edit-corretor-nome" type="text" placeholder="Nome completo" style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:var(--font-body);outline:none;">
-    <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">E-mail</label>
-    <input id="edit-corretor-email" type="email" disabled style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;background:var(--color-bg);color:var(--color-text-secondary);box-sizing:border-box;font-family:var(--font-body);">
-    <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">WhatsApp (com DDI e DDD, só dígitos)</label>
-    <input id="edit-corretor-whatsapp" type="text" placeholder="5541999999999" style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:var(--font-body);outline:none;">
-    <label style="display:flex;align-items:center;gap:8px;margin-bottom:20px;cursor:pointer;">
-      <input id="edit-corretor-ativo" type="checkbox" checked style="accent-color:var(--color-primary);">
-      <span style="font-size:13px;color:var(--color-text-secondary);">Corretor ativo</span>
-    </label>
-    <div style="display:flex;gap:8px;justify-content:flex-end;">
-      <button onclick="document.getElementById('modal-editar-corretor').style.display='none'" style="padding:9px 18px;border-radius:var(--radius-btn);border:1px solid var(--color-border);background:var(--color-bg);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-body);">Cancelar</button>
-      <button onclick="salvarEdicaoCorretor()" style="padding:9px 18px;border-radius:var(--radius-btn);border:none;background:var(--color-primary);color:#fff;cursor:pointer;font-family:var(--font-body);font-weight:500;">Salvar</button>
+    <div class="modal-body">
+      <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">Nome</label>
+      <input id="edit-corretor-nome" type="text" placeholder="Nome completo" style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:var(--font-body);outline:none;">
+      <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">E-mail</label>
+      <input id="edit-corretor-email" type="email" disabled style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;background:var(--color-bg);color:var(--color-text-secondary);box-sizing:border-box;font-family:var(--font-body);">
+      <label style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;">WhatsApp (com DDI e DDD, só dígitos)</label>
+      <input id="edit-corretor-whatsapp" type="text" placeholder="5541999999999" style="width:100%;height:40px;border:1px solid var(--color-border);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;box-sizing:border-box;font-family:var(--font-body);outline:none;">
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;cursor:pointer;">
+        <input id="edit-corretor-ativo" type="checkbox" checked style="accent-color:var(--color-primary);">
+        <span style="font-size:13px;color:var(--color-text-secondary);">Corretor ativo</span>
+      </label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-editar-corretor')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarEdicaoCorretor()">Salvar</button>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="./portal-shared.js"></script>
 <script>
 // ══════════════════════════════════════════════════════
 // CONFIG
@@ -583,6 +590,10 @@ async function verificarSessaoGestor() {
 async function init() {
   await Promise.all([loadBlocos(), loadRascunhos()]);
 
+  // Substitui o onerror inline (removido pela sanitização) por um
+  // listener delegado — Fase 3 / ADR 0003.
+  inicializarTratamentoImagensQuebradas('#preview-blocos, #rascunhos-container, #publicadas-container');
+
   // Realtime
   sb.channel('admin-channel')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'blocos_conteudo' }, loadBlocos)
@@ -605,7 +616,7 @@ function switchTab(tab) {
 // ── BLOCOS ──
 async function loadBlocos() {
   const { data, error } = await sb.from('blocos_conteudo').select('*').order('ordem');
-  if (error) { toast('Erro ao carregar blocos: ' + error.message, 'error'); return; }
+  if (error) { mostrarToast('Erro ao carregar blocos: ' + error.message, 'erro'); return; }
   allBlocos = data || [];
   renderListaBlocos(allBlocos);
   renderPreviewBlocos(allBlocos);
@@ -645,7 +656,7 @@ function renderListaBlocos(blocos) {
         updates.push(sb.from('blocos_conteudo').update({ ordem: idx + 1 }).eq('id', item.dataset.id));
       });
       await Promise.all(updates);
-      toast('Ordem atualizada!', 'success');
+      mostrarToast('Ordem atualizada!', 'sucesso');
     }
   });
 }
@@ -666,7 +677,7 @@ function renderPreviewBlocos(blocos) {
         </div>
       </div>
       <div id="bloco-inner-${b.id}" style="background:#fff;border-radius:14px;border:0.5px solid #e0ddd5;padding:18px 20px;margin-bottom:8px">
-        ${b.conteudo || `<p style="color:#bbb;font-size:13px;text-align:center;padding:20px">${esc(b.titulo || 'Bloco sem conteúdo')}</p>`}
+        ${b.conteudo ? sanitizarHtml(b.conteudo) : `<p style="color:#bbb;font-size:13px;text-align:center;padding:20px">${esc(b.titulo || 'Bloco sem conteúdo')}</p>`}
       </div>
     </div>
   `).join('');
@@ -676,15 +687,15 @@ async function toggleVisivel(id, valor) {
   const { error } = await sb.from('blocos_conteudo')
     .update({ visivel_cliente: valor, updated_at: new Date().toISOString() })
     .eq('id', id);
-  if (error) toast('Erro: ' + error.message, 'error');
-  else toast(valor ? '✅ Bloco agora visível' : '🙈 Bloco ocultado', 'success');
+  if (error) mostrarToast('Erro: ' + error.message, 'erro');
+  else mostrarToast(valor ? '✅ Bloco agora visível' : '🙈 Bloco ocultado', 'sucesso');
 }
 
 async function deletarBloco(id) {
   if (!confirm('Excluir este bloco permanentemente?')) return;
   const { error } = await sb.from('blocos_conteudo').delete().eq('id', id);
-  if (error) toast('Erro: ' + error.message, 'error');
-  else toast('Bloco excluído', 'success');
+  if (error) mostrarToast('Erro: ' + error.message, 'erro');
+  else mostrarToast('Bloco excluído', 'sucesso');
 }
 
 // ── EDIÇÃO INLINE NOS CARDS ──
@@ -721,7 +732,7 @@ function abrirEdicaoInline(id) {
 
   inner.classList.add('card-editando');
   inner.innerHTML = `
-    <div style="font-size:11px;color:#FF6B00;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px">✏️ Editando: ${esc(bloco.titulo || 'bloco')}</div>
+    <div style="font-size:11px;color:var(--color-primary);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px">✏️ Editando: ${esc(bloco.titulo || 'bloco')}</div>
 
     <label class="edit-label-small">Título do bloco</label>
     <div class="format-toolbar">
@@ -750,13 +761,13 @@ function abrirEdicaoInline(id) {
       <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('conteudo-${id}','italic')"><i>I</i></button>
       <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('conteudo-${id}','underline')"><u>U</u></button>
     </div>
-    <div id="conteudo-${id}" contenteditable="true" class="edit-field" style="min-height:120px;font-size:14px">${bloco.conteudo || ''}</div>
+    <div id="conteudo-${id}" contenteditable="true" class="edit-field" style="min-height:120px;font-size:14px">${sanitizarHtml(bloco.conteudo || '')}</div>
 
     <label class="edit-label-small">Link de fonte (opcional)</label>
     <input type="url" class="card-link-field" id="link-${id}" placeholder="https://..." value="${esc(bloco.link_fonte || '')}">
 
     <label class="edit-label-small" style="margin-bottom:8px">
-      <input type="checkbox" id="visivel-${id}" ${bloco.visivel_cliente ? 'checked' : ''} style="accent-color:#FF6B00;margin-right:6px">
+      <input type="checkbox" id="visivel-${id}" ${bloco.visivel_cliente ? 'checked' : ''} style="accent-color:var(--color-primary);margin-right:6px">
       Visível no portal do cliente
     </label>
 
@@ -796,15 +807,15 @@ async function salvarEdicaoInline(id) {
 
   const payload = {
     titulo: tituloEl.innerText.trim(),
-    conteudo: conteudoEl.innerHTML,
+    conteudo: sanitizarHtml(conteudoEl.innerHTML),
     link_fonte: linkEl ? linkEl.value : null,
     visivel_cliente: visivelEl ? visivelEl.checked : true,
     updated_at: new Date().toISOString()
   };
 
   const { error } = await sb.from('blocos_conteudo').update(payload).eq('id', id);
-  if (error) { toast('Erro ao salvar: ' + error.message, 'error'); return; }
-  toast('✅ Bloco salvo com sucesso!', 'success');
+  if (error) { mostrarToast('Erro ao salvar: ' + error.message, 'erro'); return; }
+  mostrarToast('✅ Bloco salvo com sucesso!', 'sucesso');
   editingBlocoId = null;
   await loadBlocos();
 }
@@ -830,7 +841,7 @@ function openModalNovo() {
 
 async function criarBloco() {
   const titulo = document.getElementById('novo-titulo').value;
-  const conteudo = document.getElementById('novo-conteudo').value;
+  const conteudo = sanitizarHtml(document.getElementById('novo-conteudo').value);
   const tipo = document.getElementById('novo-tipo').value;
   const visivel = document.getElementById('novo-visivel').checked;
   const maxOrdem = allBlocos.length > 0 ? Math.max(...allBlocos.map(b => b.ordem || 0)) : 0;
@@ -839,8 +850,8 @@ async function criarBloco() {
   const { error } = await sb.from('blocos_conteudo').insert({
     titulo, conteudo, tipo, visivel_cliente: visivel, ordem: maxOrdem + 1, slug
   });
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Bloco criado!', 'success');
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
+  mostrarToast('Bloco criado!', 'sucesso');
   closeModal('modal-novo');
 }
 
@@ -903,11 +914,11 @@ function renderPublicadas(aprovados, despublicados) {
             ${label ? `<span style="font-size:9px;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:${cor};background:${cor}18;padding:2px 7px;border-radius:20px">${label}</span>` : ''}
             <span style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:rgba(39,174,96,0.1);color:#219a52;border-radius:20px;padding:2px 7px;margin-left:4px">publicado</span>
             <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin:5px 0 2px;line-height:1.4">${esc(r.titulo || '')}</div>
-            ${linkOk ? `<a href="${r.link_fonte}" target="_blank" style="font-size:10.5px;color:#FF6B00;text-decoration:none">↗ ${(() => { try { return new URL(r.link_fonte).hostname; } catch(e) { return r.link_fonte; } })()}</a>` : ''}
+            ${linkOk ? `<a href="${r.link_fonte}" target="_blank" style="font-size:10.5px;color:var(--color-primary);text-decoration:none">↗ ${(() => { try { return new URL(r.link_fonte).hostname; } catch(e) { return r.link_fonte; } })()}</a>` : ''}
             <div style="font-size:10.5px;color:#aaa;margin-top:4px">${new Date(r.created_at).toLocaleDateString('pt-BR')}</div>
           </div>
           <div style="display:flex;gap:5px;flex-shrink:0">
-            <button onclick="editarPublicada('${r.id}')" style="background:rgba(255,107,0,0.08);color:#FF6B00;border:0.5px solid rgba(255,107,0,0.2);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-weight:600">✏️</button>
+            <button onclick="editarPublicada('${r.id}')" style="background:rgba(10,77,140,0.08);color:var(--color-primary);border:0.5px solid rgba(10,77,140,0.2);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-weight:600">✏️</button>
             <button onclick="despublicarRascunho('${r.id}')" title="Despublicar" style="background:rgba(245,158,11,0.08);color:#d97706;border:0.5px solid rgba(245,158,11,0.25);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">⏸</button>
             <button onclick="excluirRascunho('${r.id}')" title="Excluir permanentemente" style="background:rgba(239,68,68,0.07);color:#c0392b;border:0.5px solid rgba(239,68,68,0.2);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">🗑️</button>
           </div>
@@ -926,7 +937,7 @@ function renderPublicadas(aprovados, despublicados) {
             <div style="font-size:12.5px;font-weight:600;color:#888;margin:4px 0 0;line-height:1.3">${esc(r.titulo || '')}</div>
           </div>
           <div style="display:flex;gap:5px;flex-shrink:0">
-            <button onclick="republicar('${r.id}')" title="Republicar no portal" style="background:rgba(255,107,0,0.12);color:#FF6B00;border:0.5px solid rgba(255,107,0,0.3);border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;font-weight:700">↩ Republicar</button>
+            <button onclick="republicar('${r.id}')" title="Republicar no portal" style="background:rgba(10,77,140,0.12);color:var(--color-primary);border:0.5px solid rgba(10,77,140,0.3);border-radius:6px;padding:5px 12px;font-size:11px;cursor:pointer;font-weight:700">↩ Republicar</button>
             <button onclick="excluirRascunho('${r.id}')" title="Excluir permanentemente" style="background:rgba(239,68,68,0.07);color:#c0392b;border:0.5px solid rgba(239,68,68,0.2);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">🗑️</button>
           </div>
         </div>
@@ -948,17 +959,17 @@ function editarPublicada(id) {
   if (!card) return;
   // Busca dados do item
   const r = allRascunhos ? allRascunhos.find(x => x.id === id) : null;
-  if (!r) { toast('Item não encontrado. Recarregue.', 'error'); return; }
+  if (!r) { mostrarToast('Item não encontrado. Recarregue.', 'erro'); return; }
   card.innerHTML = `
     <div style="width:100%;padding:4px 0">
       <label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Título</label>
       <input id="pub-titulo-${id}" type="text" value="${esc(r.titulo || '')}" style="width:100%;border:0.5px solid #ddd;border-radius:6px;padding:7px 10px;font-size:13px;margin-bottom:8px;outline:none;font-family:'DM Sans',sans-serif">
       <label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Conteúdo</label>
-      <textarea id="pub-conteudo-${id}" style="width:100%;min-height:70px;border:0.5px solid #ddd;border-radius:6px;padding:7px 10px;font-size:12px;resize:vertical;outline:none;font-family:monospace;margin-bottom:8px">${r.conteudo || ''}</textarea>
+      <textarea id="pub-conteudo-${id}" style="width:100%;min-height:70px;border:0.5px solid #ddd;border-radius:6px;padding:7px 10px;font-size:12px;resize:vertical;outline:none;font-family:monospace;margin-bottom:8px">${esc(r.conteudo || '')}</textarea>
       <label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Link da notícia</label>
       <input id="pub-link-${id}" type="url" value="${esc(r.link_fonte || '')}" placeholder="https://..." style="width:100%;border:0.5px solid #ddd;border-radius:6px;padding:7px 10px;font-size:12px;margin-bottom:10px;outline:none;font-family:'DM Sans',sans-serif">
       <div style="display:flex;gap:7px">
-        <button onclick="salvarPublicada('${id}')" style="background:#FF6B00;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">💾 Salvar</button>
+        <button onclick="salvarPublicada('${id}')" style="background:var(--color-primary);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;cursor:pointer;font-weight:600">💾 Salvar</button>
         <button onclick="loadRascunhos()" style="background:#f5f5f0;color:#555;border:0.5px solid #ddd;border-radius:6px;padding:6px 12px;font-size:12px;cursor:pointer">Cancelar</button>
       </div>
     </div>`;
@@ -966,11 +977,11 @@ function editarPublicada(id) {
 
 async function salvarPublicada(id) {
   const titulo   = document.getElementById('pub-titulo-' + id)?.value || '';
-  const conteudo = document.getElementById('pub-conteudo-' + id)?.value || '';
+  const conteudo = sanitizarHtml(document.getElementById('pub-conteudo-' + id)?.value || '');
   const link     = document.getElementById('pub-link-' + id)?.value || '';
   const { error } = await sb.from('rascunhos_curadoria').update({ titulo, conteudo, link_fonte: link }).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('✅ Item atualizado!', 'success');
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
+  mostrarToast('✅ Item atualizado!', 'sucesso');
   loadRascunhos();
 }
 
@@ -979,24 +990,24 @@ async function despublicarRascunho(id) {
   // Marca foi_publicado=true para poder republicar depois
   const { error } = await sb.from('rascunhos_curadoria')
     .update({ status: 'rejeitado', foi_publicado: true }).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Item despublicado. Use "↩ Republicar" para restaurar.', 'success');
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
+  mostrarToast('Item despublicado. Use "↩ Republicar" para restaurar.', 'sucesso');
   loadRascunhos();
 }
 
 async function republicar(id) {
   const { error } = await sb.from('rascunhos_curadoria')
     .update({ status: 'aprovado', foi_publicado: true }).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('✅ Item republicado! Já aparece no portal.', 'success');
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
+  mostrarToast('✅ Item republicado! Já aparece no portal.', 'sucesso');
   loadRascunhos();
 }
 
 async function excluirRascunho(id) {
   if (!confirm('Tem certeza? O item vai sumir do portal do cliente e será excluído permanentemente.')) return;
   const { error } = await sb.from('rascunhos_curadoria').delete().eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Item excluído permanentemente', 'success');
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
+  mostrarToast('Item excluído permanentemente', 'sucesso');
   loadRascunhos();
 }
 
@@ -1022,7 +1033,7 @@ function renderRascunhos(rascunhos) {
       <div id="rascunho-card-${r.id}" style="background:#fff;border-radius:12px;border:0.5px solid #e0ddd5;margin-bottom:12px;overflow:hidden">
         <div style="padding:12px 18px;border-bottom:0.5px solid #f5f3ef;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            ${isPendente ? `<input type="checkbox" class="rascunho-check" data-id="${r.id}" onchange="atualizarSelecao()" style="width:14px;height:14px;accent-color:#FF6B00;cursor:pointer;flex-shrink:0">` : ''}
+            ${isPendente ? `<input type="checkbox" class="rascunho-check" data-id="${r.id}" onchange="atualizarSelecao()" style="width:14px;height:14px;accent-color:var(--color-primary);cursor:pointer;flex-shrink:0">` : ''}
             ${label ? `<span style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${cor};background:${cor}18;padding:3px 8px;border-radius:20px">${label}</span>` : ''}
             <span style="font-weight:600;font-size:13.5px;color:#1a1a1a">${esc(r.titulo || 'Sem título')}</span>
           </div>
@@ -1032,13 +1043,13 @@ function renderRascunhos(rascunhos) {
           </div>
         </div>
         <div id="rascunho-body-${r.id}" style="padding:10px 18px;font-size:13px;color:#666;line-height:1.6;max-height:90px;overflow:hidden;position:relative">
-          ${r.conteudo || ''}
+          ${sanitizarHtml(r.conteudo || '')}
           <div style="position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,#fff)"></div>
         </div>
         ${isPendente ? `
         <div style="padding:10px 18px;border-top:0.5px solid #f5f3ef;display:flex;gap:7px;flex-wrap:wrap">
           <button onclick="aprovarRascunho('${r.id}')" style="background:rgba(39,174,96,0.1);color:#219a52;border:0.5px solid rgba(39,174,96,0.25);border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-weight:600">✓ Aprovar</button>
-          <button onclick="editarRascunho('${r.id}')" style="background:rgba(255,107,0,0.08);color:#FF6B00;border:0.5px solid rgba(255,107,0,0.2);border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-weight:600">✏️ Editar</button>
+          <button onclick="editarRascunho('${r.id}')" style="background:rgba(10,77,140,0.08);color:var(--color-primary);border:0.5px solid rgba(10,77,140,0.2);border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-weight:600">✏️ Editar</button>
           <button onclick="rejeitarRascunho('${r.id}')" style="background:rgba(239,68,68,0.07);color:#c0392b;border:0.5px solid rgba(239,68,68,0.2);border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;font-weight:600">✕ Rejeitar</button>
         </div>` : ''}
       </div>`;
@@ -1048,7 +1059,7 @@ function renderRascunhos(rascunhos) {
   if (pendentes.length) {
     html += `
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 12px;background:#fff;border-radius:8px;border:0.5px solid #e0ddd5">
-        <input type="checkbox" id="selecionar-todos" onchange="selecionarTodos(this)" style="width:15px;height:15px;accent-color:#FF6B00;cursor:pointer">
+        <input type="checkbox" id="selecionar-todos" onchange="selecionarTodos(this)" style="width:15px;height:15px;accent-color:var(--color-primary);cursor:pointer">
         <label for="selecionar-todos" style="font-size:12px;color:#888;cursor:pointer">Selecionar todos</label>
         <button id="btn-excluir-selecionados" onclick="excluirSelecionados()" style="display:none;background:#e24b4a;color:#fff;border:none;border-radius:7px;padding:6px 13px;font-size:12px;cursor:pointer;margin-left:auto;font-weight:600">
           Excluir (<span id="count-selecionados">0</span>)
@@ -1070,7 +1081,7 @@ function editarRascunho(id) {
   const r = (allRascunhos || []).find(x => x.id === id) || {};
 
   // Esconde o body normal, transforma o card inteiro
-  card.style.border = '2px solid #FF6B00';
+  card.style.border = '2px solid var(--color-primary)';
   card.style.borderRadius = '14px';
 
   const body = document.getElementById('rascunho-body-' + id);
@@ -1128,7 +1139,7 @@ function editarRascunho(id) {
         <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('edit-r-conteudo-${id}','italic')"><i>I</i></button>
         <button class="fmt-btn" onmousedown="event.preventDefault();focusAndExec('edit-r-conteudo-${id}','underline')"><u>U</u></button>
       </div>
-      <div id="edit-r-conteudo-${id}" contenteditable="true" class="edit-field" style="min-height:80px;font-size:14px">${r.conteudo || ''}</div>
+      <div id="edit-r-conteudo-${id}" contenteditable="true" class="edit-field" style="min-height:80px;font-size:14px">${sanitizarHtml(r.conteudo || '')}</div>
 
       <label class="edit-label-small">Link completo da notícia</label>
       <input type="url" id="edit-r-link-${id}" value="${esc(r.link_fonte || '')}" placeholder="https://..." style="width:100%;height:34px;border:0.5px solid #ddd;border-radius:7px;padding:0 10px;font-size:13px;margin-bottom:14px;outline:none;font-family:'DM Sans',sans-serif">
@@ -1156,7 +1167,7 @@ async function salvarEdicaoRascunho(id, aprovar = false) {
   const tituloEl   = document.getElementById('edit-r-titulo-' + id);
   const conteudoEl = document.getElementById('edit-r-conteudo-' + id);
   const titulo     = tituloEl ? tituloEl.innerText.trim() : '';
-  const conteudo   = conteudoEl ? conteudoEl.innerHTML : '';
+  const conteudo   = conteudoEl ? sanitizarHtml(conteudoEl.innerHTML) : '';
   const link       = document.getElementById('edit-r-link-' + id)?.value || '';
   const tema       = document.getElementById('edit-r-tema-' + id)?.value || '';
   const kpiValor   = document.getElementById('edit-r-kpi-valor-' + id)?.value || null;
@@ -1167,28 +1178,28 @@ async function salvarEdicaoRascunho(id, aprovar = false) {
   if (aprovar) { payload.status = 'aprovado'; payload.foi_publicado = true; }
 
   const { error } = await sb.from('rascunhos_curadoria').update(payload).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
 
   const card = document.getElementById('rascunho-card-' + id);
   if (card) { card.style.border = ''; card.style.borderRadius = ''; }
 
-  toast(aprovar ? '✅ Aprovado! Aparecerá nas Novidades da semana.' : '💾 Rascunho salvo.', 'success');
+  mostrarToast(aprovar ? '✅ Aprovado! Aparecerá nas Novidades da semana.' : '💾 Rascunho salvo.', 'sucesso');
   loadRascunhos();
 }
 
 async function aprovarRascunho(id) {
   const { error } = await sb.from('rascunhos_curadoria')
     .update({ status: 'aprovado', foi_publicado: true }).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('✅ Aprovado! Aparecerá nos Dados de Curitiba.', 'success');
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
+  mostrarToast('✅ Aprovado! Aparecerá nos Dados de Curitiba.', 'sucesso');
   loadRascunhos();
 }
 
 async function rejeitarRascunho(id) {
   if (!confirm('Rejeitar este item?')) return;
   const { error } = await sb.from('rascunhos_curadoria').update({ status: 'rejeitado' }).eq('id', id);
-  if (error) toast('Erro: ' + error.message, 'error');
-  else { toast('Item rejeitado', 'success'); loadRascunhos(); }
+  if (error) mostrarToast('Erro: ' + error.message, 'erro');
+  else { mostrarToast('Item rejeitado', 'sucesso'); loadRascunhos(); }
 }
 
 // ── SEED: Popular com conteúdo do index.html ──
@@ -1442,8 +1453,8 @@ async function seedConteudo() {
     else ok++;
   }
 
-  if (fail > 0) toast(`${ok} blocos inseridos, ${fail} com erro. Verifique o console.`, 'error');
-  else toast(`✅ ${ok} blocos inseridos com sucesso!`, 'success');
+  if (fail > 0) mostrarToast(`${ok} blocos inseridos, ${fail} com erro. Verifique o console.`, 'erro');
+  else mostrarToast(`✅ ${ok} blocos inseridos com sucesso!`, 'sucesso');
   btn.textContent = '🌱 Popular com conteúdo do material interno';
   btn.disabled = false;
 }
@@ -1472,8 +1483,8 @@ async function excluirSelecionados() {
   if (!ids.length) return;
   if (!confirm(`Excluir ${ids.length} rascunho${ids.length>1?'s':''} selecionado${ids.length>1?'s':''}?`)) return;
   const { error } = await sb.from('rascunhos_curadoria').delete().in('id', ids);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast(`${ids.length} rascunho${ids.length>1?'s':''} excluído${ids.length>1?'s':''}`, 'success');
+  if (error) { mostrarToast('Erro: ' + error.message, 'erro'); return; }
+  mostrarToast(`${ids.length} rascunho${ids.length>1?'s':''} excluído${ids.length>1?'s':''}`, 'sucesso');
   loadRascunhos();
 }
 
@@ -1481,9 +1492,7 @@ async function excluirSelecionados() {
 function slugify(text) {
   return String(text).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
 }
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+// esc() agora vem de portal-shared.js (Fase 3 / ADR 0003).
 
 // ── MODAL ──
 function openModal(id) { document.getElementById(id).classList.add('open'); }
@@ -1492,24 +1501,12 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
 
-// ── TOAST ──
-function toast(msg, type) {
-  const t = document.createElement('div');
-  t.className = 'toast ' + (type || 'info');
-  t.textContent = msg;
-  document.getElementById('toast-container').appendChild(t);
-  setTimeout(() => t.remove(), 3500);
-}
-
-function mostrarToast(mensagem, tipo = 'sucesso') {
-  const border = tipo === 'erro' ? '#e24b4a' : '#FF6B00';
-  const el = document.createElement('div');
-  el.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a1a;border:0.5px solid ${border};color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;z-index:99999;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;box-shadow:0 8px 32px rgba(0,0,0,0.3);white-space:nowrap;`;
-  el.textContent = mensagem;
-  document.body.appendChild(el);
-  requestAnimationFrame(() => { el.style.transform = 'translateX(-50%) translateY(0)'; el.style.opacity = '1'; });
-  setTimeout(() => { el.style.transform = 'translateX(-50%) translateY(80px)'; el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
-}
+// ── TOAST (Fase 3 / ADR 0003 / Bloco 1) ──
+// mostrarToast() e mostrarToast() (2 funções redundantes, estilos visuais
+// diferentes) foram unificadas na mostrarToast() única de
+// portal-shared.js — mesma usada em cliente.html/index.html. Todas as
+// chamadas abaixo (antes mostrarToast(msg,'error'/'success')) foram migradas
+// para mostrarToast(msg,'erro'/'sucesso').
 
 // ══════════════════════════════════════════════════════
 // CORRETORES
@@ -1530,7 +1527,7 @@ function formatDt(iso) {
 function formatarSaida(item) {
   if (item.saiu_em) return new Date(item.saiu_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const diff = (new Date() - new Date(item.entrou_em)) / 3600000;
-  return diff < 2 ? '<span style="color:#FF6B00;font-weight:600;font-size:11px;">● Ativo agora</span>' : '—';
+  return diff < 2 ? '<span style="color:var(--color-primary);font-weight:600;font-size:11px;">● Ativo agora</span>' : '—';
 }
 
 function formatarDuracao(item) {
@@ -1539,7 +1536,7 @@ function formatarDuracao(item) {
     return h > 0 ? `${h}h${m>0?' '+m+'min':''}` : `${m} min`;
   }
   const diff = (new Date() - new Date(item.entrou_em)) / 3600000;
-  if (diff < 2) { const m = Math.round(diff*60); return `<span style="color:#FF6B00;font-size:11px;">${m}min (em curso)</span>`; }
+  if (diff < 2) { const m = Math.round(diff*60); return `<span style="color:var(--color-primary);font-size:11px;">${m}min (em curso)</span>`; }
   return '—';
 }
 
@@ -1555,9 +1552,9 @@ function switchCorSub(sub) {
     document.getElementById('corsub-section-' + s).style.display = s === sub ? 'block' : 'none';
     const btn = document.getElementById('corsub-' + s);
     if (s === sub) {
-      btn.style.background = 'rgba(255,107,0,0.12)';
-      btn.style.borderColor = 'rgba(255,107,0,0.3)';
-      btn.style.color = '#FF6B00';
+      btn.style.background = 'rgba(10,77,140,0.12)';
+      btn.style.borderColor = 'rgba(10,77,140,0.3)';
+      btn.style.color = 'var(--color-primary)';
     } else {
       btn.style.background = 'rgba(0,0,0,0.04)';
       btn.style.borderColor = '#ddd';
@@ -1574,7 +1571,7 @@ let _todosCorretores = [];
 
 async function carregarCorretores() {
   const { data, error } = await sb.from('corretores').select('*').order('nome');
-  if (error) { toast('Erro ao carregar corretores', 'error'); return; }
+  if (error) { mostrarToast('Erro ao carregar corretores', 'erro'); return; }
   _todosCorretores = data || [];
   renderTabelaCorretores(_todosCorretores);
   popularFiltroCorretores(_todosCorretores);
@@ -1605,7 +1602,7 @@ async function renderTabelaCorretores(lista) {
       <td style="padding:12px 16px;font-size:12px;color:#888">${formatDt(ultimoAcesso[c.id])}</td>
       <td style="padding:12px 16px">
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button onclick="editarCorretor('${c.id}')" style="background:rgba(255,107,0,0.1);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#FF6B00;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">✏️ Editar</button>
+          <button onclick="editarCorretor('${c.id}')" style="background:rgba(10,77,140,0.1);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:var(--color-primary);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">✏️ Editar</button>
           <button onclick="abrirRedefSenha('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(0,0,0,0.05);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#555;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Redefinir senha</button>
           ${c.portal_token ? `<button onclick="copiarLink('${c.portal_token}')" style="background:rgba(0,120,255,0.08);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#0078ff;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">🔗 Link portal</button>` : ''}
           <button onclick="excluirCorretor('${c.id}','${c.nome.replace(/'/g,'')}')" style="background:rgba(231,76,60,0.08);border:none;border-radius:6px;padding:5px 10px;font-size:11px;color:#c0392b;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600">Excluir</button>
@@ -1630,14 +1627,14 @@ async function toggleAtivoCorretor(id, atual) {
 async function excluirCorretor(id, nome) {
   if (!confirm(`Excluir o corretor "${nome}"? Esta ação não pode ser desfeita.`)) return;
   const { error } = await sb.from('corretores').delete().eq('id', id);
-  if (error) { toast('Erro ao excluir: ' + error.message, 'error'); return; }
-  toast('Corretor excluído.', 'success');
+  if (error) { mostrarToast('Erro ao excluir: ' + error.message, 'erro'); return; }
+  mostrarToast('Corretor excluído.', 'sucesso');
   carregarCorretores();
 }
 
 async function editarCorretor(id) {
   const { data, error } = await sb.from('corretores').select('*').eq('id', id).single();
-  if (error || !data) { toast('Erro ao carregar dados do corretor.', 'error'); return; }
+  if (error || !data) { mostrarToast('Erro ao carregar dados do corretor.', 'erro'); return; }
 
   document.getElementById('edit-corretor-nome').value = data.nome || '';
   document.getElementById('edit-corretor-email').value = data.email || '';
@@ -1646,7 +1643,7 @@ async function editarCorretor(id) {
 
   const modal = document.getElementById('modal-editar-corretor');
   modal.dataset.corretorId = id;
-  modal.style.display = 'flex';
+  openModal('modal-editar-corretor');
 }
 
 async function salvarEdicaoCorretor() {
@@ -1658,12 +1655,12 @@ async function salvarEdicaoCorretor() {
   const whatsapp = document.getElementById('edit-corretor-whatsapp').value.replace(/\D/g, '') || null;
   const ativo = document.getElementById('edit-corretor-ativo').checked;
 
-  if (!nome) { toast('Preencha o nome.', 'error'); return; }
+  if (!nome) { mostrarToast('Preencha o nome.', 'erro'); return; }
 
   const { error } = await sb.from('corretores').update({ nome, whatsapp, ativo, atualizado_em: new Date().toISOString() }).eq('id', id);
-  if (error) { toast('Erro ao salvar: ' + error.message, 'error'); return; }
+  if (error) { mostrarToast('Erro ao salvar: ' + error.message, 'erro'); return; }
 
-  modal.style.display = 'none';
+  closeModal('modal-editar-corretor');
   mostrarToast('Corretor atualizado!');
   await carregarCorretores();
 }
@@ -1681,20 +1678,20 @@ async function salvarNovoCorretor() {
   const email = document.getElementById('nc-email').value.trim().toLowerCase();
   const whatsapp = document.getElementById('nc-whatsapp').value.trim();
   const senha = document.getElementById('nc-senha').value;
-  if (!nome || !email || !senha) { toast('Preencha nome, email e senha.', 'error'); return; }
-  if (senha.length < 6) { toast('Senha deve ter mínimo 6 caracteres.', 'error'); return; }
+  if (!nome || !email || !senha) { mostrarToast('Preencha nome, email e senha.', 'erro'); return; }
+  if (senha.length < 6) { mostrarToast('Senha deve ter mínimo 6 caracteres.', 'erro'); return; }
   const hash = await hashSenha(senha);
   const portal_token = Array.from(crypto.getRandomValues(new Uint8Array(8))).map(b => b.toString(16).padStart(2,'0')).join('');
   const { error } = await sb.from('corretores').insert({ nome, email, senha_hash: hash, whatsapp: whatsapp || null, portal_token });
-  if (error) { toast('Erro: ' + (error.message.includes('unique') ? 'Email já cadastrado.' : error.message), 'error'); return; }
-  toast('Corretor criado com sucesso!', 'success');
+  if (error) { mostrarToast('Erro: ' + (error.message.includes('unique') ? 'Email já cadastrado.' : error.message), 'erro'); return; }
+  mostrarToast('Corretor criado com sucesso!', 'sucesso');
   closeModal('modal-novo-corretor');
   carregarCorretores();
 }
 
 function copiarLink(token) {
   const url = `https://curitibaem-movimento.vercel.app/cliente.html?c=${token}`;
-  navigator.clipboard.writeText(url).then(() => toast('Link copiado!', 'success'));
+  navigator.clipboard.writeText(url).then(() => mostrarToast('Link copiado!', 'sucesso'));
 }
 
 function abrirRedefSenha(id, nome) {
@@ -1707,11 +1704,11 @@ function abrirRedefSenha(id, nome) {
 async function salvarRedefinicaoSenha() {
   const id = document.getElementById('redef-corretor-id').value;
   const senha = document.getElementById('redef-senha').value;
-  if (!senha || senha.length < 6) { toast('Senha deve ter mínimo 6 caracteres.', 'error'); return; }
+  if (!senha || senha.length < 6) { mostrarToast('Senha deve ter mínimo 6 caracteres.', 'erro'); return; }
   const hash = await hashSenha(senha);
   const { error } = await sb.from('corretores').update({ senha_hash: hash, atualizado_em: new Date().toISOString() }).eq('id', id);
-  if (error) { toast('Erro ao redefinir senha.', 'error'); return; }
-  toast('Senha redefinida!', 'success');
+  if (error) { mostrarToast('Erro ao redefinir senha.', 'erro'); return; }
+  mostrarToast('Senha redefinida!', 'sucesso');
   closeModal('modal-redef-senha');
 }
 
@@ -1727,7 +1724,7 @@ async function carregarHistorico() {
   if (filtroCorretor) query = query.eq('corretor_id', filtroCorretor);
 
   const { data, error } = await query;
-  if (error) { toast('Erro ao carregar histórico', 'error'); return; }
+  if (error) { mostrarToast('Erro ao carregar histórico', 'erro'); return; }
   const rows = data || [];
 
   // Totalizadores
@@ -1748,7 +1745,7 @@ async function carregarHistorico() {
       <div style="font-size:11px;color:#888;margin-top:4px">Tempo médio / sessão</div>
     </div>
     <div style="background:#fff;border-radius:10px;border:0.5px solid #e0ddd5;padding:14px 16px">
-      <div style="font-size:15px;font-weight:700;color:#FF6B00">${maisAtivo ? maisAtivo[0] : '—'}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--color-primary)">${maisAtivo ? maisAtivo[0] : '—'}</div>
       <div style="font-size:11px;color:#888;margin-top:4px">Corretor mais ativo${maisAtivo ? ' (' + maisAtivo[1] + 'x)' : ''}</div>
     </div>`;
 
