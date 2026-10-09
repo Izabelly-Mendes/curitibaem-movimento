@@ -1,7 +1,10 @@
 # ADR 0002 — Portal Único (Cliente + Corretor + Gestor)
 
-- **Status:** Aprovado para implementação em blocos (Bloco 1 em andamento)
-- **Data:** 2026-10-08
+- **Status:** Blocos 1, 2 e 3 implementados e validados (2026-10-09). Base
+  técnica da Fase 2 aprovada para a Fase 3. **Cutover definitivo
+  (produção, migração dos 32 corretores, desligamento do legado)
+  continua pendente** — ver `docs/testes/bloco-3-validacao-final.md`.
+- **Data:** 2026-10-08 (criação) · atualizado 2026-10-09
 - **Fase:** Fase 2 da reestruturação (depende da base técnica validada na
   Fase 1 — ver [ADR 0001](0001-autenticacao-usuarios-roles.md) e
   `docs/testes/bloco-d-rodada-concentrada.md`)

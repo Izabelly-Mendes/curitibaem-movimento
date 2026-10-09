@@ -2,14 +2,38 @@
 
 > Reflete o estado **implementado e validado** em 2026-10-09. Ver
 > [ADR 0001](decisions/0001-autenticacao-usuarios-roles.md) (autenticação)
-> e [ADR 0002](decisions/0002-portal-unico.md) (portal único, Fase 2, em
-> implementação) para as decisões completas.
+> e [ADR 0002](decisions/0002-portal-unico.md) (portal único, Fase 2 —
+> Blocos 1-3 implementados e validados; cutover definitivo pendente) para
+> as decisões completas.
+
+## Portal único (ADR 0002) — arquitetura final da Fase 2
+
+`cliente.html` é a base única de experiência para visitante, corretor e
+gestor (substitui a antiga duplicação entre `cliente.html`/`index.html`).
+`index.html` foi preparado como redirect permanente para `cliente.html`
+**só nesta branch** — reversível, não publicado em produção.
+
+**Comportamento por perfil (validado):**
+
+| | Visitante | Corretor | Gestor |
+|---|---|---|---|
+| Vê as 16 seções + conteúdo público | ✅ | ✅ | ✅ |
+| Vê "Meu link" / "Meu perfil" / "Sair" | ❌ | ✅ | ✅ |
+| Vê "Administração" (→ `admin.html`, mesma sessão, sem novo login) | ❌ | ❌ | ✅ |
+| Redirecionado para login se não autenticado | ❌ (nunca — portal é público) | — | — |
+
+**Componente compartilhado:** `portal-shared.js` (mapas de tema/imagem,
+`toggleFontes`, `trocarIdioma`, `mostrarToast`, busca de dados de clima) —
+carregado por `index.html` e `cliente.html`.
+
+**Client Supabase:** único por página, via `authClient` (`auth.js`) — a
+duplicação de 2 instâncias de `GoTrueClient` dentro do próprio
+`cliente.html` foi eliminada no Bloco 2.
 
 ## Portal único — separação de contextos (ADR 0002)
 
-A partir da Fase 2, cliente/corretor/gestor compartilham a mesma base de
-portal (`cliente.html`). Dois mecanismos **independentes** decidem coisas
-diferentes, e não se misturam:
+Dois mecanismos **independentes** decidem coisas diferentes, e não se
+misturam:
 
 | Mecanismo | Fonte | Decide |
 |---|---|---|

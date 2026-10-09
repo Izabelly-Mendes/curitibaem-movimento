@@ -685,6 +685,19 @@ img { max-width: 100%; height: auto; }
 </head>
 <body>
 
+<!-- ══════════════════════════════════════════════════════════════
+     Fase 2 (ADR 0002) / Bloco 3 — REDIRECT PREPARADO PARA O CUTOVER
+     cliente.html agora e o portal unico (visitante/corretor/gestor,
+     ver Bloco 2). index.html nao tem mais conteudo exclusivo — tudo
+     que ele oferecia (ferramentas de corretor/gestor) ja existe em
+     cliente.html. Este redirect so existe NESTA branch de
+     desenvolvimento; nada foi publicado em producao.
+     REVERSIVEL: para voltar ao index.html antigo, basta remover este
+     bloco <script> — todo o resto do arquivo abaixo permanece intacto,
+     nao foi apagado nem alterado.
+     ══════════════════════════════════════════════════════════════ -->
+<script>window.location.replace('./cliente.html');</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="./auth.js"></script>
 <script src="./portal-shared.js"></script>
