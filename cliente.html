@@ -812,6 +812,12 @@ input:focus-visible {
 }
 .sidebar-item.menu-ativo:hover { padding-left: 20px; }
 
+/* Ferramentas internas (Fase 2 / ADR 0002) — discretas, mesma
+   linguagem visual dos itens de menu, só separadas por um divisor. */
+#ferramentas-internas { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--color-divider); }
+#ferramentas-internas .sidebar-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+#ferramentas-internas .sidebar-item .ico { font-size: 14px; width: 16px; text-align: center; flex-shrink: 0; }
+
 .card { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-card); }
 
 .secao { padding: var(--space-4) var(--space-6); }
@@ -892,6 +898,10 @@ input:focus-visible {
     <a href="javascript:void(0)" onclick="navegarSecao('secao-regioes', this)" class="sidebar-item" data-tooltip="Regiões Estratégicas" data-tip-pt="Regiões Estratégicas" data-tip-en="Strategic Areas" data-tip-zh="战略区域"><span class="label" data-pt="Regiões Estratégicas" data-en="Strategic Areas" data-zh="战略区域">Regiões Estratégicas</span></a>
     <a href="javascript:void(0)" onclick="navegarSecao('secao-noticias', this)" class="sidebar-item" data-tooltip="Notícias" data-tip-pt="Notícias" data-tip-en="News" data-tip-zh="新闻"><span class="label" data-pt="Notícias" data-en="News" data-zh="新闻">Notícias</span></a>
     <a href="javascript:void(0)" onclick="navegarSecao('secao-dados-curitiba', this)" class="sidebar-item" data-tooltip="Dados de Curitiba"><span class="label" data-pt="Dados de Curitiba" data-en="Curitiba Data" data-zh="库里蒂巴数据">Dados de Curitiba</span></a>
+    <!-- Ferramentas internas (Fase 2 / ADR 0002 / Bloco 2): preenchido
+         via JS só quando há sessão autenticada (obterContextoVisitante).
+         Nunca depende de ?c= — ver docs/USUARIOS-E-PERMISSOES.md. -->
+    <div id="ferramentas-internas" style="display:none"></div>
   </div>
 </nav>
 
@@ -1848,10 +1858,13 @@ document.addEventListener('DOMContentLoaded', function() {
      anon key é pública por design do Supabase
      ══════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./auth.js"></script>
 <script>
-const _PORTAL_URL = 'https://uocnikcoynoflxgcknii.supabase.co';
-const _PORTAL_KEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
-const supabaseClient = window.supabase.createClient(_PORTAL_URL, _PORTAL_KEY);
+// Fase 2 (ADR 0002) / Bloco 2: client único. 'supabaseClient' passa a
+// apontar para o mesmo authClient de auth.js, em vez de criar uma 2ª
+// instância de GoTrueClient com a mesma anon key (achado do inventário —
+// este arquivo chegou a ter 2 clients Supabase próprios).
+const supabaseClient = authClient;
 
 let _corretor = null;
 
@@ -1938,6 +1951,52 @@ function inicializarWhatsFloat() {
   document.body.appendChild(btn);
 }
 
+// ── Ferramentas internas (Fase 2 / ADR 0002 / Bloco 2) ──────────────
+// Depende EXCLUSIVAMENTE da sessão autenticada (obterContextoVisitante,
+// de auth.js) — nunca do ?c= da URL. Ver regra de separação de
+// contextos em docs/USUARIOS-E-PERMISSOES.md.
+let _perfilAutenticado = null;
+
+async function inicializarFerramentasInternas() {
+  const ctx = await obterContextoVisitante();
+  if (ctx.tipo === 'visitante') return;
+
+  _perfilAutenticado = ctx.perfil;
+  const container = document.getElementById('ferramentas-internas');
+  if (!container) return;
+
+  let html = `
+    <a href="javascript:void(0)" onclick="copiarMeuLinkPortal()" class="sidebar-item"><span class="ico">🔗</span><span class="label">Meu link</span></a>
+    <a href="./perfil.html" class="sidebar-item"><span class="ico">👤</span><span class="label">Meu perfil</span></a>`;
+  if (ctx.tipo === 'gestor') {
+    html += `<a href="./admin.html" class="sidebar-item"><span class="ico">⚙️</span><span class="label">Administração</span></a>`;
+  }
+  html += `<a href="javascript:void(0)" onclick="fazerLogout()" class="sidebar-item"><span class="ico">↪</span><span class="label">Sair</span></a>`;
+
+  container.innerHTML = html;
+  container.style.display = 'block';
+}
+
+async function copiarMeuLinkPortal() {
+  if (!_perfilAutenticado) { mostrarToast('Sessão não encontrada.', 'erro'); return; }
+
+  let token = _perfilAutenticado.portal_token;
+  if (!token) {
+    token = Math.random().toString(36).substring(2,10) + Math.random().toString(36).substring(2,10);
+    const { error } = await authClient.from('perfis').update({ portal_token: token }).eq('id', _perfilAutenticado.id);
+    if (error) { mostrarToast('Erro ao gerar link: ' + error.message, 'erro'); return; }
+    _perfilAutenticado.portal_token = token;
+  }
+
+  const url = `${window.location.origin}${window.location.pathname}?c=${token}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    mostrarToast('Link copiado!', 'sucesso');
+  } catch (e) {
+    mostrarToast('Não foi possível copiar automaticamente.', 'erro');
+  }
+}
+
 // mostrarToast() agora vem de portal-shared.js (Fase 2 / Bloco 1).
 
 (function() {
@@ -1952,9 +2011,8 @@ function inicializarWhatsFloat() {
 </script>
 <script>
 (function() {
-  const SURL = 'https://uocnikcoynoflxgcknii.supabase.co';
-  const SKEY = 'sb_publishable_nWEHxISod-7kWfXptMj6Ow_RQU6hsf2';
-  const sb   = supabase.createClient(SURL, SKEY);
+  // Mesma consolidação — ver nota acima.
+  const sb = authClient;
 
   // ── Mapa slug → id da secao ──
   const SLUG_MAP = {
@@ -2141,6 +2199,7 @@ function inicializarWhatsFloat() {
     carregarDadosCuritiba();
     carregarBarraKPIs();
     inicializarPortal();
+    inicializarFerramentasInternas();
 
     // Scroll reveal (Fase 5, corrigido na Fase 7): anima o CONTAINER de cada
     // seção, não cada card/kpi individualmente. Números e gráficos aparecem
